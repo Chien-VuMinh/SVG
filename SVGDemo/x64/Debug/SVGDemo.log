@@ -1,0 +1,13 @@
+﻿  stdafx.cpp
+  Line.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Line.cpp(20,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  Point.cpp
+  Shape.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(26,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(42,27): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(42,24): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  SVGDemo.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\SVGDemo.cpp(57,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  Generating Code...
+  LINK : C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVGDemo.exe not found or not built by the last incremental link; performing full link
+  SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVGDemo.exe
