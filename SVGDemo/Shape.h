@@ -9,6 +9,8 @@
 #include <fstream>
 #include "Point.h"
 #include "Line.h"
+#include "Rec.h"
+#include "Circle.h"
 
 
 using namespace std;
@@ -22,6 +24,10 @@ class Shape {
 private:
 	int LineArrSize;
 	Line* LineArr;
+	int RecArrSize;
+	_Rectangle* RecArr;
+	int CircleArrSize;
+	Circle* CircleArr;
 
 public:
 	Shape();

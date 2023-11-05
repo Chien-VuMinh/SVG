@@ -19,7 +19,7 @@ using namespace Gdiplus;
 
 
 class Line {
-private:
+protected:
 	HDC hdc;
 	int rgb[3];
 	int thickness;
