@@ -22,6 +22,12 @@ int Point2D::GetY() {
 }
 
 
+void Point2D::SetPoint(int x, int y) {
+	this->x = x;
+	this->y = y;
+}
+
+
 Point2D:: ~Point2D() {
 
 }

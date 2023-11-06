@@ -15,7 +15,7 @@ void Circle::SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, in
 }
 
 
-VOID Circle::OnPaintLine() {
+VOID Circle::OnPaintCircle() {
     Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     graphics.DrawEllipse(&pen, center.GetX() - radX, center.GetY() - radY, 2 * radX, 2 * radY);

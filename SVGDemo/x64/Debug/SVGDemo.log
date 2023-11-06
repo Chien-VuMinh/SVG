@@ -1,12 +1,12 @@
-﻿  Circle.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Circle.cpp(20,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Line.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Line.cpp(20,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+﻿  PolyShape.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(28,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(29,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(36,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(57,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(58,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(65,56): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+  SVG_Reader.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\SVG_Reader.cpp(56,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
   Shape.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(36,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(52,27): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(52,24): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  SVGDemo.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\SVGDemo.cpp(56,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
   Generating Code...
   SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVGDemo.exe

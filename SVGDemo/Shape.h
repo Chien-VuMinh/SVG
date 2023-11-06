@@ -11,6 +11,8 @@
 #include "Line.h"
 #include "Rec.h"
 #include "Circle.h"
+#include "Text.h"
+#include "PolyShape.h"
 
 
 using namespace std;
@@ -24,10 +26,22 @@ class Shape {
 private:
 	int LineArrSize;
 	Line* LineArr;
+
 	int RecArrSize;
 	_Rectangle* RecArr;
+
 	int CircleArrSize;
 	Circle* CircleArr;
+
+	int TextArrSize;
+	Text* TextArr;
+
+	int PolyLilneArrSize;
+	PolyLine* PolyLineArr;
+
+	int PolyGonArrSize;
+	PolyGon* PolyGonArr;
+
 
 public:
 	Shape();

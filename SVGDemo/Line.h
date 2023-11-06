@@ -5,8 +5,6 @@
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
-#include <vector>
-#include <fstream>
 #include "Point.h"
 
 

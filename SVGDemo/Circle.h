@@ -5,8 +5,6 @@
 #include <windows.h>
 #include <objidl.h>
 #include <gdiplus.h>
-#include <vector>
-#include <fstream>
 #include "Point.h"
 
 
@@ -29,5 +27,5 @@ protected:
 public:
 	void SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, int thickness);
 
-	VOID OnPaintLine();
+	VOID OnPaintCircle();
 };

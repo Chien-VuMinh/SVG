@@ -9,50 +9,72 @@ Shape::Shape() {
 
     RecArrSize = 0;
     RecArr = NULL;
+
+    CircleArrSize = 0;
+    CircleArr = NULL;
+
+    TextArrSize = 0;
+    TextArr = NULL;
+
+    PolyLilneArrSize = 0;
+    PolyLineArr = NULL;
+
+    PolyGonArrSize = 0;
+    PolyGonArr = NULL;
 }
 
 
 void Shape::ReadSVG(HDC hdc) {
-    this->LineArrSize = 1;
-    int rgb[] = { 255,255, 0 };
-    Point2D start(50, 125), end(500, 300);
+    //this->LineArrSize = 1;
+    //int rgb[] = { 255,255, 0 };
+    //Point2D start(50, 125), end(500, 300);
 
-    this->LineArr = new Line[LineArrSize];
+    //this->LineArr = new Line[LineArrSize];
 
-    this->LineArr[0].SetLine(hdc, rgb, start, end, 8);
+    //this->LineArr[0].SetLine(hdc, rgb, start, end, 8);
 
 
 
-    this->RecArrSize = 1;
-    this->RecArr = new _Rectangle[RecArrSize];
+    //this->RecArrSize = 1;
+    //this->RecArr = new _Rectangle[RecArrSize];
 
-    this->RecArr[0].SetRec(hdc, rgb, start, 100, 500, 8);
+    //this->RecArr[0].SetRec(hdc, rgb, start, 100, 500, 8);
+
+
+
+    //this->CircleArrSize = 1;
+    //this->CircleArr = new Circle[CircleArrSize];
+    //start.SetPoint(747, 163);
+    //rgb[2] = 255;
+    //rgb[0] = 1;
+    //this->CircleArr[0].SetCircle(hdc, rgb, start, 107, 107, 8);
+
+
+    //this->TextArrSize = 1;
+    //this->TextArr = new Text[TextArrSize];
+    //start.SetPoint(50, 500);
+    //rgb[2] = 0;
+    //rgb[1] = 0;
+    //rgb[0] = 255;
+    //this->TextArr[0].SetText(hdc, "ThaNg NaO k0 Tai vE xEm t gHi v0 Ba0 cA0", rgb, 50, start);
+
+
+
+
+
+
+    // READING SVG FILE START FROM HERE
+
+
 }
 
 
-VOID Shape::OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness) {
-    //Ref: https://docs.microsoft.com/en-us/windows/desktop/gdiplus/-gdiplus-getting-started-use
-    Graphics graphics(hdc);
-    Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
-    graphics.DrawLine(&pen, xStart, yStart, xEnd, yEnd);
-}
 
-
-
-VOID Shape::OnPaintString(HDC hdc, string s, int* rgb, int size, int x, int y) {
-    wstring widestr = wstring(s.begin(), s.end());
-    const wchar_t* widecstr = widestr.c_str();
-
-
-
-    Graphics    graphics(hdc);
-    SolidBrush  brush(Color(rgb[0], rgb[1], rgb[2]));
-    FontFamily  fontFamily(L"Times New Roman");
-    Font        font(&fontFamily, 50, FontStyleRegular, UnitPixel);
-    PointF      pointF(x, y);
-
-    graphics.DrawString(widecstr, -1, &font, pointF, &brush);
-}
+//VOID Shape::OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness) {
+//    Graphics graphics(hdc);
+//    Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
+//    graphics.DrawLine(&pen, xStart, yStart, xEnd, yEnd);
+//}
 
 
 VOID Shape::OnPaintImage(HDC hdc, string name, int x, int y) {
@@ -67,29 +89,32 @@ VOID Shape::OnPaintImage(HDC hdc, string name, int x, int y) {
 
 
 VOID Shape::OnPain(HDC hdc) {
-    int rgb[] = { 255, 0, 0 };
-    this->RecArr[0].OnPaintRec();
+    //int rgb[] = { 255, 0, 0 };
 
-    OnPaintLine(hdc, rgb, 50, 125, 500, 125, 8);
+    //this->RecArr[0].OnPaintRec();
+    //this->CircleArr[0].OnPaintCircle();
+    //this->TextArr[0].OnPaintText();
 
-    OnPaintString(hdc, "ThaNg NaO k0 Tai vE xEm t gHi v0 Ba0 cA0", rgb, 70, 50, 500);
+    //OnPaintLine(hdc, rgb, 50, 125, 500, 125, 8);
 
-    rgb[1] = 255;
-    //OnPaintLine(hdc, rgb, 50, 125, 500, 300, 8);
-    this->LineArr[0].OnPaintLine();
-    //Line l;
-    //Point2D start(50, 125), end(500, 300);
-    //l.SetLine(hdc, rgb, start, end, 8);
-    //l.OnPaintLine();
+    ////OnPaintString(hdc, "ThaNg NaO k0 Tai vE xEm t gHi v0 Ba0 cA0", rgb, 50, 50, 500);
 
-    rgb[2] = 100;
-    OnPaintLine(hdc, rgb, 500, 300, 550 / 2, 0, 8);
+    //rgb[1] = 255;
+    ////OnPaintLine(hdc, rgb, 50, 125, 500, 300, 8);
+    //this->LineArr[0].OnPaintLine();
+    ////Line l;
+    ////Point2D start(50, 125), end(500, 300);
+    ////l.SetLine(hdc, rgb, start, end, 8);
+    ////l.OnPaintLine();
 
-    rgb[0] = 0;
-    OnPaintLine(hdc, rgb, 550 / 2, 0, 50, 300, 8);
+    //rgb[2] = 100;
+    //OnPaintLine(hdc, rgb, 500, 300, 550 / 2, 0, 8);
 
-    rgb[1] = 0;
-    OnPaintLine(hdc, rgb, 50, 300, 500, 125, 8);
+    //rgb[0] = 0;
+    //OnPaintLine(hdc, rgb, 550 / 2, 0, 50, 300, 8);
+
+    //rgb[1] = 0;
+    //OnPaintLine(hdc, rgb, 50, 300, 500, 125, 8);
 
 
     OnPaintImage(hdc, "33.png", 600, 10);
@@ -97,7 +122,7 @@ VOID Shape::OnPain(HDC hdc) {
 
 
 Shape::~Shape() {
-    delete[] LineArr, RecArr;
+    delete[] LineArr, RecArr, CircleArr, TextArr, PolyLineArr, PolyGonArr;
 }
 
 
@@ -183,7 +208,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hdc = BeginPaint(hWnd, &ps);
         shape.ReadSVG(hdc);
         shape.OnPain(hdc);
-        //Example_DrawCurve2(hdc);
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:

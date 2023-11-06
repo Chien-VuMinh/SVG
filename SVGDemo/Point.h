@@ -16,6 +16,7 @@ public:
 
 	int GetX();
 	int GetY();
+	void SetPoint(int x, int y);
 
 	~Point2D();
 };
