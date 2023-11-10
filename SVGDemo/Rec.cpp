@@ -6,15 +6,18 @@
 
 
 
-void _Rectangle::SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness) {
+void _Rectangle::SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity) {
     this->hdc = hdc;
-    this->rgb[0] = rgb[0];
-    this->rgb[1] = rgb[1];
-    this->rgb[2] = rgb[2];
     this->start = start;
     this->height = height;
     this->width = width;
     this->thickness = thickness;
+    this->stroke_opacity = stroke_opacity;
+    for (int i = 0; i <= 2; i++)
+    {
+        this->rgb[i] = rgb[i];
+        this->fill_rgb[i] = fill_rgb[i];
+    }
 }
 
 

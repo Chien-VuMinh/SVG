@@ -36,12 +36,11 @@ private:
 	int TextArrSize;
 	Text* TextArr;
 
-	int PolyLilneArrSize;
+	int PolyLineArrSize;
 	PolyLine* PolyLineArr;
 
 	int PolyGonArrSize;
 	PolyGon* PolyGonArr;
-
 
 public:
 	Shape();

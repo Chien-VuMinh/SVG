@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "rapidxml.hpp"
 #include "Shape.h"
+#include <string>
 
 
 Shape::Shape() {
@@ -16,7 +17,7 @@ Shape::Shape() {
     TextArrSize = 0;
     TextArr = NULL;
 
-    PolyLilneArrSize = 0;
+    PolyLineArrSize = 0;
     PolyLineArr = NULL;
 
     PolyGonArrSize = 0;
@@ -64,7 +65,141 @@ void Shape::ReadSVG(HDC hdc) {
 
 
     // READING SVG FILE START FROM HERE
+    ifstream ifs;
+    ifs.open("Sample.svg");
+    if (!ifs.is_open())
+        cout << "Cannot open file!" << endl;
+    string temp;
+    while (getline(ifs, temp, '\n'))
+    {
+        if (temp.find("rect") < temp.size())
+        {
+            RecArrSize++;
+        }
+        else if (temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
+        {
+            CircleArrSize++;
+        }
+        else if (temp.find("text") < temp.length())
+        {
+            TextArrSize++;
+        }
+        else if (temp.find("polyline") < temp.length())
+        {
+            PolyLineArrSize++;
+        }
+        else if (temp.find("polygon") < temp.length())
+        {
+            PolyGonArrSize++;
+        }
+        else if (temp.find("line") < temp.length())
+        {
+            LineArrSize++;
+        }
+    }
+    ifs.close();
 
+    RecArr = new _Rectangle[RecArrSize];
+    CircleArr = new Circle[CircleArrSize];
+    TextArr = new Text[TextArrSize];
+    PolyLineArr = new PolyLine[PolyLineArrSize];
+    PolyGonArr = new PolyGon[PolyGonArrSize];
+    LineArr = new Line[LineArrSize];
+    int countRec = 0;
+    ifstream In;
+    In.open("Sample.svg");
+    if (In.is_open() == 0)
+        cout << "Cannot open this file!";
+    while (getline(In, temp, '\n'))
+    {
+        if (temp.find("rect") < temp.size())
+        {
+           
+            int pos1 = temp.find("fill-opacity") + 14;
+            int pos2 = temp.find("\"", pos1);
+            double fill_opacity = stod(temp.substr(pos1, pos2-pos1));
+            
+            pos1 = temp.find("stroke=") + 13;
+            pos2 = temp.find(",", pos1);
+            int rgb[3];
+            rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = pos2 + 1;
+            pos2 = temp.find(",", pos1);
+            rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+            
+            pos1 = pos2 + 1;
+            pos2 = temp.find(")", pos1);
+            rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            
+            pos1 = temp.find("stroke-width=") + 14;
+            pos2 = temp.find("\"", pos1);
+            int thickness = stoi(temp.substr(pos1, pos2 - pos1));
+
+            Point2D start;
+            pos1 = temp.find("x=") + 3;
+            pos2 = temp.find("\"", pos1);
+            int x = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = temp.find("y=") + 3;
+            pos2 = temp.find("\"", pos1);
+            int y = stoi(temp.substr(pos1, pos2 - pos1));
+            start.SetPoint(x, y);
+
+            pos1 = temp.find("width=") + 7;
+            pos2 = temp.find("\"", pos1);
+            int width = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = temp.find("height=") + 8;
+            pos2 = temp.find("\"", pos1);
+            int height = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = temp.find("fill=") + 10;
+            pos2 = temp.find(",", pos1);
+            int fill_rgb[3];
+            fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = pos2 + 1;
+            pos2 = temp.find(",", pos1);
+            fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = pos2 + 1;
+            pos2 = temp.find(")", pos1);
+            fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+
+            pos1 = temp.find("stroke-width=") + 14;
+            pos2 = temp.find("\"", pos1);
+            int thickness = stoi(temp.substr(pos1, pos2 - pos1));
+
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                //pos1 = temp.find()
+            }
+
+            //RecArr[countRec++].SetRec(hdc, rgb, start, height, width, thickness, fill_rgb, fill_opacity, )
+        }
+        else if (temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
+        {
+            CircleArrSize++;
+        }
+        else if (temp.find("text") < temp.length())
+        {
+            TextArrSize++;
+        }
+        else if (temp.find("polyline") < temp.length())
+        {
+            PolyLineArrSize++;
+        }
+        else if (temp.find("polygon") < temp.length())
+        {
+            PolyGonArrSize++;
+        }
+        else if (temp.find("line") < temp.length())
+        {
+            LineArrSize++;
+        }
+    }
+    ifs.close();
 
 }
 

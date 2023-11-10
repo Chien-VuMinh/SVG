@@ -4,14 +4,17 @@
 
 
 
-void Line::SetLine(HDC hdc, int* rgb, Point2D start, Point2D end, int thickness) {
+void Line::SetLine(HDC hdc, int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity) 
+{
     this->hdc = hdc;
-    this->rgb[0] = rgb[0];
-    this->rgb[1] = rgb[1];
-    this->rgb[2] = rgb[2];
+    for (int i = 0; i <= 2; i++)
+    {
+        this->rgb[i] = rgb[i];
+    }
     this->start = start;
     this->end = end;
     this->thickness = thickness;
+    this->stroke_opacity = stroke_opacity;
 }
 
 

@@ -22,6 +22,9 @@ protected:
 	int rgb[3];
 	Point2D start;
 	int height, width;
+	double fill_opacity;
+	int fill_rgb[3];
+	double stroke_opacity;
 };
 
 
@@ -30,7 +33,7 @@ private:
 	int thickness;
 
 public:
-	void SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness);
+	void SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity);
 
 	VOID OnPaintRec();
 };

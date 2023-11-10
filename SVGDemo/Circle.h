@@ -23,9 +23,11 @@ protected:
 	int thickness;
 	Point2D center;
 	int radX, radY;
-
+	int fill_rgb[3];
+	double stroke_opacity;
+	double fill_opacity;
 public:
-	void SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, int thickness);
+	void SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
 
 	VOID OnPaintCircle();
 };
