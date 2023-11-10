@@ -6,6 +6,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 #include "Point.h"
+#include "Shape.h"
 
 
 using namespace std;
@@ -16,7 +17,8 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 
-class Rec {
+
+class Rec : public Shape {
 protected:
 	HDC hdc;
 	int rgb[3];
@@ -35,7 +37,7 @@ private:
 public:
 	void SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity);
 
-	VOID OnPaintRec();
+	VOID OnPaint();
 };
 
 

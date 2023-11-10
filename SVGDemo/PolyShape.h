@@ -6,6 +6,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 #include "Point.h"
+#include "Shape.h"
 
 
 using namespace std;
@@ -17,7 +18,7 @@ using namespace Gdiplus;
 
 
 
-class PolyShape {
+class PolyShape : public Shape {
 protected:
 	HDC hdc;
 	int rgb[3];

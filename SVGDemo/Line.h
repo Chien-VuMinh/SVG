@@ -6,6 +6,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 #include "Point.h"
+#include "Shape.h"
 
 
 using namespace std;
@@ -16,7 +17,7 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 
-class Line {
+class Line : public Shape {
 protected:
 	HDC hdc;
 	int rgb[3];
@@ -26,5 +27,5 @@ protected:
 public:
 	void SetLine(HDC hdc, int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
 
-	VOID OnPaintLine();
+	VOID OnPaint();
 };

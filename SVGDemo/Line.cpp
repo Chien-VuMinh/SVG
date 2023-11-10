@@ -18,7 +18,7 @@ void Line::SetLine(HDC hdc, int* rgb, Point2D start, Point2D end, int thickness,
 }
 
 
-VOID Line::OnPaintLine() {
+VOID Line::OnPaint() {
     Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());

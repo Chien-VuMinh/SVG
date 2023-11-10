@@ -1,25 +1,2 @@
-﻿  stdafx.cpp
-  Circle.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Circle.cpp(20,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Line.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Line.cpp(20,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Point.cpp
-  PolyShape.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(28,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(29,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(36,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(57,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(58,43): warning C4244: '=': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\PolyShape.cpp(65,56): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Rec.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Rec.cpp(23,49): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Shape.cpp
-  SVG_Reader.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\SVG_Reader.cpp(56,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
-  Text.cpp
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Text.cpp(26,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Text.cpp(27,48): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\Documents\GitHub\SVG\SVGDemo\Text.cpp(27,34): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-  Generating Code...
-  LINK : C:\Users\ADMIN\Documents\GitHub\SVG\x64\Debug\SVGDemo.exe not found or not built by the last incremental link; performing full link
-  SVGDemo.vcxproj -> C:\Users\ADMIN\Documents\GitHub\SVG\x64\Debug\SVGDemo.exe
+﻿  Shape.cpp
+  SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVGDemo.exe

@@ -1,8 +1,7 @@
 #pragma once
+#include "stdafx.h"
+#include "rapidxml.hpp"
 #include <iostream>
-
-
-using namespace std;
 
 const double epsilon = 0.0001;
 

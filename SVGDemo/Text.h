@@ -6,6 +6,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 #include "Point.h"
+#include "Shape.h"
 
 
 using namespace std;
@@ -16,7 +17,7 @@ using namespace Gdiplus;
 #pragma comment (lib,"Gdiplus.lib")
 
 
-class Text {
+class Text : public Shape {
 protected:
 	HDC hdc;
 	string text;
@@ -27,5 +28,5 @@ protected:
 public:
 	void SetText(HDC hdc, string text, int* rgb, int size, Point2D start);
 
-	VOID OnPaintText();
+	VOID OnPaint();
 };

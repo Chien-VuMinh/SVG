@@ -21,7 +21,7 @@ void _Rectangle::SetRec(HDC hdc, int* rgb, Point2D start, int height, int width,
 }
 
 
-VOID _Rectangle::OnPaintRec() {
+VOID _Rectangle::OnPaint() {
     Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);

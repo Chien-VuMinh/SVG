@@ -69,7 +69,7 @@ void PolyGon::SetPolyLine(HDC hdc, int* rgb, int* fill_rgb, int thickness, int N
 VOID PolyGon::OnPaintPolyLine() {
     Graphics        graphics(hdc);
     Pen             pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
-    SolidBrush      brush(Color(brushRGB[0], brushRGB[1], brushRGB[2]));
+    SolidBrush      brush(Color(fill_rgb[0], fill_rgb[1], fill_rgb[2]));
     graphics.DrawPolygon(&pen, points, NumOfPoint);
     graphics.FillPolygon(&brush, points, NumOfPoint);
 }

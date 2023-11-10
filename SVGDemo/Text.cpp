@@ -16,7 +16,7 @@ void Text::SetText(HDC hdc, string text, int* rgb, int size, Point2D start) {
 }
 
 
-VOID Text::OnPaintText() {
+VOID Text::OnPaint() {
     wstring widestr = wstring(text.begin(), text.end());
     const wchar_t* widecstr = widestr.c_str();
 
