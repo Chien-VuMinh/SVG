@@ -171,7 +171,396 @@ void Shape::ReadSVG(HDC hdc) {
     //ifs.close();
 }
 
+void Shape::HandleSVGFile(HDC hdc) {
+    //this->LineArrSize = 1;
+    //int rgb[] = { 255,255, 0 };
+    //Point2D start(50, 125), end(500, 300);
 
+    //this->LineArr = new Line[LineArrSize];
+
+    //this->LineArr[0].SetLine(hdc, rgb, start, end, 8);
+
+
+
+    //this->RecArrSize = 1;
+    //this->RecArr = new _Rectangle[RecArrSize];
+
+    //this->RecArr[0].SetRec(hdc, rgb, start, 100, 500, 8);
+
+
+
+    //this->CircleArrSize = 1;
+    //this->CircleArr = new Circle[CircleArrSize];
+    //start.SetPoint(747, 163);
+    //rgb[2] = 255;
+    //rgb[0] = 1;
+    //this->CircleArr[0].SetCircle(hdc, rgb, start, 107, 107, 8);
+
+
+    //this->TextArrSize = 1;
+    //this->TextArr = new Text[TextArrSize];
+    //start.SetPoint(50, 500);
+    //rgb[2] = 0;
+    //rgb[1] = 0;
+    //rgb[0] = 255;
+    //this->TextArr[0].SetText(hdc, "ThaNg NaO k0 Tai vE xEm t gHi v0 Ba0 cA0", rgb, 50, start);
+
+
+
+
+
+
+    // READING SVG FILE START FROM HERE
+    ifstream ifs;
+    ifs.open("Sample.svg");
+    if (!ifs.is_open())
+        cout << "Cannot open file!" << endl;
+    string temp;
+    while (getline(ifs, temp))
+        if (temp.find("line") < temp.length() || temp.find("polygon") < temp.length() || temp.find("polyline") < temp.length() || temp.find("text") < temp.length() || temp.find("rect") < temp.size() || temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
+            ShapeArrSize++;
+    ifs.close();
+
+
+
+
+
+    ShapeArr = new Shape * [ShapeArrSize];
+    int count = 0;
+
+    ifstream In;
+    In.open("Sample.svg");
+
+
+    while (getline(In, temp, '\n'))
+    {
+        if (temp.find("rect") < temp.size())
+        {
+            int pos1, pos2;
+            double fill_opacity;
+            if (temp.find("fill-opacity") < temp.length())
+            {
+                pos1 = temp.find("fill-opacity") + 14;
+                pos2 = temp.find("\"", pos1);
+                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_opacity = 1;
+            }
+
+            int rgb[3];
+            if (temp.find("stroke=") < temp.length())
+            {
+                pos1 = temp.find("stroke=") + 12;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+
+            Point2D start;
+            int x, y;
+            if (temp.find("x=") < temp.length())
+            {
+                pos1 = temp.find("x=") + 3;
+                pos2 = temp.find("\"", pos1);
+                x = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find(" y=") + 4;
+                pos2 = temp.find("\"", pos1);
+                y = stoi(temp.substr(pos1, pos2 - pos1));
+                start.SetPoint(x, y);
+            }
+            else
+            {
+                start.SetPoint(0, 0);
+            }
+
+            int width;
+            if (temp.find(" width=") < temp.length())
+            {
+                pos1 = temp.find(" width=") + 8;
+                pos2 = temp.find("\"", pos1);
+                width = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                width = 0;
+            }
+
+            int height;
+            if (temp.find(" height=") < temp.length())
+            {
+                pos1 = temp.find(" height=") + 9;
+                pos2 = temp.find("\"", pos1);
+                height = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                height = 0;
+            }
+
+            int fill_rgb[3];
+            if (temp.find("fill=") < temp.length())
+            {
+                pos1 = temp.find("fill=") + 10;
+                pos2 = temp.find(",", pos1);
+
+                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
+            }
+
+            int thickness;
+            if (temp.find("stroke-width") < temp.length())
+            {
+                pos1 = temp.find("stroke-width=") + 14;
+                pos2 = temp.find("\"", pos1);
+                thickness = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                thickness = 0;
+            }
+
+            double stroke_opacity;
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                pos1 = temp.find("stroke-opacity=") + 16;
+                pos2 = temp.find("\"", pos1);
+                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+                stroke_opacity = 1;
+
+            _Rectangle Rec;
+            Rec.SetRec(rgb, start, height, width, thickness, fill_rgb, fill_opacity, stroke_opacity);
+            ShapeArr[count] = &Rec;
+            ShapeArr[count++]->OnPaint(hdc);
+        }
+        else if (temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
+        {
+            //void Circle::SetCircle(, , double fill_opacity)
+            Point2D center;
+            int pos1, pos2;
+            int cx, cy;
+            if (temp.find("cx=") < temp.length())
+            {
+                pos1 = temp.find("cx=") + 4;
+                pos2 = temp.find("\"", pos1);
+                cx = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find("cy=") + 4;
+                pos2 = temp.find("\"", pos1);
+                cy = stoi(temp.substr(pos1, pos2 - pos1));
+                center.SetPoint(cx, cy);
+            }
+            else
+            {
+                center.SetPoint(0, 0);
+            }
+
+            int radX, radY;
+            if (temp.find("r=") < temp.length())
+            {
+                pos1 = temp.find("r=") + 3;
+                pos2 = temp.find("\"", pos1);
+                radX = radY = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else if (temp.find("rx=") < temp.length())
+            {
+                pos1 = temp.find("rx=") + 4;
+                pos2 = temp.find("\"", pos1);
+                radX = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find("ry=") + 4;
+                pos2 = temp.find("\"", pos1);
+                radY = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+                radX = radY = 0;
+
+            int rgb[3];
+            if (temp.find("stroke=") < temp.length())
+            {
+                pos1 = temp.find("stroke=") + 12;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+
+            int fill_rgb[3];
+            if (temp.find("fill=") < temp.length())
+            {
+                pos1 = temp.find("fill=") + 10;
+                pos2 = temp.find(",", pos1);
+
+                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
+            }
+
+            int thickness;
+            if (temp.find("stroke-width") < temp.length())
+            {
+                pos1 = temp.find("stroke-width=") + 14;
+                pos2 = temp.find("\"", pos1);
+                thickness = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                thickness = 0;
+            }
+
+            double stroke_opacity;
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                pos1 = temp.find("stroke-opacity=") + 16;
+                pos2 = temp.find("\"", pos1);
+                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+                stroke_opacity = 1;
+
+            double fill_opacity;
+            if (temp.find("fill-opacity") < temp.length())
+            {
+                pos1 = temp.find("fill-opacity") + 14;
+                pos2 = temp.find("\"", pos1);
+                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_opacity = 1;
+            }
+            Circle Cir;
+            Cir.SetCircle(rgb, center, radX, radY, thickness, fill_rgb, stroke_opacity, fill_opacity);
+
+            ShapeArr[count] = &Cir;
+            ShapeArr[count++]->OnPaint(hdc);
+        }
+        else if (temp.find("text") < temp.length())
+        {
+            int pos1, pos2;
+            Point2D start;
+            int x, y;
+            if (temp.find("x=") < temp.length())
+            {
+                pos1 = temp.find("x=") + 3;
+                pos2 = temp.find("\"", pos1);
+                x = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find(" y=") + 4;
+                pos2 = temp.find("\"", pos1);
+                y = stoi(temp.substr(pos1, pos2 - pos1));
+                start.SetPoint(x, y);
+            }
+            else
+            {
+                start.SetPoint(0, 0);
+            }
+
+            int rgb[3];
+            if (temp.find("fill=") < temp.length())
+            {
+                pos1 = temp.find("fill=") + 10;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+
+            int size;
+            if (temp.find("font-size=") < temp.length())
+            {
+                pos1 = temp.find("font-size=") + 11;
+                pos2 = temp.find("\"", pos1);
+                size = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                size = 0;
+            }
+
+            string txt;
+            if (temp.find(">") < temp.length())
+            {
+                pos1 = temp.find(">") + 1;
+                pos2 = temp.find("<", pos1);
+                txt = temp.substr(pos1, pos2 - pos1);
+            }
+            else
+            {
+                txt = "";
+            }
+
+            Text text;
+            text.SetText(txt, rgb, size, start);
+            ShapeArr[count] = &text;
+            ShapeArr[count++]->OnPaint(hdc);
+
+        }
+        //Continue here...
+
+
+
+    }
+}
 
 //VOID Shape::OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness) {
 //    Graphics graphics(hdc);
