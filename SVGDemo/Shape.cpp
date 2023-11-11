@@ -560,6 +560,7 @@ void Shape::HandleSVGFile(HDC hdc) {
 
 
     }
+    In.close();
 }
 
 //VOID Shape::OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness) {
