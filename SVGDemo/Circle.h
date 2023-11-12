@@ -40,5 +40,5 @@ public:
 	void myLinearGradientBrush(HDC, double*, double*);
 	void gradientBrushPath(HDC, double*, double*);
 
-	VOID OnPaint(HDC hdc, doubel);
+	VOID OnPaint(HDC hdc, double);
 };
