@@ -83,10 +83,10 @@ void PolyGon::fillPolygon(HDC hdc, double opacity)
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
 }
 
-VOID PolyGon::OnPaint(HDC hdc) {
+VOID PolyGon::OnPaint(HDC hdc, double stroke_opacity) {
     Graphics        graphics(hdc);
     int alpha = 255 * stroke_opacity;
     Pen      pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
     //Pen             pen(Color(255 * stroke_opacity, rgb[0], rgb[1], rgb[2]), thickness);
-    graphics.FillPolygon(&brush, points, NumOfPoint);
+    graphics.DrawPolygon(&pen, points, NumOfPoint);
 }
