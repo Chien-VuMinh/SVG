@@ -32,6 +32,11 @@ public:
 	VOID OnPaintImage(HDC hdc, string name, int x, int y);
 	virtual VOID OnPain(HDC hdc);
 	virtual VOID OnPaint(HDC hdc);
+	virtual void fillRect(HDC, double);
+	virtual void _fillCircle(HDC, double);
+	virtual void fillPoline(HDC, double);
+	virtual void fillPolygon(HDC, double);
+
 
 	~Shape();
 };
