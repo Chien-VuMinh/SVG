@@ -166,7 +166,8 @@ void Shape::HandleSVGFile(HDC hdc) {
             _Rectangle Rec;
             Rec.SetRec(rgb, start, height, width, thickness, fill_rgb, fill_opacity, stroke_opacity);
             ShapeArr[count] = &Rec;
-            ShapeArr[count++]->OnPaint(hdc);
+            ShapeArr[count]->fillRect(hdc, fill_opacity);
+            ShapeArr[count++]->OnPaint(hdc, stroke_opacity);
         }
         else if (temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
         {
@@ -289,6 +290,7 @@ void Shape::HandleSVGFile(HDC hdc) {
             Cir.SetCircle(rgb, center, radX, radY, thickness, fill_rgb, stroke_opacity, fill_opacity);
 
             ShapeArr[count] = &Cir;
+            ShapeArr[count]->_fillCircle(hdc, fill_opacity);
             ShapeArr[count++]->OnPaint(hdc);
         }
         else if (temp.find("text") < temp.length())
@@ -360,7 +362,7 @@ void Shape::HandleSVGFile(HDC hdc) {
             Text text;
             text.SetText(txt, rgb, size, start);
             ShapeArr[count] = &text;
-            ShapeArr[count++]->OnPaint(hdc);
+            ShapeArr[count++]->OnPaint(hdc, 1.0);
 
         }
        else if (temp.find("polyline") < temp.length())
@@ -484,7 +486,8 @@ void Shape::HandleSVGFile(HDC hdc) {
             PolyLine Polyline;
             Polyline.SetPolyLine(rgb, thickness, NumOfPoint, pointsArray, fill_rgb, fill_opacity, stroke_opacity);
             ShapeArr[count] = &Polyline;
-            ShapeArr[count++]->OnPaint(hdc);
+            ShapeArr[count]->fillPoline(hdc, fill_opacity);
+            ShapeArr[count++]->OnPaint(hdc, stroke_opacity);
         }
         else if (temp.find("polygon") < temp.length())
         {
@@ -609,7 +612,8 @@ void Shape::HandleSVGFile(HDC hdc) {
             Polygon.SetPolyLine(rgb, fill_rgb, thickness, NumOfPoint, pointsArray, fill_opacity, stroke_opacity);
             //Polygon.OnPaint();
             ShapeArr[count] = &Polygon;
-            ShapeArr[count++]->OnPaint(hdc);
+            ShapeArr[count]->fillPolygon(hdc, fill_opacity);
+            ShapeArr[count++]->OnPaint(hdc, stroke_opacity);
         }
         else if (temp.find("line") < temp.length())
         {
@@ -695,7 +699,7 @@ void Shape::HandleSVGFile(HDC hdc) {
             line.SetLine(rgb, start, end, thickness, stroke_opacity);
             line.OnPaint(hdc);
             ShapeArr[count] = &line;
-            ShapeArr[count++]->OnPaint(hdc);
+            ShapeArr[count++]->OnPaint(hdc, 1.0);
         }
 
 
@@ -772,7 +776,10 @@ VOID Shape::OnPain(HDC hdc) {
 
 
 VOID Shape::OnPaint(HDC hdc) {}
-
+void Shape::fillRect(HDC hdc, double fill_opacity) {}
+void Shape::_fillCircle(HDC, double) {}
+void Shape::fillPoline(HDC, double) {}
+void Shape::fillPolygon(HDC, double) {}
 
 Shape::~Shape() {
     delete[] ShapeArr;
