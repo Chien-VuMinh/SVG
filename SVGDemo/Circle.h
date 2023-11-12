@@ -19,7 +19,6 @@ using namespace Gdiplus;
 
 class Circle : public Shape {
 protected:
-	HDC hdc;
 	int rgb[3];
 	int fill_rgb[3];
 	int thickness;
@@ -29,7 +28,7 @@ protected:
 	double stroke_opacity;
 	double fill_opacity;
 public:
-	void SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
+	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
 
-	VOID OnPaint();
+	VOID OnPaint(HDC hdc);
 };

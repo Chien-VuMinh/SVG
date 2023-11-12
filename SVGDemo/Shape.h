@@ -20,17 +20,18 @@ using namespace Gdiplus;
 class Shape {
 protected:
 	int ShapeArrSize;
-	Shape* ShapeArr;
+	Shape** ShapeArr;
 
 public:
 	Shape();
 
-	void ReadSVG(HDC hdc);
+	void HandleSVGFile(HDC hdc);
 
 	VOID OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness);
 	VOID OnPaintString(HDC hdc, string s, int* rgb, int size, int x, int y);
 	VOID OnPaintImage(HDC hdc, string name, int x, int y);
 	virtual VOID OnPain(HDC hdc);
+	virtual VOID OnPaint(HDC hdc);
 
 	~Shape();
 };

@@ -16,8 +16,7 @@ PolyShape::~PolyShape() {
 
 
 
-void PolyLine::SetPolyLine(HDC hdc, int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity,double stroke_opacity) {
-    this->hdc = hdc;
+void PolyLine::SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity,double stroke_opacity) {
     this->thickness = thickness;
     this->NumOfPoint = NumOfPoint;
     this->stroke_opacity = stroke_opacity;
@@ -36,7 +35,7 @@ void PolyLine::SetPolyLine(HDC hdc, int* rgb, int thickness, int NumOfPoint, Poi
 }
 
 
-VOID PolyLine::OnPaintPolyLine() {
+VOID PolyLine::OnPaint(HDC hdc) {
 	Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
 	graphics.DrawPolygon(&pen, points, NumOfPoint);
@@ -47,8 +46,7 @@ VOID PolyLine::OnPaintPolyLine() {
 
 
 
-void PolyGon::SetPolyLine(HDC hdc, int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity) {
-    this->hdc = hdc;
+void PolyGon::SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity) {
     this->thickness = thickness;
     this->NumOfPoint = NumOfPoint;
     this->fill_opacity = fill_opacity;
@@ -66,7 +64,7 @@ void PolyGon::SetPolyLine(HDC hdc, int* rgb, int* fill_rgb, int thickness, int N
 }
 
 
-VOID PolyGon::OnPaintPolyLine() {
+VOID PolyGon::OnPaint(HDC hdc) {
     Graphics        graphics(hdc);
     Pen             pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     SolidBrush      brush(Color(fill_rgb[0], fill_rgb[1], fill_rgb[2]));
