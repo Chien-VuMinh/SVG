@@ -556,6 +556,340 @@ void Shape::HandleSVGFile(HDC hdc) {
 
         }
         //Continue here...
+        else if (temp.find("polyline") < temp.length())
+        {
+            //int NumOfPoint, Point2D* points
+            int pos1, pos2;
+            int rgb[3];
+            if (temp.find("stroke=") < temp.length())
+            {
+                pos1 = temp.find("stroke=") + 12;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+
+            int thickness;
+            if (temp.find("stroke-width") < temp.length())
+            {
+                pos1 = temp.find("stroke-width=") + 14;
+                pos2 = temp.find("\"", pos1);
+                thickness = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                thickness = 0;
+            }
+
+            int fill_rgb[3];
+            if (temp.find("fill=") < temp.length())
+            {
+                pos1 = temp.find("fill=") + 10;
+                pos2 = temp.find(",", pos1);
+
+                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
+            }
+
+            double fill_opacity;
+            if (temp.find("fill-opacity") < temp.length())
+            {
+                pos1 = temp.find("fill-opacity") + 14;
+                pos2 = temp.find("\"", pos1);
+                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_opacity = 1;
+            }
+
+            double stroke_opacity;
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                pos1 = temp.find("stroke-opacity=") + 16;
+                pos2 = temp.find("\"", pos1);
+                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                stroke_opacity = 1;
+            }
+            string points;
+            int NumOfPoint = 0;
+            Point2D* pointsArray = NULL;
+            vector<Point2D> pointArray;
+            if (temp.find("points=") < temp.size())
+            {
+                pos1 = temp.find("points=") + 8;
+                pos2 = temp.find("\"", pos1);
+                points = temp.substr(pos1, pos2 - pos1);
+                stringstream ss(points);
+                string point;
+
+                while (getline(ss, point, ' ')) {
+                    stringstream pointSS(point);
+                    string coordinate;
+                    vector<int> coordinates;
+
+                    while (getline(pointSS, coordinate, ',')) {
+                        coordinates.push_back(stoi(coordinate));
+                    }
+
+                    Point2D pointObj(coordinates[0], coordinates[1]);
+                    pointArray.push_back(pointObj);
+                }
+
+                NumOfPoint = pointArray.size();
+                pointsArray = new Point2D[NumOfPoint];
+                for (int i = 0; i < NumOfPoint; i++)
+                {
+                    pointsArray[i] = pointArray[i];
+                }
+            }
+            else
+            {
+                NumOfPoint = 0;
+                Point2D* pointsArray = NULL;
+            }
+            PolyLine Polyline;
+            Polyline.SetPolyLine(rgb, thickness, NumOfPoint, pointsArray, fill_rgb, fill_opacity, stroke_opacity);
+            ShapeArr[count] = &Polyline;
+            ShapeArr[count++]->OnPaint(hdc);
+        }
+        else if (temp.find("polygon") < temp.length())
+        {
+
+            int pos1, pos2;
+            int rgb[3];
+            if (temp.find("stroke=") < temp.length())
+            {
+                pos1 = temp.find("stroke=") + 12;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+
+            int thickness;
+            if (temp.find("stroke-width") < temp.length())
+            {
+                pos1 = temp.find("stroke-width=") + 14;
+                pos2 = temp.find("\"", pos1);
+                thickness = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                thickness = 0;
+            }
+
+            int fill_rgb[3];
+            if (temp.find("fill=") < temp.length())
+            {
+                pos1 = temp.find("fill=") + 10;
+                pos2 = temp.find(",", pos1);
+
+                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
+            }
+
+            double fill_opacity;
+            if (temp.find("fill-opacity") < temp.length())
+            {
+                pos1 = temp.find("fill-opacity") + 14;
+                pos2 = temp.find("\"", pos1);
+                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                fill_opacity = 1;
+            }
+
+            double stroke_opacity;
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                pos1 = temp.find("stroke-opacity=") + 16;
+                pos2 = temp.find("\"", pos1);
+                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                stroke_opacity = 1;
+            }
+            string points;
+            Point2D* pointsArray = NULL;
+            int NumOfPoint = 0;
+            vector<Point2D> pointArray;
+            if (temp.find("points=") < temp.size())
+            {
+                pos1 = temp.find("points=") + 8;
+                pos2 = temp.find("\"", pos1);
+                points = temp.substr(pos1, pos2 - pos1);
+                stringstream ss(points);
+                string point;
+
+                while (getline(ss, point, ' ')) {
+                    stringstream pointSS(point);
+                    string coordinate;
+                    vector<int> coordinates;
+
+                    while (getline(pointSS, coordinate, ',')) {
+                        coordinates.push_back(stoi(coordinate));
+                    }
+
+                    Point2D pointObj(coordinates[0], coordinates[1]);
+                    pointArray.push_back(pointObj);
+                }
+
+                NumOfPoint = pointArray.size();
+                pointsArray = new Point2D[NumOfPoint];
+                for (int i = 0; i < NumOfPoint; i++)
+                {
+                    pointsArray[i] = pointArray[i];
+                }
+            }
+            else
+            {
+                NumOfPoint = 0;
+                Point2D* pointsArray = NULL;
+            }
+            PolyGon Polygon;
+            //HDC hdc, int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity
+            Polygon.SetPolyLine(rgb, fill_rgb, thickness, NumOfPoint, pointsArray, fill_opacity, stroke_opacity);
+            //Polygon.OnPaint();
+            ShapeArr[count] = &Polygon;
+            ShapeArr[count++]->OnPaint(hdc);
+        }
+        else if (temp.find("line") < temp.length())
+        {
+            //HDC hdc, int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity
+            int pos1, pos2;
+            int rgb[3];
+            if (temp.find("stroke=") < temp.length())
+            {
+                pos1 = temp.find("stroke=") + 12;
+                pos2 = temp.find(",", pos1);
+
+                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(",", pos1);
+                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = pos2 + 1;
+                pos2 = temp.find(")", pos1);
+                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                rgb[0] = rgb[1] = rgb[2] = 0;
+            }
+            Point2D start, end;
+            int x, y;
+            if (temp.find("x1=") < temp.length())
+            {
+                pos1 = temp.find("x1=") + 4;
+                pos2 = temp.find("\"", pos1);
+                x = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find("y1=") + 4;
+                pos2 = temp.find("\"", pos1);
+                y = stoi(temp.substr(pos1, pos2 - pos1));
+                start.SetPoint(x, y);
+            }
+            else
+            {
+                start.SetPoint(0, 0);
+            }
+
+            if (temp.find("x2=") < temp.length())
+            {
+                pos1 = temp.find("x2=") + 4;
+                pos2 = temp.find("\"", pos1);
+                x = stoi(temp.substr(pos1, pos2 - pos1));
+
+                pos1 = temp.find("y2=") + 4;
+                pos2 = temp.find("\"", pos1);
+                y = stoi(temp.substr(pos1, pos2 - pos1));
+                end.SetPoint(x, y);
+            }
+            else
+            {
+                end.SetPoint(0, 0);
+            }
+
+            double stroke_opacity;
+            if (temp.find("stroke-opacity") < temp.size())
+            {
+                pos1 = temp.find("stroke-opacity=") + 16;
+                pos2 = temp.find("\"", pos1);
+                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+                stroke_opacity = 1;
+
+            int thickness;
+            if (temp.find("stroke-width") < temp.length())
+            {
+                pos1 = temp.find("stroke-width=") + 14;
+                pos2 = temp.find("\"", pos1);
+                thickness = stoi(temp.substr(pos1, pos2 - pos1));
+            }
+            else
+            {
+                thickness = 0;
+            }
+
+            Line line;
+            line.SetLine(rgb, start, end, thickness, stroke_opacity);
+            line.OnPaint(hdc);
+            ShapeArr[count] = &line;
+            ShapeArr[count++]->OnPaint(hdc);
+        }
 
 
 
