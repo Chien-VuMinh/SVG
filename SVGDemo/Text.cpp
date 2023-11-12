@@ -23,7 +23,9 @@ VOID Text::OnPaint(HDC hdc) {
     SolidBrush  brush(Color(rgb[0], rgb[1], rgb[2]));
     FontFamily  fontFamily(L"Times New Roman");
     Font        font(&fontFamily, size, FontStyleRegular, UnitPixel);
-    PointF      pointF(start.GetX(), start.GetY());
+    int Y = start.GetY() - font.GetHeight(FontStyleRegular);
 
-    graphics.DrawString(widecstr, -1, &font, pointF, &brush);
+    int scale = fontFamily.GetEmHeight(FontStyleRegular) / font.GetHeight(FontStyleRegular);
+    PointF      pointF(start.GetX(), Y + fontFamily.GetCellDescent(FontStyleRegular) / scale);
+    graphics.DrawString(widecstr, -1, &font, pointF, NULL, &brush);
 }
