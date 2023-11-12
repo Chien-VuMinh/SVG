@@ -38,7 +38,8 @@ class PolyLine : public PolyShape {
 public:
 	void SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity);
 
-	VOID OnPaint(HDC hdc);
+	void fillPoline(HDC, double);
+	VOID OnPaint(HDC hdc, double);
 };
 
 
@@ -47,5 +48,6 @@ class PolyGon : public PolyShape {
 public:
 	void SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
 
-	VOID OnPaint(HDC hdc);
+	void fillPolygon(HDC, double);
+	VOID OnPaint(HDC hdc, double);
 };
