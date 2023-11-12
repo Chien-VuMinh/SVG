@@ -26,5 +26,5 @@ protected:
 public:
 	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
 
-	VOID OnPaint(HDC hdc);
+	VOID OnPaint(HDC hdc, double);
 };
