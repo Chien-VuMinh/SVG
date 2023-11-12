@@ -3,8 +3,7 @@
 #include "Circle.h"
 
 
-void Circle::SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity) {
-    this->hdc = hdc;
+void Circle::SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity) {
     this->center = center;
     this->radX = radX;
     this->radY = radY;
@@ -19,7 +18,7 @@ void Circle::SetCircle(HDC hdc, int* rgb, Point2D center, int radX, int radY, in
 }
 
 
-VOID Circle::OnPaint() {
+VOID Circle::OnPaint(HDC hdc) {
     Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     graphics.DrawEllipse(&pen, center.GetX() - radX, center.GetY() - radY, 2 * radX, 2 * radY);

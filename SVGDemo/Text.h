@@ -19,14 +19,13 @@ using namespace Gdiplus;
 
 class Text : public Shape {
 protected:
-	HDC hdc;
 	string text;
 	int rgb[3];
 	int size;
 	Point2D start;
 
 public:
-	void SetText(HDC hdc, string text, int* rgb, int size, Point2D start);
+	void SetText(string text, int* rgb, int size, Point2D start);
 
-	VOID OnPaint();
+	VOID OnPaint(HDC hdc);
 };

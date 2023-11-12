@@ -6,8 +6,7 @@
 
 
 
-void _Rectangle::SetRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity) {
-    this->hdc = hdc;
+void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity) {
     this->start = start;
     this->height = height;
     this->width = width;
@@ -21,7 +20,7 @@ void _Rectangle::SetRec(HDC hdc, int* rgb, Point2D start, int height, int width,
 }
 
 
-VOID _Rectangle::OnPaint() {
+VOID _Rectangle::OnPaint(HDC hdc) {
     Graphics graphics(hdc);
     Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
     graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);

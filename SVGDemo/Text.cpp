@@ -5,8 +5,7 @@
 
 
 
-void Text::SetText(HDC hdc, string text, int* rgb, int size, Point2D start) {
-	this->hdc = hdc;
+void Text::SetText(string text, int* rgb, int size, Point2D start) {
     this->text = text;
     this->rgb[0] = rgb[0];
     this->rgb[1] = rgb[1];
@@ -16,7 +15,7 @@ void Text::SetText(HDC hdc, string text, int* rgb, int size, Point2D start) {
 }
 
 
-VOID Text::OnPaint() {
+VOID Text::OnPaint(HDC hdc) {
     wstring widestr = wstring(text.begin(), text.end());
     const wchar_t* widecstr = widestr.c_str();
 

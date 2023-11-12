@@ -20,7 +20,6 @@ using namespace Gdiplus;
 
 class PolyShape : public Shape {
 protected:
-	HDC hdc;
 	int rgb[3];
 	int thickness;
 	int NumOfPoint;
@@ -37,16 +36,16 @@ public:
 
 class PolyLine : public PolyShape {
 public:
-	void SetPolyLine(HDC hdc, int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity);
+	void SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity);
 
-	VOID OnPaintPolyLine();
+	VOID OnPaint(HDC hdc);
 };
 
 
 
 class PolyGon : public PolyShape {
 public:
-	void SetPolyLine(HDC hdc, int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
+	void SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
 
-	VOID OnPaintPolyLine();
+	VOID OnPaint(HDC hdc);
 };
