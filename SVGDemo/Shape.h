@@ -31,7 +31,7 @@ public:
 	VOID OnPaintString(HDC hdc, string s, int* rgb, int size, int x, int y);
 	VOID OnPaintImage(HDC hdc, string name, int x, int y);
 	virtual VOID OnPain(HDC hdc);
-	virtual VOID OnPaint(HDC hdc);
+	virtual VOID OnPaint(HDC hdc, double);
 	virtual void fillRect(HDC, double);
 	virtual void _fillCircle(HDC, double);
 	virtual void fillPoline(HDC, double);
