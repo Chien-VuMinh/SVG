@@ -30,5 +30,15 @@ protected:
 public:
 	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
 
+	int getX();
+	int getY();
+	int getradX();
+	int getradY();
+
+	void setRGB(int*);
+	void _fillCircle(HDC, double);
+	void myLinearGradientBrush(HDC, double*, double*);
+	void gradientBrushPath(HDC, double*, double*);
+
 	VOID OnPaint(HDC hdc);
 };
