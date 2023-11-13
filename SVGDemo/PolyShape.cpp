@@ -48,7 +48,14 @@ VOID PolyLine::OnPaint(HDC hdc, double stroke_opacity) {
 	Graphics graphics(hdc);
     	int alpha = 255 * stroke_opacity;
 	Pen      pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-	graphics.DrawPolygon(&pen, points, NumOfPoint);
+	Line l;
+	Point2D p1, p2;
+	for (int i = 0; i < this->NumOfPoint; ++i)
+	{
+    		p1.SetPoint(this->points[i].X, this->points[i].Y), p2.SetPoint(this->points[i + 1].X, this->points[i + 1].Y);
+    		l.SetLine(this->rgb, p1, p2, this->thickness, stroke_opacity);
+    	l.OnPaint(hdc, stroke_opacity);
+	}
 }
 
 
