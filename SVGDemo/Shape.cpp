@@ -17,8 +17,6 @@ Shape::Shape() {
 
 
 void Shape::HandleSVGFile(HDC hdc) {
-
-    // READING SVG FILE START FROM HERE
     ifstream ifs;
     ifs.open("Sample.svg");
     if (!ifs.is_open())
