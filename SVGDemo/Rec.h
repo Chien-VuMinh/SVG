@@ -40,8 +40,8 @@ public:
 	int getY();
 
 	void setRGB(double*);
-	void fillRect(HDC, double);
-	VOID OnPaint(HDC hdc, double);
+	void fillRect(HDC);
+	VOID OnPaint(HDC hdc);
 };
 
 

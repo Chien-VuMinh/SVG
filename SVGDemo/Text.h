@@ -26,6 +26,5 @@ protected:
 
 public:
 	void SetText(string text, int* rgb, int size, Point2D start);
-
-	VOID OnPaint(HDC hdc, double);
+	VOID OnPaint(HDC hdc);
 };

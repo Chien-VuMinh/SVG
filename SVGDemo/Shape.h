@@ -26,17 +26,12 @@ public:
 	Shape();
 
 	void HandleSVGFile(HDC hdc);
-
-	VOID OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness);
-	VOID OnPaintString(HDC hdc, string s, int* rgb, int size, int x, int y);
-	VOID OnPaintImage(HDC hdc, string name, int x, int y);
-	virtual VOID OnPain(HDC hdc);
+	
 	virtual VOID OnPaint(HDC hdc, double);
 	virtual void fillRect(HDC, double);
 	virtual void _fillCircle(HDC, double);
 	virtual void fillPoline(HDC, double);
 	virtual void fillPolygon(HDC, double);
-
 
 	~Shape();
 };

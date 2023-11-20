@@ -23,8 +23,8 @@ protected:
 	int thickness;
 	Point2D start, end;
 	double stroke_opacity;
+
 public:
 	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
-
-	VOID OnPaint(HDC hdc, double);
+	VOID OnPaint(HDC hdc);
 };

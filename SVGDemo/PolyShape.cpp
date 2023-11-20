@@ -20,6 +20,7 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* poi
     this->thickness = thickness;
     this->NumOfPoint = NumOfPoint;
     this->stroke_opacity = stroke_opacity;
+    this->fill_opacity = fill_opacity;
     
     this->points = new PointF[NumOfPoint];
     for (int i = 0; i < NumOfPoint; ++i) {
@@ -34,21 +35,23 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* poi
     }
 }
 
-void PolyLine::fillPoline(HDC hdc, double opacity)
+void PolyLine::fillPoline(HDC hdc)
 {
-    Graphics    graphics(hdc);
-    int alpha = 255 * opacity;
-
-    //SolidBrush solidBrush(Color(alpha, ((this->rgb[0] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[1] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[2] * alpha) / 255) + 255 * (255 - alpha) / 255));
-    SolidBrush solidBrush(Color(255 * opacity, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-    graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
+    Graphics     graphics(hdc);
+    int alpha =  255 * fill_opacity;
+    SolidBrush   solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.FillPolygon(&solidBrush, points, NumOfPoint);
 }
 
-VOID PolyLine::OnPaint(HDC hdc, double stroke_opacity) {
-	Graphics graphics(hdc);
-    	int alpha = 255 * stroke_opacity;
-	Pen      pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-	graphics.DrawPolygon(&pen, points, NumOfPoint);
+VOID PolyLine::OnPaint(HDC hdc) {
+    if (!thickness)
+        return;
+	Graphics     graphics(hdc);
+    int          alpha = 255 * stroke_opacity;
+	Pen          pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+	graphics.DrawLines(&pen, points, NumOfPoint);
 }
 
 
@@ -56,7 +59,7 @@ VOID PolyLine::OnPaint(HDC hdc, double stroke_opacity) {
 
 
 
-void PolyGon::SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity) {
+void PolyGon::SetPolyGon(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity) {
     this->thickness = thickness;
     this->NumOfPoint = NumOfPoint;
     this->fill_opacity = fill_opacity;
@@ -66,27 +69,25 @@ void PolyGon::SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint
         this->points[i].X = points[i].GetX();
         this->points[i].Y = points[i].GetY();
     }
-    for (int i = 0; i <= 2; i++)
-    {
+    for (int i = 0; i <= 2; i++) {
         this->rgb[i] = rgb[i];
         this->fill_rgb[i] = fill_rgb[i];
     }
 }
 
-void PolyGon::fillPolygon(HDC hdc, double opacity)
+void PolyGon::fillPolygon(HDC hdc)
 {
     Graphics    graphics(hdc);
-    int alpha = 255 * opacity;
-
-    //SolidBrush solidBrush(Color(alpha, ((this->rgb[0] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[1] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[2] * alpha) / 255) + 255 * (255 - alpha) / 255));
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    int         alpha = 255 * fill_opacity;
+    SolidBrush  solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
 }
 
-VOID PolyGon::OnPaint(HDC hdc, double stroke_opacity) {
-    Graphics        graphics(hdc);
-    int alpha = 255 * stroke_opacity;
-    Pen      pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-    //Pen             pen(Color(255 * stroke_opacity, rgb[0], rgb[1], rgb[2]), thickness);
+VOID PolyGon::OnPaint(HDC hdc) {
+    Graphics    graphics(hdc);
+    int         alpha = 255 * stroke_opacity;
+    Pen         pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.DrawPolygon(&pen, points, NumOfPoint);
 }

@@ -44,15 +44,18 @@ void Circle::setRGB(int* rgb)
     this->rgb[2] = rgb[2];
 }
 
-void Circle::_fillCircle(HDC hdc, double opacity)
+
+void Circle::_fillCircle(HDC hdc)
 {
     Graphics    graphics(hdc);
-    int alpha = 255 * opacity;
+    int alpha = 255 * fill_opacity;
 
     //SolidBrush solidBrush(Color(alpha, ((this->rgb[0] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[1] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[2] * alpha) / 255) + 255 * (255 - alpha) / 255));
     SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillEllipse(&solidBrush, this->getX() - this->getradX(), this->getY() - this->getradY(), this->getradX() * 2, this->getradY() * 2);
 }
+
 
 void Circle::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)//these arr need 4 elements (alpha, reb, green, blue)
 {
@@ -64,8 +67,10 @@ void Circle::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)
         Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]));
 
     linearBrush.SetGammaCorrection(TRUE);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillEllipse(&linearBrush, this->getX() - this->getradX(), this->getY() - this->getradY(), this->getradX() * 2, this->getradY() * 2);
 }
+
 
 void Circle::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
 {
@@ -85,14 +90,16 @@ void Circle::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
     Color colors[] = { Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]) };
     int count = 1;
     pthGrBrush.SetSurroundColors(colors, &count);
-
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillEllipse(&pthGrBrush, this->getX() - this->getradX() + 100, this->getY() - this->getradY() + 100, this->getradX() * 2, this->getradY() * 2);
 }
 
-VOID Circle::OnPaint(HDC hdc, double stroke_opacity) {
-    Graphics graphics(hdc);
-    int alpha = 255 * stroke_opacity;
-    Pen  pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+
+VOID Circle::OnPaint(HDC hdc) {
+    Graphics   graphics(hdc);
+    int        alpha = 255 * stroke_opacity;
+    Pen        pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.DrawEllipse(&pen, center.GetX() - radX, center.GetY() - radY, 2 * radX, 2 * radY);
 }
 

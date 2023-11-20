@@ -27,27 +27,25 @@ protected:
 	double stroke_opacity;
 	double fill_opacity;
 	int fill_rgb[3];
+
 public:
 	PolyShape();
 	~PolyShape();
-
 };
 
 
 class PolyLine : public PolyShape {
 public:
 	void SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity);
-
-	void fillPoline(HDC, double);
-	VOID OnPaint(HDC hdc, double);
+	void fillPoline(HDC);
+	VOID OnPaint(HDC hdc);
 };
 
 
 
 class PolyGon : public PolyShape {
 public:
-	void SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
-
-	void fillPolygon(HDC, double);
-	VOID OnPaint(HDC hdc, double);
+	void SetPolyGon(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
+	void fillPolygon(HDC);
+	VOID OnPaint(HDC hdc);
 };
