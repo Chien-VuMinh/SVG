@@ -20,7 +20,6 @@ using namespace Gdiplus;
 class Text : public Shape {
 protected:
 	string text;
-	int rgb[3];
 	int size;
 	Point2D start;
 

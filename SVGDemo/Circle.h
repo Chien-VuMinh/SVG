@@ -19,12 +19,10 @@ using namespace Gdiplus;
 
 class Circle : public Shape {
 protected:
-	int rgb[3];
 	int fill_rgb[3];
 	int thickness;
 	Point2D center;
 	int radX, radY;
-	double stroke_opacity;
 	double fill_opacity;
 
 public:

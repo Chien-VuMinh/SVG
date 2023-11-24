@@ -19,7 +19,6 @@ using namespace Gdiplus;
 
 class Line : public Shape {
 protected:
-	int rgb[3];
 	int thickness;
 	Point2D start, end;
 	double stroke_opacity;

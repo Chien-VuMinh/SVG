@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bezier.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Point.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Point.cpp" />

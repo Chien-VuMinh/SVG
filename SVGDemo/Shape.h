@@ -22,6 +22,11 @@ protected:
 	int ShapeArrSize;
 	Shape** ShapeArr;
 
+	int Translate[2];
+	int Scale[2];
+	int rgb[3];
+	double stroke_opacity;
+
 public:
 	Shape();
 

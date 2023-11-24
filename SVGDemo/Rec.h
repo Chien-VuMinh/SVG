@@ -20,12 +20,10 @@ using namespace Gdiplus;
 
 class Rec : public Shape {
 protected:
-	int rgb[3];
 	Point2D start;
 	int height, width;
 	double fill_opacity;
 	int fill_rgb[3];
-	double stroke_opacity;
 	int thickness;
 };
 

@@ -20,11 +20,9 @@ using namespace Gdiplus;
 
 class PolyShape : public Shape {
 protected:
-	int rgb[3];
 	int thickness;
 	int NumOfPoint;
 	PointF* points;
-	double stroke_opacity;
 	double fill_opacity;
 	int fill_rgb[3];
 

@@ -762,6 +762,43 @@ VOID Example_DrawPolygon(HDC hdc)
     graphics.DrawPolygon(&blackPen, pPoints, 4);
 }
 
+
+VOID Example_DrawBeziers2(HDC hdc)
+{
+    Graphics graphics(hdc);
+
+    // Define a Pen object and an array of PointF objects.
+    Pen greenPen(Color(255, 0, 255, 0), 3);
+    SolidBrush redBrush(Color(255, 255, 0, 0));
+    PointF startPoint(100.0f, 100.0f);
+    PointF ctrlPoint1(200.0f, 50.0f);
+    PointF ctrlPoint2(400.0f, 10.0f);
+    PointF endPoint1(500.0f, 100.0f);
+    PointF ctrlPoint3(600.0f, 200.0f);
+    PointF ctrlPoint4(700.0f, 400.0f);
+    PointF endPoint2(500.0f, 500.0f);
+
+    PointF curvePoints[7] = {
+       startPoint,
+       ctrlPoint1,
+       ctrlPoint2,
+       endPoint1,
+       ctrlPoint3,
+       ctrlPoint4,
+       endPoint2 };
+
+
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    GraphicsPath bezierPath;
+    bezierPath.AddBeziers(curvePoints, 7);
+    graphics.FillPath(&redBrush, &bezierPath);
+    graphics.DrawPath(&greenPen, &bezierPath);
+}
+
+
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     Shape        shape;
     HDC          hdc;
@@ -771,7 +808,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.HandleSVGFile(hdc);
+        //shape.HandleSVGFile(hdc);
+        Example_DrawBeziers2(hdc);
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:
