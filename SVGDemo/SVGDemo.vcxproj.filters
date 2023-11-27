@@ -51,7 +51,7 @@
     <ClInclude Include="PolyShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bezier.h">
+    <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClCompile Include="PolyShape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bezier.cpp">
+    <ClCompile Include="Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿  Shape.cpp
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (SVGDemo.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Shape.cpp
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(33,54): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(34,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(45,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
@@ -107,4 +108,4 @@ C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(654,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(663,55): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(664,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVGDemo.exe
+  SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVG.exe

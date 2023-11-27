@@ -741,25 +741,18 @@ VOID Example_DrawCurve2(HDC hdc)
 
 
 
-VOID Example_DrawPolygon(HDC hdc)
+VOID Example_DrawPath(HDC hdc)
 {
     Graphics graphics(hdc);
-
-
-    // Create a Pen object.
-    Pen blackPen(Color(255, 0, 0, 0), 3);
-
-    // Create an array of Point objects that define the polygon.
-    Point point1(100, 100);
-    Point point2(200, 130);
-    Point point3(150, 200);
-    Point point4(50, 200);
-    //Point point5(0, 130);
-    Point points[5] = { point1, point2, point3, point4 };
-    Point* pPoints = points;
-
-    // Draw the polygon.
-    graphics.DrawPolygon(&blackPen, pPoints, 4);
+    GraphicsPath myGraphicsPath;
+    Pen myPen(Color(255, 0, 0));
+    SolidBrush redBrush(Color( 0, 255, 0));
+    myGraphicsPath.AddLine(0, 0, 30, 20);
+    myGraphicsPath.AddEllipse(20, 20, 20, 40);
+    myGraphicsPath.AddBezier(30, 60, 70, 60, 50, 30, 100, 10);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.DrawPath(&myPen, &myGraphicsPath);
+    graphics.FillPath(&redBrush, &myGraphicsPath);
 }
 
 
@@ -809,7 +802,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
         //shape.HandleSVGFile(hdc);
-        Example_DrawBeziers2(hdc);
+        Example_DrawPath(hdc);
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:
