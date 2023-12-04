@@ -12,6 +12,7 @@ void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thic
     this->width = width;
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
+    this->fill_opacity = fill_opacity;
     for (int i = 0; i <= 2; i++)
     {
         this->rgb[i] = rgb[i];
@@ -63,6 +64,11 @@ VOID _Rectangle::OnPaint(HDC hdc) {
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
+
+    alpha = 255 * fill_opacity;
+    SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
+
 }
 
 

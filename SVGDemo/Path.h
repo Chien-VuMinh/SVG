@@ -21,16 +21,14 @@ protected:
 	int thickness;
 	int fill_rgb[3];
 	double fill_opacity;
-	int NumOfLines;
-	Point2D* Lines;
-	int NumOfBeziers;
-	Point2D* Beziers;
+	vector<char> command;
+	vector<vector<Point2D>> points;
 
 public:
 	Path();
 
-	void SetPath(int* rgb, int* fill_rgb, int thickness, int NumOfLines, Point2D* Lines,
-				 int NumOfBeziers, Point2D* Beziers, double fill_opacity, double stroke_opacity);
+	void SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
+				 vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity);
 	VOID OnPaint(HDC hdc);
 
 	~Path();

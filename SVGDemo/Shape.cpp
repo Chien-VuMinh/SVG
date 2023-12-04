@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "rapidxml.hpp"
 #include "Shape.h"
 #include "Line.h"
@@ -16,789 +16,37 @@ Shape::Shape() {
 }
 
 
-void Shape::HandleSVGFile(HDC hdc) {
-    ifstream In;
-    string temp;
-    In.open("Sample.svg");
+void Shape::ReadSVGFile(HDC hdc, string file_name) {
+    ifstream read(file_name);
+
+    if (!read.is_open()) {
+        cerr << "Không thể mở tệp " << file_name << endl;
+    }
+    // Đọc nội dung của tệp vào một vector<char>
+    vector<char> buffer((istreambuf_iterator<char>(read)), istreambuf_iterator<char>());
+    buffer.push_back('\0'); // Thêm ký tự kết thúc chuỗi
+
+    // Khai báo một tài liệu XML để lưu trữ cấu trúc tệp SVG
+    rapidxml::xml_document<> doc;
+
+    // Phân tích nội dung tệp vào tài liệu XML
+    doc.parse<0>(&buffer[0]);
+
+    // Lấy nút gốc (root node) của tài liệu
+    rapidxml::xml_node<>* root = doc.first_node("svg");
+
+    read.close();
+
+    HanleSVG(hdc, root);
+
+
     int translateX = 0, translateY = 0;
     int scaleX = 1, scaleY = 1;
     int rotate = 0;
     int x, y;
-    while (getline(In, temp, '\n'))
+    /*
+    while (getline(In, value, '\n'))
     {
-        if (temp.find("rect") < temp.size())
-        {
-            int pos1, pos2;
-            double fill_opacity;
-            if (temp.find("fill-opacity") < temp.length())
-            {
-                pos1 = temp.find("fill-opacity") + 14;
-                pos2 = temp.find("\"", pos1);
-                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_opacity = 1;
-            }
-
-            int rgb[3];
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            Point2D start;
-            
-            if (temp.find("x=") < temp.length())
-            {
-                pos1 = temp.find("x=") + 3;
-                pos2 = temp.find("\"", pos1);
-                x = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find(" y=") + 4;
-                pos2 = temp.find("\"", pos1);
-                y = stoi(temp.substr(pos1, pos2 - pos1));
-                start.SetPoint(x, y);
-            }
-            else
-            {
-                start.SetPoint(0, 0);
-            }
-
-            if (temp.find("transform") < temp.size()) {
-                pos1 = temp.find("transform") + 11;
-                pos2 = temp.find("\"", pos1);
-
-                for (int i = pos1; i < pos2; ++i) {
-                    if (temp[i] == 't') {
-                        int ind1 = i + 10;
-                        int ind2;
-
-                        if (temp.find(",", ind1) < temp.find(")", ind1)) {
-                            ind2 = temp.find(",", ind1);
-                            translateX = stoi(temp.substr(ind1, ind2 - ind1));
-                           
-
-                            ind1 = ind2 + 1;
-                            ind2 = temp.find(")", ind1);
-                            translateY = stoi(temp.substr(ind1, ind2 - ind1));
-                            
-                            start.SetPoint(x + translateX, y + translateY);
-                        }
-                        else {
-                            ind2 = temp.find(")", ind1);
-                            translateX = stoi(temp.substr(ind1, ind2 - ind1));
-                            start.SetPoint(x + translateX, y);
-                        }
-
-                        i = ind2 + 1;
-                    }
-
-                    else if (temp[i] == 'r') {
-                        int ind1 = i + 7;
-                        int ind2 = temp.find(")", ind1);
-                        int rotate = stoi(temp.substr(ind1, ind2 - ind1));
-                        
-
-                        i = ind2 + 1;
-                    }
-
-                    else if (temp[i] == 's') {
-                        int ind1 = i + 6;
-                        int ind2;
-
-                        if (temp.find(",", ind1) < temp.find(")", ind1)) {
-                            ind2 = temp.find(",", ind1);
-                            scaleX = stoi(temp.substr(ind1, ind2 - ind1));
-                           
-
-                            ind1 = ind2 + 1;
-                            ind2 = temp.find(")", ind1);
-                            scaleY = stoi(temp.substr(ind1, ind2 - ind1));
-                            start.SetPoint(x * scaleX, y * scaleY);
-                        }
-                        else {
-                            ind2 = temp.find(")", ind1);
-                            scaleX = stoi(temp.substr(ind1, ind2 - ind1));
-                            start.SetPoint(x* scaleX, y * scaleX);
-                        }
-
-                        i = ind2 + 1;
-                    }
-                }
-            }
-
-            int width;
-            if (temp.find(" width=") < temp.length())
-            {
-                pos1 = temp.find(" width=") + 8;
-                pos2 = temp.find("\"", pos1);
-                width = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                width = 0;
-            }
-
-            int height;
-            if (temp.find(" height=") < temp.length())
-            {
-                pos1 = temp.find(" height=") + 9;
-                pos2 = temp.find("\"", pos1);
-                height = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                height = 0;
-            }
-
-            int fill_rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
-            }
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-                stroke_opacity = 1;
-
-            _Rectangle Rec;
-            Rec.SetRec(rgb, start, height, width, thickness, fill_rgb, fill_opacity, stroke_opacity);
-            Rec.fillRect(hdc);
-            Rec.OnPaint(hdc);
-
-        }
-        else if (temp.find("circle") < temp.length() || temp.find("ellipse") < temp.length())
-        {
-            Point2D center;
-            int pos1, pos2;
-            int cx, cy;
-            if (temp.find("cx=") < temp.length())
-            {
-                pos1 = temp.find("cx=") + 4;
-                pos2 = temp.find("\"", pos1);
-                cx = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find("cy=") + 4;
-                pos2 = temp.find("\"", pos1);
-                cy = stoi(temp.substr(pos1, pos2 - pos1));
-                center.SetPoint(cx, cy);
-            }
-            else
-            {
-                center.SetPoint(0, 0);
-            }
-
-            if (temp.find("transform") < temp.size()) {
-                pos1 = temp.find("transform") + 11;
-                pos2 = temp.find("\"", pos1);
-
-                for (int i = pos1; i < pos2; ++i) {
-                    if (temp[i] == 't') {
-                        int ind1 = i + 10;
-                        int ind2;
-
-                        if (temp.find(",", ind1) < temp.find(")", ind1)) {
-                            ind2 = temp.find(",", ind1);
-                            translateX = stoi(temp.substr(ind1, ind2 - ind1));
-
-
-                            ind1 = ind2 + 1;
-                            ind2 = temp.find(")", ind1);
-                            translateY = stoi(temp.substr(ind1, ind2 - ind1));
-
-                            center.SetPoint(x + translateX, y + translateY);
-                        }
-                        else {
-                            ind2 = temp.find(")", ind1);
-                            translateX = stoi(temp.substr(ind1, ind2 - ind1));
-                            center.SetPoint(x + translateX, y);
-                        }
-
-                        i = ind2 + 1;
-                    }
-
-                    else if (temp[i] == 'r') {
-                        int ind1 = i + 7;
-                        int ind2 = temp.find(")", ind1);
-                        int rotate = stoi(temp.substr(ind1, ind2 - ind1));
-
-                        i = ind2 + 1;
-                    }
-
-                    else if (temp[i] == 's') {
-                        int ind1 = i + 6;
-                        int ind2;
-
-                        if (temp.find(",", ind1) < temp.find(")", ind1)) {
-                            ind2 = temp.find(",", ind1);
-                            scaleX = stoi(temp.substr(ind1, ind2 - ind1));
-
-
-                            ind1 = ind2 + 1;
-                            ind2 = temp.find(")", ind1);
-                            scaleY = stoi(temp.substr(ind1, ind2 - ind1));
-                            center.SetPoint(x * scaleX, y * scaleY);
-                        }
-                        else {
-                            ind2 = temp.find(")", ind1);
-                            scaleX = stoi(temp.substr(ind1, ind2 - ind1));
-                            center.SetPoint(x * scaleX, y * scaleX);
-                        }
-
-                        i = ind2 + 1;
-                    }
-                }
-            }
-            int radX, radY;
-            if (temp.find("r=") < temp.length())
-            {
-                pos1 = temp.find("r=") + 3;
-                pos2 = temp.find("\"", pos1);
-                radX = radY = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else if (temp.find("rx=") < temp.length())
-            {
-                pos1 = temp.find("rx=") + 4;
-                pos2 = temp.find("\"", pos1);
-                radX = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find("ry=") + 4;
-                pos2 = temp.find("\"", pos1);
-                radY = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-                radX = radY = 0;
-
-            int rgb[3];
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            int fill_rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
-            }
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-                stroke_opacity = 1;
-
-            double fill_opacity;
-            if (temp.find("fill-opacity") < temp.length())
-            {
-                pos1 = temp.find("fill-opacity") + 14;
-                pos2 = temp.find("\"", pos1);
-                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_opacity = 1;
-            }
-            Circle Cir;
-            Cir.SetCircle(rgb, center, radX, radY, thickness, fill_rgb, stroke_opacity, fill_opacity);
-            Cir._fillCircle(hdc);
-            Cir.OnPaint(hdc);
-        }
-        else if (temp.find("text") < temp.length())
-        {
-            int pos1, pos2;
-            Point2D start;
-            int x, y;
-            if (temp.find("x=") < temp.length())
-            {
-                pos1 = temp.find("x=") + 3;
-                pos2 = temp.find("\"", pos1);
-                x = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find(" y=") + 4;
-                pos2 = temp.find("\"", pos1);
-                y = stoi(temp.substr(pos1, pos2 - pos1));
-                start.SetPoint(x, y);
-            }
-            else
-            {
-                start.SetPoint(0, 0);
-            }
-
-            int rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            int size;
-            if (temp.find("font-size=") < temp.length())
-            {
-                pos1 = temp.find("font-size=") + 11;
-                pos2 = temp.find("\"", pos1);
-                size = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                size = 0;
-            }
-
-            string txt;
-            if (temp.find(">") < temp.length())
-            {
-                pos1 = temp.find(">") + 1;
-                pos2 = temp.find("<", pos1);
-                txt = temp.substr(pos1, pos2 - pos1);
-            }
-            else
-            {
-                txt = "";
-            }
-
-            Text text;
-            text.SetText(txt, rgb, size, start);
-            text.OnPaint(hdc);
-
-        }
-        else if (temp.find("polyline") < temp.length())
-        {
-            int pos1, pos2;
-            int rgb[3];
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            int fill_rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
-            }
-
-            double fill_opacity;
-            if (temp.find("fill-opacity") < temp.length())
-            {
-                pos1 = temp.find("fill-opacity") + 14;
-                pos2 = temp.find("\"", pos1);
-                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_opacity = 1;
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                stroke_opacity = 1;
-            }
-            string points;
-            int NumOfPoint = 0;
-            Point2D* pointsArray = NULL;
-            vector<Point2D> pointArray;
-            if (temp.find("points=") < temp.size())
-            {
-                pos1 = temp.find("points=") + 8;
-                pos2 = temp.find("\"", pos1);
-                points = temp.substr(pos1, pos2 - pos1);
-                stringstream ss(points);
-                string point;
-                
-                while (getline(ss, point, ' ')) {
-                    stringstream pointSS(point);
-                    string coordinate;
-                    vector<int> coordinates;
-
-                    while (getline(pointSS, coordinate, ','))
-                        coordinates.push_back(stoi(coordinate));
-
-                    Point2D pointObj(coordinates[0], coordinates[1]);
-                    pointArray.push_back(pointObj);
-                }
-
-                NumOfPoint = pointArray.size();
-                pointsArray = new Point2D[NumOfPoint];
-                for (int i = 0; i < NumOfPoint; i++)
-                    pointsArray[i] = pointArray[i];
-            }
-            else
-            {
-                NumOfPoint = 0;
-                Point2D* pointsArray = NULL;
-            }
-            PolyLine Polyline;
-            Polyline.SetPolyLine(rgb, thickness, NumOfPoint, pointsArray, fill_rgb, fill_opacity, stroke_opacity);
-            Polyline.fillPoline(hdc);
-            Polyline.OnPaint(hdc);
-
-            delete[] pointsArray;
-        }
-        else if (temp.find("polygon") < temp.length())
-        {
-
-            int pos1, pos2;
-            int rgb[3];
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            int fill_rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
-            }
-
-            double fill_opacity;
-            if (temp.find("fill-opacity") < temp.length())
-            {
-                pos1 = temp.find("fill-opacity") + 14;
-                pos2 = temp.find("\"", pos1);
-                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_opacity = 1;
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                stroke_opacity = 1;
-            }
-            string points;
-            Point2D* pointsArray = NULL;
-            int NumOfPoint = 0;
-            vector<Point2D> pointArray;
-            if (temp.find("points=") < temp.size())
-            {
-                pos1 = temp.find("points=") + 8;
-                pos2 = temp.find("\"", pos1);
-                points = temp.substr(pos1, pos2 - pos1);
-                stringstream ss(points);
-                string point;
-
-                while (getline(ss, point, ' ')) {
-                    stringstream pointSS(point);
-                    string coordinate;
-                    vector<int> coordinates;
-
-                    while (getline(pointSS, coordinate, ',')) {
-                        coordinates.push_back(stoi(coordinate));
-                    }
-
-                    Point2D pointObj(coordinates[0], coordinates[1]);
-                    pointArray.push_back(pointObj);
-                }
-
-                NumOfPoint = pointArray.size();
-                pointsArray = new Point2D[NumOfPoint];
-                for (int i = 0; i < NumOfPoint; i++)
-                {
-                    pointsArray[i] = pointArray[i];
-                }
-            }
-            else
-            {
-                NumOfPoint = 0;
-                Point2D* pointsArray = NULL;
-            }
-            PolyGon Polygon;
-            Polygon.SetPolyGon(rgb, fill_rgb, thickness, NumOfPoint, pointsArray, fill_opacity, stroke_opacity);
-            Polygon.fillPolygon(hdc);
-            Polygon.OnPaint(hdc);
-
-            delete[] pointsArray;
-        }
-        else if (temp.find("line") < temp.length())
-        {
-            //HDC hdc, int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity
-            int pos1, pos2;
-            int rgb[3];
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-            Point2D start, end;
-            int x, y;
-            if (temp.find("x1=") < temp.length())
-            {
-                pos1 = temp.find("x1=") + 4;
-                pos2 = temp.find("\"", pos1);
-                x = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find("y1=") + 4;
-                pos2 = temp.find("\"", pos1);
-                y = stoi(temp.substr(pos1, pos2 - pos1));
-                start.SetPoint(x, y);
-            }
-            else
-            {
-                start.SetPoint(0, 0);
-            }
-
-            if (temp.find("x2=") < temp.length())
-            {
-                pos1 = temp.find("x2=") + 4;
-                pos2 = temp.find("\"", pos1);
-                x = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = temp.find("y2=") + 4;
-                pos2 = temp.find("\"", pos1);
-                y = stoi(temp.substr(pos1, pos2 - pos1));
-                end.SetPoint(x, y);
-            }
-            else
-            {
-                end.SetPoint(0, 0);
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-                stroke_opacity = 1;
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            Line line;
-            line.SetLine(rgb, start, end, thickness, stroke_opacity);
-            line.OnPaint(hdc);
-        }
         if (temp.find("path") < temp.size()) {
             int rgb[3];
             int pos1 = 0;
@@ -1136,10 +384,826 @@ void Shape::HandleSVGFile(HDC hdc) {
             }
         }
     }
+
+
     In.close();
+        */
 }
 
 
+void Shape::HanleSVG(HDC hdc, xml_node<>*& root) {
+    for (rapidxml::xml_node<>* node = root->first_node(); node; node = node->next_sibling()) {
+        string name = node->name();
+        double fill_opacity = 1, stroke_opacity = 1;
+        int rotate = 0;
+        int translate[] = { 0, 0 },
+            scale[] = { 0, 0 },
+            fill[] = { 0, 0, 0 },
+            stroke_fill[] = { 0,0,0 };
+
+        if (name == "g") {
+            for (rapidxml::xml_attribute<>* attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
+
+            }
+            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, translate, scale, rotate);
+        }
+        else {
+            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, translate, scale, rotate);
+        }
+
+    }
+}
+
+
+void Shape::readRGB(string value, int*& rgb) {
+    if (value[0] == 'r' && value[1] == 'g' && value[2] == 'b') {
+        int ind1, ind2;
+        for (int i = 0; i < value.size(); ++i) 
+            if (value[i] == '(')
+                ind1 = i + 1;
+        ind2 = value.find(",", ind1);
+        rgb[0] = stoi(value.substr(ind1, ind2 - ind1));
+
+        ind1 = ind2 + 1;
+        ind2 = value.find(",", ind1);
+        rgb[1] = stoi(value.substr(ind1, ind2 - ind1));
+
+        ind1 = ind2 + 1;
+        ind2 = value.find(")", ind1);
+        rgb[2] = stoi(value.substr(ind1, ind2 - ind1));
+    }
+    else if (value[0] == '#') {
+        unsigned int hexValue;
+        if (value.length() == 4) {
+            char a1 = value[1], a2 = value[2], a3 = value[3];
+            value = "#" + string(1, a1) + string(1, a1) + string(1, a2) + string(1, a2) + string(1, a3) + string(1, a3);
+        }
+        istringstream(value.substr(1)) >> hex >> hexValue;
+
+        rgb[0] = (hexValue >> 16) & 0xFF;
+        rgb[1] = (hexValue >> 8) & 0xFF;
+        rgb[2] = hexValue & 0xFF;
+        int alpha = (hexValue >> 24) & 0xFF;
+    }
+}
+
+void Shape::GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP) {
+    int x, y, ind1 = n + 1, ind2;
+    Point2D p;
+    vector<Point2D> Parray;
+    Parray.push_back(startP);
+
+    for (int i = ind1; i < s.size(); ++i) {
+        if (s[i] < 65 || (s[i] > 90 && s[i] < 97) || s[i] > 122) {
+            if (s[i] == ' ') {
+                ind2 = i;
+                x = stoi(s.substr(ind1, ind2 - ind1));
+
+                ind1 = ind2 + 1;
+                ind2 = s.find(" ", ind1);
+                y = stoi(s.substr(ind1, ind2 - ind1));
+
+                ind1 = ind2 + 1;
+                i = ind2;
+                n = ind2;
+
+                p.SetPoint(x, y);
+                Parray.push_back(p);
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+    points.push_back(Parray);
+}
+
+
+void Shape::readTransform(string value, int*& translate, int*& scale, int& rotate){
+    for (int i = 0; i < value.size(); ++i) {
+        if (value[i] == 't') {
+            int ind1 = i + 10;
+            int ind2;
+
+            if (value.find(",", ind1) < value.find(")", ind1)) {
+                ind2 = value.find(",", ind1);
+                translate[0] = stoi(value.substr(ind1, ind2 - ind1));
+
+
+                ind1 = ind2 + 1;
+                ind2 = value.find(")", ind1);
+                translate[1] = stoi(value.substr(ind1, ind2 - ind1));
+            }
+            else {
+                ind2 = value.find(")", ind1);
+                translate[0] = stoi(value.substr(ind1, ind2 - ind1));
+                translate[1] = 0;;
+            }
+
+            i = ind2 + 1;
+        }
+
+        else if (value[i] == 'r') {
+            int ind1 = i + 7;
+            int ind2 = value.find(")", ind1);
+            rotate = stoi(value.substr(ind1, ind2 - ind1));
+
+
+            i = ind2 + 1;
+        }
+
+        else if (value[i] == 's') {
+            int ind1 = i + 6;
+            int ind2;
+
+            if (value.find(",", ind1) < value.find(")", ind1)) {
+                ind2 = value.find(",", ind1);
+                scale[0] = stoi(value.substr(ind1, ind2 - ind1));
+
+
+                ind1 = ind2 + 1;
+                ind2 = value.find(")", ind1);
+                scale[1] = stoi(value.substr(ind1, ind2 - ind1));
+            }
+            else {
+                ind2 = value.find(")", ind1);
+                scale[0] = stoi(value.substr(ind1, ind2 - ind1));
+            }
+
+            i = ind2 + 1;
+        }
+    }
+}
+
+void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
+                 double stroke_opacity, int* translate, int* scale, int rotate) {
+    string name = root->name();
+
+    if (name == "rect") {
+        int thickness = 0, width, height, x, y;
+        Point2D start;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "fill-opacity")
+                fill_opacity = stod(value);
+
+            else if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent")
+                    fill_opacity = 0;
+                else
+                    readRGB(value, fill);
+            }
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                    stroke_opacity = 0;
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "stroke-width") {
+                thickness = stoi(value);
+            }
+
+            else if (name == "x")
+                x = stoi(value);
+
+            else if (name == "y")
+                y = stoi(value);
+
+            else if (name == "width") {
+                if (value[value.length() - 1] == 't')
+                    value = value.substr(0, value.length() - 2);
+                width = stoi(value);
+            }
+
+            else if (name == "height") {
+                if (value[value.length() - 1] == 't')
+                    value = value.substr(0, value.length() - 2);
+                height = stoi(value);
+            }
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+        }
+
+        _Rectangle Rec;
+        start.SetPoint(x, y);
+        Rec.SetRec(stroke_fill, start, height, width, thickness, fill, fill_opacity, stroke_opacity);
+        Rec.OnPaint(hdc);
+    }
+
+    else if (name == "circle" || name == "ellipse") {
+        int thickness = 0, x, y, rx, ry = 0;
+        Point2D start;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "fill-opacity")
+                fill_opacity = stod(value);
+
+            else if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent")
+                    fill_opacity = 0;
+                else
+                    readRGB(value, fill);
+            }
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                    stroke_opacity = 0;
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "stroke-width") {
+                thickness = stoi(value);
+            }
+
+            else if (name == "cx")
+                x = stoi(value);
+
+            else if (name == "cy")
+                y = stoi(value);
+
+            else if (name == "r" || name == "rx")
+                rx = ry = stoi(value);
+
+            else if (name == "ry")
+                ry = stoi(value);
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+        }
+
+        Circle Cir;
+        start.SetPoint(x, y);
+        Cir.SetCircle(stroke_fill, start, rx, ry, thickness, fill, stroke_opacity, fill_opacity);
+        Cir.OnPaint(hdc);
+    }
+
+    else if (name == "text") {
+        int x, y, font_size;
+        string text = root->value();
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "fill-opacity")
+                fill_opacity = stod(value);
+
+            else if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent")
+                    fill_opacity = 0;
+                else
+                    readRGB(value, fill);
+            }
+
+            else if (name == "x")
+                x = stoi(value);
+
+            else if (name == "y")
+                y = stoi(value);
+
+            else if (name == "font-size")
+                font_size = stoi(value);
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+        }
+
+        Text t;
+        Point2D start(x, y);
+        t.SetText(text, fill, font_size, start);
+        t.OnPaint(hdc);
+    }
+
+    else if (name == "polyline") {
+        int thickness = 0;
+        vector<Point2D> pointArray;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "fill-opacity")
+                fill_opacity = stod(value);
+
+            else if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent")
+                    fill_opacity = 0;
+                else
+                    readRGB(value, fill);
+            }
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                    stroke_opacity = 0;
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "points") {
+                string points;
+                int NumOfPoint = 0;
+                Point2D* pointsArray = NULL;
+                int pos1 = 0;
+                int pos2 = value.size();
+                points = value.substr(pos1, pos2 - pos1);
+
+                stringstream ss(points);
+                string point;
+
+                while (getline(ss, point, ' ')) {
+                    stringstream pointSS(point);
+                    string coordinate;
+                    vector<int> coordinates;
+
+                    while (getline(pointSS, coordinate, ','))
+                        coordinates.push_back(stoi(coordinate));
+
+                    Point2D pointObj(coordinates[0], coordinates[1]);
+                    pointArray.push_back(pointObj);
+                }
+            }
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+
+            PolyLine poly;
+            poly.SetPolyLine(stroke_fill, thickness, pointArray, fill, fill_opacity, stroke_opacity);
+            poly.OnPaint(hdc);
+        }
+    }
+
+    else if (name == "polygon") {
+        int thickness = 0;
+        vector<Point2D> pointArray;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "fill-opacity")
+                fill_opacity = stod(value);
+
+            else if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent")
+                    fill_opacity = 0;
+                else
+                    readRGB(value, fill);
+            }
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                    stroke_opacity = 0;
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "stroke-width")
+                thickness = stoi(value);
+
+            else if (name == "points") {
+                string points;
+                int NumOfPoint = 0;
+                Point2D* pointsArray = NULL;
+                int pos1 = 0;
+                int pos2 = value.size();
+                points = value.substr(pos1, pos2 - pos1);
+
+                stringstream ss(points);
+                string point;
+
+                while (getline(ss, point, ' ')) {
+                    stringstream pointSS(point);
+                    string coordinate;
+                    vector<int> coordinates;
+
+                    while (getline(pointSS, coordinate, ','))
+                        coordinates.push_back(stoi(coordinate));
+
+                    Point2D pointObj(coordinates[0], coordinates[1]);
+                    pointArray.push_back(pointObj);
+                }
+            }
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+
+            PolyGon poly;
+            poly.SetPolyGon(stroke_fill, fill, thickness, pointArray, fill_opacity, stroke_opacity);
+            poly.OnPaint(hdc);
+        }
+    }
+
+    else if (name == "line") {
+        int thickness = 0, x1, y1, x2, y2;
+        Point2D start;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "stroke-opacity")
+                stroke_opacity = stod(value);
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                    stroke_opacity = 0;
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "stroke-width") {
+                thickness = stoi(value);
+            }
+
+            else if (name == "x1")
+                x1 = stoi(value);
+
+            else if (name == "y1")
+                y1 = stoi(value);
+
+            else if (name == "x2")
+                x2 = stoi(value);
+
+            else if (name == "y2")
+                y2 = stoi(value);
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+        }
+
+        Line line;
+        Point2D p1(x1, y1), p2(x2, y2);
+        line.SetLine(stroke_fill, p1, p2, thickness, stroke_opacity);
+        line.OnPaint(hdc);
+    }
+
+    else if (name == "path") {
+        int thickness = 0;
+        Point2D start;
+
+        for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
+            name = node->name();
+            string value = node->value();
+
+            if (name == "stroke-opacity")
+            {
+                stroke_opacity = stod(value);
+            }
+
+            else if (name == "fill-opacity")
+            {
+                fill_opacity = stof(value);
+            }
+
+            else if (name == "fill") {
+                if (value == "none" || value == "transparent") {
+                    fill_opacity = 0;
+                }
+                else
+                {
+                    readRGB(value, fill);
+                }
+            }
+
+            else if (name == "stroke") {
+                if (value == "none" || value == "transparent")
+                {
+                    stroke_opacity = 0;
+                }
+                else {
+                    readRGB(value, stroke_fill);
+                    if (thickness == 0)
+                        thickness = 1;
+                }
+            }
+
+            else if (name == "stroke-width") {
+                thickness = stoi(value);
+            }
+
+            else if (name == "transform") {
+                readTransform(value, translate, scale, rotate);
+            }
+
+            else if (name == "d") {
+                for (int i = 0; i < value.size(); ++i) {
+                    if (value[i] == '\n' || value[i] == ',')
+                        value[i] = ' ';
+                }
+                value += ' ';
+
+                vector<vector<Point2D>> points;
+                vector<char> command;
+
+                Point2D InitialP(0, 0);
+                Point2D startP(0, 0);
+
+                int x = 0, y = 0;
+
+                bool flag = 0;
+
+                for (int i = 0; i < value.size(); ++i) {
+
+                    if (value[i] == 'm') {
+                        int ind1, ind2;
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+                        x += stoi(value.substr(ind1, ind2 - ind1));
+
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y += stoi(value.substr(ind1, ind2 - ind1));
+
+                        startP.SetPoint(x, y);
+
+                        i = ind2;
+
+                        startP.SetPoint(x, y);
+                        if (flag == 0)
+                        {
+                            InitialP = startP;
+                            flag = 1;
+                        }
+                    }
+
+                    else if (value[i] == 'M') {
+                        int ind1, ind2;
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+                        x = stoi(value.substr(ind1, ind2 - ind1));
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y = stoi(value.substr(ind1, ind2 - ind1));
+                        startP.SetPoint(x, y);
+
+                        i = ind2;
+
+                        startP.SetPoint(x, y);
+                        if (flag == 0)
+                        {
+                            InitialP = startP;
+                            flag = 1;
+                        }
+                    }
+
+                    else if (value[i] == 'c') {
+                        command.push_back('c');
+
+                        int x, y, ind1 = i + 1, ind2;
+                        Point2D p;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        for (int j = ind1; j < value.size(); ++j) {
+                            if (value[j] < 65 || (value[j] > 90 && value[j] < 97) || value[j] > 122) {
+                                if (value[j] == ' ') {
+                                    ind2 = j;
+
+                                    x = startP.GetX() + stoi(value.substr(ind1, ind2 - ind1));
+                                    ind1 = ind2 + 1;
+                                    ind2 = value.find(" ", ind1);
+
+                                    y = startP.GetY() + stoi(value.substr(ind1, ind2 - ind1));
+                                    ind1 = ind2 + 1;
+                                    while (value[ind1] == ' ') {
+                                        ++ind1;
+                                        ++ind2;
+                                    }
+                                    j = ind2;
+
+                                    p.SetPoint(x, y);
+                                    Parray.push_back(p);
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        points.push_back(Parray);
+                        startP = p;
+
+                        i = ind2;
+                    }
+
+                    else if (value[i] == 'C') {
+                        command.push_back('C');
+                        int x, y, ind1 = i + 1, ind2;
+                        Point2D p;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        for (int j = ind1; j < value.size(); ++j) {
+                            if (value[j] < 65 || (value[j] > 90 && value[j] < 97) || value[j] > 122) {
+                                if (value[j] == ' ') {
+                                    ind2 = j;
+
+                                    x = stoi(value.substr(ind1, ind2 - ind1));
+                                    ind1 = ind2 + 1;
+                                    ind2 = value.find(" ", ind1);
+
+                                    y = stoi(value.substr(ind1, ind2 - ind1));
+                                    ind1 = ind2 + 1;
+                                    while (value[ind1] == ' ') {
+                                        ++ind1;
+                                        ++ind2;
+                                    }
+                                    j = ind2;
+
+                                    p.SetPoint(x, y);
+                                    Parray.push_back(p);
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        points.push_back(Parray);
+                        startP = p;
+                        i = ind2;
+                    }
+
+                    else if (value[i] == 'h') {
+                        command.push_back('h');
+                        int ind1, ind2;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+
+                        x = startP.GetX() + stoi(value.substr(ind1, ind2 - ind1));
+                        startP.SetPoint(x, startP.GetY());
+                        Parray.push_back(startP);
+                        points.push_back(Parray);
+
+                        i = ind2;
+                    }
+
+                    else if (value[i] == 'H') {
+                        command.push_back('H');
+                        int ind1, ind2;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+
+                        x = stoi(value.substr(ind1, ind2 - ind1));
+                        startP.SetPoint(x, startP.GetY());
+                        Parray.push_back(startP);
+                        points.push_back(Parray);
+
+                        i = ind2;
+                    }
+
+                    else if (value[i] == 'v') {
+                    command.push_back('v');
+                    int ind1, ind2;
+                    vector<Point2D> Parray;
+                    Parray.push_back(startP);
+
+                    ind1 = i + 1;
+                    ind2 = value.find(" ", ind1);
+
+                    y = startP.GetX() + stoi(value.substr(ind1, ind2 - ind1));
+                    startP.SetPoint(startP.GetX(), y);
+                    Parray.push_back(startP);
+                    points.push_back(Parray);
+
+                    i = ind2;
+                    }
+
+                    else if (value[i] == 'V') {
+                    command.push_back('V');
+                    int ind1, ind2;
+                    vector<Point2D> Parray;
+                    Parray.push_back(startP);
+
+                    ind1 = i + 1;
+                    ind2 = value.find(" ", ind1);
+
+                    y = stoi(value.substr(ind1, ind2 - ind1));
+                    startP.SetPoint(startP.GetX(), y);
+                    Parray.push_back(startP);
+                    points.push_back(Parray);
+
+                    i = ind2;
+                    }
+                   
+                    else if (value[i] == 'l') {
+                        command.push_back('l');
+                        int ind1, ind2;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+                        x = startP.GetX() + stoi(value.substr(ind1, ind2 - ind1));
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y = startP.GetY() + stoi(value.substr(ind1, ind2 - ind1));
+
+                        startP.SetPoint(x, y);
+                        Parray.push_back(startP);
+                        points.push_back(Parray);
+
+                        i = ind2;
+                    }
+
+                    else if (value[i] == 'L') {
+                        command.push_back('L');
+                        int ind1, ind2;
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+
+                        ind1 = i + 1;
+                        ind2 = value.find(" ", ind1);
+                        x = stoi(value.substr(ind1, ind2 - ind1));
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y = stoi(value.substr(ind1, ind2 - ind1));
+
+                        startP.SetPoint(x, y);
+                        Parray.push_back(startP);
+                        points.push_back(Parray);
+
+                        i = ind2;
+                    }
+                    
+                    else if (value[i] == 'Z' || value[i] == 'z') {
+                        command.push_back('z');
+                        vector<Point2D> Parray;
+                        Parray.push_back(startP);
+                        Parray.push_back(InitialP);
+                        points.push_back(Parray);
+                    }
+                }
+
+                Path p;
+                p.SetPath(stroke_fill, fill, thickness, command, points, fill_opacity, stroke_opacity);
+                p.OnPaint(hdc);
+            }
+        }
+
+    }
+}
 
 
 VOID Shape::OnPaint(HDC hdc, double opacity) {}
@@ -1263,8 +1327,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        //shape.HandleSVGFile(hdc);
-        Example_DrawPath(hdc);
+        shape.ReadSVGFile(hdc, "sample.svg");
+        // Example_DrawPath(hdc);
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:
