@@ -57,19 +57,20 @@ void _Rectangle::fillRect(HDC hdc)
     graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
 }
 
-VOID _Rectangle::OnPaint(HDC hdc) {
-    Graphics       graphics(hdc);
-    double         alpha = 255 * stroke_opacity;
-    Pen            pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+VOID _Rectangle::OnPaint(HDC hdc, vector<Transform> transform) {
+    Graphics   graphics(hdc);
+    int        alpha = 255 * fill_opacity;
+    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
 
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
 
-    alpha          = 255 * fill_opacity;
-    SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
-
-}
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
 
 
 
