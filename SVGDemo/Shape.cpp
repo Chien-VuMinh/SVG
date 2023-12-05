@@ -300,7 +300,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         _Rectangle Rec;
         start.SetPoint(x, y);
         Rec.SetRec(stroke_fill, start, height, width, thickness, fill, fill_opacity, stroke_opacity);
-        Rec.OnPaint(hdc);
+        Rec.OnPaint(hdc, transform);
     }
 
     else if (name == "circle" || name == "ellipse") {
@@ -399,7 +399,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         Text t;
         Point2D start(x, y);
         t.SetText(text, fill, font_size, start);
-        t.OnPaint(hdc);
+        t.OnPaint(hdc, transform);
     }
 
     else if (name == "polyline") {
@@ -464,7 +464,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         
         PolyLine poly;
         poly.SetPolyLine(stroke_fill, thickness, pointArray, fill, fill_opacity, stroke_opacity);
-        poly.OnPaint(hdc);
+        poly.OnPaint(hdc, transform);
     }
 
     else if (name == "polygon") {
@@ -532,7 +532,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         PolyGon poly;
         poly.SetPolyGon(stroke_fill, fill, thickness, pointArray, fill_opacity, stroke_opacity);
-        poly.OnPaint(hdc);
+        poly.OnPaint(hdc, transform);
     }
 
     else if (name == "line") {
@@ -580,7 +580,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         Line line;
         Point2D p1(x1, y1), p2(x2, y2);
         line.SetLine(stroke_fill, p1, p2, thickness, stroke_opacity);
-        line.OnPaint(hdc);
+        line.OnPaint(hdc, transform);
     }
 
     else if (name == "path") {
@@ -905,12 +905,12 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         
         Path p;
         p.SetPath(stroke_fill, fill, thickness, command, points, fill_opacity, stroke_opacity);
-        p.OnPaint(hdc);
+        p.OnPaint(hdc, transform);
     }
 }
 
 
-VOID Shape::OnPaint(HDC hdc, double opacity) {}
+VOID Shape::OnPaint(HDC hdc, vector<Transform> transform) {}
 
 Shape::~Shape() {
     delete[] ShapeArr;
