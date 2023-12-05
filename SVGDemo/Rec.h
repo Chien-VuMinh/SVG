@@ -7,7 +7,7 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
-
+#include "Transform.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -39,7 +39,7 @@ public:
 
 	void setRGB(double*);
 	void fillRect(HDC);
-	VOID OnPaint(HDC hdc);
+	VOID OnPaint(HDC hdc, vector<Transform> transform);
 };
 
 
