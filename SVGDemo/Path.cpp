@@ -27,35 +27,19 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
 
 
 
-VOID Path::OnPaint(HDC hdc) {
-    Graphics        graphics(hdc);
-    GraphicsPath    Path;
-    double          alpha = 255 * fill_opacity;
-    SolidBrush      solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
+VOID Path::OnPaint(HDC hdc, vector<Transform> transform) {
+    Graphics   graphics(hdc);
+    int        alpha = 255 * fill_opacity;
+    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
 
-    //for (int i = 0; i < NumOfLines; ++i)
-    //    Path.AddLine(  Lines[i*2].GetX(),       Lines[i * 2].GetY(), 
-    //                   Lines[i * 2 + 1].GetX(), Lines[i * 2 + 1].GetY());
 
-    //for (int i = 0; i < NumOfBeziers; ++i)
-    //    Path.AddBezier(Lines[i * 4].GetX(),     Lines[i * 4].GetY(), 
-    //                   Lines[i * 4 + 1].GetX(), Lines[i * 4 + 1].GetY(), 
-    //                   Lines[i * 4 + 2].GetX(), Lines[i * 4 + 2].GetY(), 
-    //                   Lines[i * 4 + 3].GetX(), Lines[i * 4 + 3].GetY());
-
-    for (int i = 0; i < command.size(); ++i) {      
-        if (command[i] == 'c' || command[i] == 'C') {
-            Point* pts = new Point[points[i].size()];
-            for (int k = 0; k < points[i].size(); ++k) {
-                pts[k].X = points[i][k].GetX();
-                pts[k].Y = points[i][k].GetY();
-            }
-            Path.AddBeziers(pts, points[i].size());
-            delete[] pts;
-        }
-        else
-            Path.AddLine(points[i][0].GetX(), points[i][0].GetY(),
-                points[i][1].GetX(), points[i][1].GetY());
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
         
 
