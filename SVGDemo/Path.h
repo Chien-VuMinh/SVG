@@ -7,7 +7,7 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
-
+#include "Transform.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -29,7 +29,7 @@ public:
 
 	void SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
 				 vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity);
-	VOID OnPaint(HDC hdc);
+	VOID OnPaint(HDC hdc, vector<Transform>& transform);
 
 	~Path();
 };
