@@ -7,7 +7,7 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
-
+#include "Transform.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -25,5 +25,5 @@ protected:
 
 public:
 	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
-	VOID OnPaint(HDC hdc);
+	VOID OnPaint(HDC hdc, vector<Transform>& transform);
 };
