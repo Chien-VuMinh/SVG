@@ -20,24 +20,10 @@ using namespace Gdiplus;
 
 class Circle : public Shape {
 protected:
-	int fill_rgb[3];
-	int thickness;
 	Point2D center;
 	int radX, radY;
-	double fill_opacity;
 
 public:
 	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
-
-	int getX();
-	int getY();
-	int getradX();
-	int getradY();
-
-	void setRGB(int*);
-	void _fillCircle(HDC);
-	void myLinearGradientBrush(HDC, double*, double*);
-	void gradientBrushPath(HDC, double*, double*);
-
 	VOID OnPaint(HDC hdc, vector<Transform> transform);
 };

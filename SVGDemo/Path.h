@@ -18,9 +18,6 @@ using namespace Gdiplus;
 
 class Path : public Shape {
 protected:
-	int thickness;
-	int fill_rgb[3];
-	double fill_opacity;
 	vector<char> command;
 	vector<vector<Point2D>> points;
 

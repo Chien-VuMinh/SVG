@@ -23,9 +23,10 @@ protected:
 	int ShapeArrSize;
 	Shape** ShapeArr;
 
-	int Translate[2];
-	int Scale[2];
 	int rgb[3];
+	int fill_rgb[3];
+	int thickness;
+	double fill_opacity;
 	double stroke_opacity;
 
 public:
@@ -34,10 +35,10 @@ public:
 	void ReadSVGFile(HDC hdc, string file_name);
 	void HanleSVG(HDC hdc, xml_node<>*& root);
 	void Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
-		      double stroke_opacity, vector<Transform>& transform);
+		      double stroke_opacity, int thickness, vector<Transform>& transform);
 	void readTransform(string value, vector<Transform>& transform);
 
-	void readRGB(string value, int*& rgb);
+	void readRGB(string value, int* rgb);
 	void GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP);
 
 	virtual VOID OnPaint(HDC hdc, vector<Transform>& transform);

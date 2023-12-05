@@ -15,17 +15,27 @@ void Line::SetLine(int* rgb, Point2D start, Point2D end, int thickness, double s
 }
 
 
-VOID Line::OnPaint(HDC hdc, vector<Transform> transform) {
-    Graphics   graphics(hdc);
-    int        alpha = 255 * fill_opacity;
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+VOID Line::OnPaint(HDC hdc, vector<Transform>& transform) {
+    Graphics graphics(hdc);
+    int      alpha = 255 * stroke_opacity;
+    Pen      pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
 
 
     for (int i = 0; i < transform.size(); i++) {
         if (transform[i].GetName() == "t")
             graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
         if (transform[i].GetName() == "r")
-            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        {
+            PointF center(transform[i].GetRotate()[1], transform[i].GetRotate()[2]);
+            Gdiplus::Matrix	matrix;
+            matrix.RotateAt(transform[i].GetRotate()[0], center);
+            graphics.SetTransform(&matrix);
+        }
         if (transform[i].GetName() == "s")
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
+
+
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
+}

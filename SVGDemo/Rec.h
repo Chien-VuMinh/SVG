@@ -22,24 +22,14 @@ class Rec : public Shape {
 protected:
 	Point2D start;
 	int height, width;
-	double fill_opacity;
-	int fill_rgb[3];
-	int thickness;
 };
 
 
 class _Rectangle : public Rec {
 public:
-	void SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity);
-
-	int getHeight();
-	int getWidth();
-	int getX();
-	int getY();
-
-	void setRGB(double*);
-	void fillRect(HDC);
-	VOID OnPaint(HDC hdc, vector<Transform> transform);
+	void SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, 
+				double fill_opacity, double stroke_opacity);
+	VOID OnPaint(HDC hdc, vector<Transform>& transform);
 };
 
 

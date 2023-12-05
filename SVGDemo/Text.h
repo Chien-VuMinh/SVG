@@ -24,6 +24,6 @@ protected:
 	Point2D start;
 
 public:
-	void SetText(string text, int* rgb, int size, Point2D start);
+	void SetText(string text, int* rgb, int size, Point2D start, int* fill, double stroke_opacity, double fill_opacity, int thickness);
 	VOID OnPaint(HDC hdc, vector<Transform>& transform);
 };

@@ -27,10 +27,11 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
 
 
 
-VOID Path::OnPaint(HDC hdc, vector<Transform> transform) {
-    Graphics   graphics(hdc);
-    int        alpha = 255 * fill_opacity;
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
+    Graphics        graphics(hdc);
+    GraphicsPath    Path;
+    double          alpha = 255 * fill_opacity;
+    SolidBrush      solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
 
 
     for (int i = 0; i < transform.size(); i++) {
@@ -42,6 +43,22 @@ VOID Path::OnPaint(HDC hdc, vector<Transform> transform) {
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
         
+
+    for (int i = 0; i < command.size(); ++i) {
+        if (command[i] == 'c' || command[i] == 'C') {
+            Point* pts = new Point[points[i].size()];
+            for (int k = 0; k < points[i].size(); ++k) {
+                pts[k].X = points[i][k].GetX();
+                pts[k].Y = points[i][k].GetY();
+            }
+            Path.AddBeziers(pts, points[i].size());
+            delete[] pts;
+        }
+        else
+            Path.AddLine(points[i][0].GetX(), points[i][0].GetY(),
+                points[i][1].GetX(), points[i][1].GetY());
+    }
+
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillPath(&solidBrush, &Path);

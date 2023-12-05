@@ -35,10 +35,10 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int*
     }
 }
 
-void PolyLine::OnPaint(HDC hdc, vector<Transform> transform) {
-    Graphics   graphics(hdc);
-    int        alpha = 255 * fill_opacity;
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+void PolyLine::OnPaint(HDC hdc, vector<Transform>& transform) {
+    Graphics     graphics(hdc);
+    int          alpha = 255 * fill_opacity;
+    SolidBrush   solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
 
 
     for (int i = 0; i < transform.size(); i++) {
@@ -50,6 +50,13 @@ void PolyLine::OnPaint(HDC hdc, vector<Transform> transform) {
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
 
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.FillPolygon(&solidBrush, points, NumOfPoint);
+
+    alpha = 255 * stroke_opacity;
+    Pen          pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
+    graphics.DrawLines(&pen, points, NumOfPoint);
+}
 //VOID PolyLine::OnPaint(HDC hdc) {
 //    if (!thickness)
 //        return;
@@ -81,10 +88,11 @@ void PolyGon::SetPolyGon(int* rgb, int* fill_rgb, int thickness, vector<Point2D>
     }
 }
 
-void PolyGon::OnPaint(HDC hdc, vector<Transform> transform) {
-    Graphics   graphics(hdc);
-    int        alpha = 255 * fill_opacity;
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+void PolyGon::OnPaint(HDC hdc, vector<Transform>& transform) {
+    Graphics    graphics(hdc);
+    int         alpha = 255 * fill_opacity;
+    SolidBrush  solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+
 
 
     for (int i = 0; i < transform.size(); i++) {
@@ -96,6 +104,12 @@ void PolyGon::OnPaint(HDC hdc, vector<Transform> transform) {
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
 
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
+    alpha       = 255 * stroke_opacity;
+    Pen         pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+    graphics.DrawPolygon(&pen, points, NumOfPoint);
+}
 //VOID PolyGon::OnPaint(HDC hdc) {
 //    Graphics    graphics(hdc);
 //    int         alpha = 255 * stroke_opacity;

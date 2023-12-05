@@ -17,43 +17,6 @@ void Circle::SetCircle(int* rgb, Point2D center, int radX, int radY, int thickne
     }
 }
 
-int Circle::getX()
-{
-    return this->center.GetX();
-}
-
-int Circle::getY()
-{
-    return this->center.GetY();
-}
-
-int Circle::getradX()
-{
-    return this->radX;
-}
-
-int Circle::getradY()
-{
-    return this->radY;
-}
-
-void Circle::setRGB(int* rgb)
-{
-    this->rgb[0] = rgb[0];
-    this->rgb[1] = rgb[1];
-    this->rgb[2] = rgb[2];
-}
-
-
-void Circle::_fillCircle(HDC hdc)
-{
-    Graphics    graphics(hdc);
-    int alpha = 255 * fill_opacity;
-
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    graphics.FillEllipse(&solidBrush, this->getX() - this->getradX(), this->getY() - this->getradY(), this->getradX() * 2, this->getradY() * 2);
-}
 
 
 VOID Circle::OnPaint(HDC hdc, vector<Transform> transform) {
@@ -66,7 +29,12 @@ VOID Circle::OnPaint(HDC hdc, vector<Transform> transform) {
         if (transform[i].GetName() == "t")
             graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
         if (transform[i].GetName() == "r")
-            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        {
+            PointF center(transform[i].GetRotate()[1], transform[i].GetRotate()[2]);
+            Gdiplus::Matrix	matrix;
+            matrix.RotateAt(transform[i].GetRotate()[0], center);
+            graphics.SetTransform(&matrix);
+        }
         if (transform[i].GetName() == "s")
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
