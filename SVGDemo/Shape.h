@@ -40,7 +40,7 @@ public:
 	void readRGB(string value, int*& rgb);
 	void GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP);
 
-	virtual VOID OnPaint(HDC hdc, double);
+	virtual VOID OnPaint(HDC hdc, vector<Transform>& transform);
 
 	~Shape();
 };
