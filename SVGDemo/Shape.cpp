@@ -10,6 +10,10 @@
 #include <sstream>
 #include "Path.h"
 #include <vector>
+#include "Transform.h"
+
+
+
 Shape::Shape() {
     ShapeArrSize = 0;
     ShapeArr = NULL;
@@ -38,356 +42,6 @@ void Shape::ReadSVGFile(HDC hdc, string file_name) {
     read.close();
 
     HanleSVG(hdc, root);
-
-
-    int translateX = 0, translateY = 0;
-    int scaleX = 1, scaleY = 1;
-    int rotate = 0;
-    int x, y;
-    /*
-    while (getline(In, value, '\n'))
-    {
-        if (temp.find("path") < temp.size()) {
-            int rgb[3];
-            int pos1 = 0;
-            int pos2 = 0;
-            if (temp.find("stroke=") < temp.length())
-            {
-                pos1 = temp.find("stroke=") + 12;
-                pos2 = temp.find(",", pos1);
-
-                rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                rgb[0] = rgb[1] = rgb[2] = 0;
-            }
-
-            int fill_rgb[3];
-            if (temp.find("fill=") < temp.length())
-            {
-                pos1 = temp.find("fill=") + 10;
-                pos2 = temp.find(",", pos1);
-
-                fill_rgb[0] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(",", pos1);
-                fill_rgb[1] = stoi(temp.substr(pos1, pos2 - pos1));
-
-                pos1 = pos2 + 1;
-                pos2 = temp.find(")", pos1);
-                fill_rgb[2] = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_rgb[0] = fill_rgb[1] = fill_rgb[2] = 0;
-            }
-
-            int thickness;
-            if (temp.find("stroke-width") < temp.length())
-            {
-                pos1 = temp.find("stroke-width=") + 14;
-                pos2 = temp.find("\"", pos1);
-                thickness = stoi(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                thickness = 0;
-            }
-
-            double fill_opacity;
-            if (temp.find("fill-opacity") < temp.length())
-            {
-                pos1 = temp.find("fill-opacity") + 14;
-                pos2 = temp.find("\"", pos1);
-                fill_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                fill_opacity = 1;
-            }
-
-            double stroke_opacity;
-            if (temp.find("stroke-opacity") < temp.size())
-            {
-                pos1 = temp.find("stroke-opacity=") + 16;
-                pos2 = temp.find("\"", pos1);
-                stroke_opacity = stod(temp.substr(pos1, pos2 - pos1));
-            }
-            else
-            {
-                stroke_opacity = 1;
-            }
-
-            vector<Point2D> Line;
-            vector<Point2D> BezierV;
-            Point2D startP(0, 0);
-            Point2D startPoint(0, 0);
-            pos1 = temp.find("d=") + 3;
-            pos2 = temp.find("\"", pos1);
-            bool flag = 0;
-            int x = 0, y = 0;
-            for (int i = pos1; i < pos2; ++i) {
-
-                if (temp[i] == 'm') {
-                    int ind1, ind2;
-
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x += stoi(temp.substr(ind1, ind2 - ind1));
-
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y += stoi(temp.substr(ind1, ind2 - ind1));
-
-                    startP.SetPoint(x, y);
-
-                    i = ind2;
-                    if (flag == 0)
-                    {
-                        startPoint.SetPoint(x, y);
-                        flag = 1;
-                    }
-                }
-
-                else if (temp[i] == 'M') {
-                    int ind1, ind2;
-
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = stoi(temp.substr(ind1, ind2 - ind1));
-                    startP.SetPoint(x,y);
-
-                    i = ind2;
-                    if (flag == 0)
-                    {
-                        startPoint = startP;
-                        flag = 1;
-                    }
-                }
-
-                else if (temp[i] == 'c') {
-                    int ind1, ind2;
-                    Point2D Bezier[3];
-                    BezierV.push_back(startP);
-                    // first point
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[0].SetPoint(x, y);
-
-                    // second point
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[1].SetPoint(x, y);
-
-                    //third point
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[2].SetPoint(x, y);
-
-                    startP = Bezier[2];
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        BezierV.push_back(Bezier[i]);
-                    }
-
-                    i = ind2;
-                }
-
-                else if (temp[i] == 'C') {
-                    int ind1, ind2;
-                    Point2D Bezier[3];
-                    BezierV.push_back(startP);
-                    // first point
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[0].SetPoint(x, y);
-
-                    // second point
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[1].SetPoint(x, y);
-
-                    //third point
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = startP.GetX() + stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = startP.GetY() + stoi(temp.substr(ind1, ind2 - ind1));
-                    Bezier[2].SetPoint(x, y);
-
-                    startP = Bezier[2];
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        BezierV.push_back(Bezier[i]);
-                    }
-
-                    i = ind2;
-                }
-
-
-                else if (temp[i] == 'h') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                 
-                    ind1 = i + 1;
-                    ind2 = temp.find(" ", ind1);
-
-                    x += stoi(temp.substr(ind1, ind2 - ind1));
-                    startP.SetPoint(x, y);
-                    Line.push_back(startP);
-                    
-                    i = ind2;
-                }
-
-                else if (temp[i] == 'H') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                        
-                    ind1 = i + 1;
-                    ind2 = temp.find(" ", ind1);
-                    x = stoi(temp.substr(ind1, ind2 - ind1));
-                    i = ind2;
-                    Line.push_back(startP);
-                    
-                }
-
-                else if (temp[i] == 'v') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                
-                    ind1 = i + 1;
-                    ind2 = temp.find(" ", ind1);
-
-                    y += stoi(temp.substr(ind1, ind2 - ind1));
-                    startP.SetPoint(x, y);
-                    Line.push_back(startP);
-                   
-                    i = ind2;
-                }
-
-                else if (temp[i] == 'V') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                    
-
-                    ind1 = i + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y = stoi(temp.substr(ind1, ind2 - ind1));
-                    startP.SetPoint(x, y);
-                    i = ind2;
-                    Line.push_back(startP);
-                    
-                }
-
-                else if (temp[i] == 'l') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                    
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x += stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind1);
-                    y += stoi(temp.substr(ind1, ind2 - ind1));
-
-                    startP.SetPoint(x, y);
-                    Line.push_back(startP);
-                    
-                    i = ind2;
-                }
-
-                else if (temp[i] == 'L') {
-                    int ind1, ind2;
-                    Line.push_back(startP);
-                    //startP.Print();
-
-                    ind1 = i + 1;
-                    ind2 = temp.find(",", ind1);
-                    x = stoi(temp.substr(ind1, ind2 - ind1));
-
-                    ind1 = ind2 + 1;
-                    ind2 = temp.find(" ", ind2);
-                    y = stoi(temp.substr(ind1, ind2 - ind1));
-                    i = ind2;
-                    Line.push_back(startP);
-                    //startP.Print();
-                }
-
-                else if (temp[i] == 'z' || temp[i] == 'Z')
-                {
-                    Line.push_back(startP);
-                    Line.push_back(startPoint);
-                    startP = startPoint;
-                }
-                //void SetPath(int* rgb, int* fill_rgb, int thickness, int NumOfLines, Point2D* Lines,
-                    //int NumOfBeziers, Point2D* Beziers, double fill_opacity, double stroke_opacity);
-                int NumOfLines = Line.size()/2;
-                Point2D* Lines = new Point2D[NumOfLines*2];
-                for (int i = 0; i < NumOfLines * 2;i++)
-                {
-                    Lines[i] = Line[i];
-                }
-
-                int NumOfBeziers = BezierV.size()/2;
-                Point2D* Beziers = new Point2D[NumOfBeziers*2];
-                for (int i = 0; i < NumOfBeziers * 2;i++)
-                {
-                    Beziers[i] = BezierV[i];
-                }
-                Path path;
-                path.SetPath(rgb, fill_rgb, thickness, NumOfLines, Lines, NumOfBeziers, Beziers, fill_opacity, stroke_opacity);
-            }
-        }
-    }
-
-
-    In.close();
-        */
 }
 
 
@@ -400,15 +54,16 @@ void Shape::HanleSVG(HDC hdc, xml_node<>*& root) {
             scale[] = { 0, 0 },
             fill[] = { 0, 0, 0 },
             stroke_fill[] = { 0,0,0 };
+        vector<Transform> transform;
 
         if (name == "g") {
             for (rapidxml::xml_attribute<>* attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
 
             }
-            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, translate, scale, rotate);
+            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, transform);
         }
         else {
-            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, translate, scale, rotate);
+            Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, transform);
         }
 
     }
@@ -480,56 +135,100 @@ void Shape::GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D star
 }
 
 
-void Shape::readTransform(string value, int*& translate, int*& scale, int& rotate){
+void Shape::readTransform(string value, vector<Transform>& transform){
+    for (int i = 0; i < value.size(); ++i) {
+        if (value[i] == '\n' || value[i] == ',')
+            value[i] = ' ';
+    }
+
+    Transform trans;
+    int x1 = 0, x2 = 0, x3 = 0;
+
     for (int i = 0; i < value.size(); ++i) {
         if (value[i] == 't') {
+            trans.SetName("t");
+
             int ind1 = i + 10;
             int ind2;
 
-            if (value.find(",", ind1) < value.find(")", ind1)) {
-                ind2 = value.find(",", ind1);
-                translate[0] = stoi(value.substr(ind1, ind2 - ind1));
+            if (value.find(" ", ind1) < value.find(")", ind1)) {
+                ind2 = value.find(" ", ind1);
+                x1 = stoi(value.substr(ind1, ind2 - ind1));
 
 
                 ind1 = ind2 + 1;
                 ind2 = value.find(")", ind1);
-                translate[1] = stoi(value.substr(ind1, ind2 - ind1));
+                x2 = stoi(value.substr(ind1, ind2 - ind1));
             }
             else {
                 ind2 = value.find(")", ind1);
-                translate[0] = stoi(value.substr(ind1, ind2 - ind1));
-                translate[1] = 0;;
+                x1 = stoi(value.substr(ind1, ind2 - ind1));
+                x2 = 0;
             }
+            trans.SetTranslate(x1, x2);
+            transform.push_back(trans);
 
             i = ind2 + 1;
         }
 
         else if (value[i] == 'r') {
-            int ind1 = i + 7;
-            int ind2 = value.find(")", ind1);
-            rotate = stoi(value.substr(ind1, ind2 - ind1));
+            trans.SetName("r");
 
+            int ind1 = i + 7;
+            int ind2;
+
+            if (value.find(" ", ind1) < value.find(")", ind1)) {
+                ind2 = value.find(" ", ind1);
+                x1 = stoi(value.substr(ind1, ind2 - ind1));
+                ind1 = ind2 + 1;
+
+                if (value.find(" ", ind1) < value.find(")", ind1)) {
+                    ind2 = value.find(" ", ind1);
+                    x2 = stoi(value.substr(ind1, ind2 - ind1));
+                    ind1 = ind2 + 1;
+
+                    ind2 = value.find(")", ind1);
+                    x3 = stoi(value.substr(ind1, ind2 - ind1));
+                }
+                else {
+                    ind2 = value.find(")", ind1);
+                    x2 = stoi(value.substr(ind1, ind2 - ind1));
+                }
+            }
+            else {
+                ind2 = value.find(")", ind1);
+                x1 = stoi(value.substr(ind1, ind2 - ind1));
+                x2 = 0;
+            }
+
+
+            trans.SetRotate(x1, x2, x3);
+            transform.push_back(trans);
 
             i = ind2 + 1;
         }
 
         else if (value[i] == 's') {
+            trans.SetName("s");
+
             int ind1 = i + 6;
             int ind2;
 
-            if (value.find(",", ind1) < value.find(")", ind1)) {
-                ind2 = value.find(",", ind1);
-                scale[0] = stoi(value.substr(ind1, ind2 - ind1));
+            if (value.find(" ", ind1) < value.find(")", ind1)) {
+                ind2 = value.find(" ", ind1);
+                x1 = stoi(value.substr(ind1, ind2 - ind1));
 
 
                 ind1 = ind2 + 1;
                 ind2 = value.find(")", ind1);
-                scale[1] = stoi(value.substr(ind1, ind2 - ind1));
+                x2 = stoi(value.substr(ind1, ind2 - ind1));
             }
             else {
                 ind2 = value.find(")", ind1);
-                scale[0] = stoi(value.substr(ind1, ind2 - ind1));
+                x1 = x2 = stoi(value.substr(ind1, ind2 - ind1));
             }
+            trans.SetScale(x1, x2);
+            transform.push_back(trans);
 
             i = ind2 + 1;
         }
@@ -537,7 +236,7 @@ void Shape::readTransform(string value, int*& translate, int*& scale, int& rotat
 }
 
 void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
-                 double stroke_opacity, int* translate, int* scale, int rotate) {
+                 double stroke_opacity, vector<Transform>& transform) {
     string name = root->name();
 
     if (name == "rect") {
@@ -594,7 +293,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             }
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
         }
 
@@ -652,18 +351,18 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 ry = stoi(value);
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
         }
 
         Circle Cir;
         start.SetPoint(x, y);
         Cir.SetCircle(stroke_fill, start, rx, ry, thickness, fill, stroke_opacity, fill_opacity);
-        Cir.OnPaint(hdc);
+        Cir.OnPaint(hdc, transform);
     }
 
     else if (name == "text") {
-        int x, y, font_size;
+        int x, y, font_size = 10;
         string text = root->value();
 
         for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
@@ -693,7 +392,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 font_size = stoi(value);
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
         }
 
@@ -759,13 +458,13 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             }
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
-
-            PolyLine poly;
-            poly.SetPolyLine(stroke_fill, thickness, pointArray, fill, fill_opacity, stroke_opacity);
-            poly.OnPaint(hdc);
         }
+        
+        PolyLine poly;
+        poly.SetPolyLine(stroke_fill, thickness, pointArray, fill, fill_opacity, stroke_opacity);
+        poly.OnPaint(hdc);
     }
 
     else if (name == "polygon") {
@@ -827,13 +526,13 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             }
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
-
-            PolyGon poly;
-            poly.SetPolyGon(stroke_fill, fill, thickness, pointArray, fill_opacity, stroke_opacity);
-            poly.OnPaint(hdc);
         }
+
+        PolyGon poly;
+        poly.SetPolyGon(stroke_fill, fill, thickness, pointArray, fill_opacity, stroke_opacity);
+        poly.OnPaint(hdc);
     }
 
     else if (name == "line") {
@@ -874,7 +573,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 y2 = stoi(value);
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
         }
 
@@ -888,6 +587,12 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         int thickness = 0;
         Point2D start;
 
+        vector<vector<Point2D>> points;
+        vector<char> command;
+
+        Point2D InitialP(0, 0);
+        Point2D startP(0, 0);
+
         for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
             name = node->name();
             string value = node->value();
@@ -899,7 +604,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
             else if (name == "fill-opacity")
             {
-                fill_opacity = stof(value);
+                fill_opacity = stod(value);
             }
 
             else if (name == "fill") {
@@ -929,7 +634,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             }
 
             else if (name == "transform") {
-                readTransform(value, translate, scale, rotate);
+                readTransform(value, transform);
             }
 
             else if (name == "d") {
@@ -938,12 +643,6 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                         value[i] = ' ';
                 }
                 value += ' ';
-
-                vector<vector<Point2D>> points;
-                vector<char> command;
-
-                Point2D InitialP(0, 0);
-                Point2D startP(0, 0);
 
                 int x = 0, y = 0;
 
@@ -1196,21 +895,22 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                     }
                 }
 
-                Path p;
-                p.SetPath(stroke_fill, fill, thickness, command, points, fill_opacity, stroke_opacity);
-                p.OnPaint(hdc);
+
+            }
+
+            else if (name == "transform") {
+                readTransform(value, transform);
             }
         }
-
+        
+        Path p;
+        p.SetPath(stroke_fill, fill, thickness, command, points, fill_opacity, stroke_opacity);
+        p.OnPaint(hdc);
     }
 }
 
 
 VOID Shape::OnPaint(HDC hdc, double opacity) {}
-void Shape::fillRect(HDC hdc, double fill_opacity) {}
-void Shape::_fillCircle(HDC, double) {}
-void Shape::fillPoline(HDC, double) {}
-void Shape::fillPolygon(HDC, double) {}
 
 Shape::~Shape() {
     delete[] ShapeArr;

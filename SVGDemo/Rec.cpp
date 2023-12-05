@@ -59,13 +59,13 @@ void _Rectangle::fillRect(HDC hdc)
 
 VOID _Rectangle::OnPaint(HDC hdc) {
     Graphics       graphics(hdc);
-    int            alpha = 255 * stroke_opacity;
+    double         alpha = 255 * stroke_opacity;
     Pen            pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
 
-    alpha = 255 * fill_opacity;
+    alpha          = 255 * fill_opacity;
     SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
     graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
 

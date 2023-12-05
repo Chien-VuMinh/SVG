@@ -30,7 +30,7 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
 VOID Path::OnPaint(HDC hdc) {
     Graphics        graphics(hdc);
     GraphicsPath    Path;
-    int alpha=      255 * fill_opacity;
+    double          alpha = 255 * fill_opacity;
     SolidBrush      solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
 
     //for (int i = 0; i < NumOfLines; ++i)

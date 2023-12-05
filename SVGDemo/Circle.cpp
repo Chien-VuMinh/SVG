@@ -56,10 +56,21 @@ void Circle::_fillCircle(HDC hdc)
 }
 
 
-VOID Circle::OnPaint(HDC hdc) {
+VOID Circle::OnPaint(HDC hdc, vector<Transform> transform) {
     Graphics   graphics(hdc);
     int        alpha = 255 * fill_opacity;
     SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillEllipse(&solidBrush, center.GetX() - radX, center.GetY() - radY, 2 * radX, 2 * radY);

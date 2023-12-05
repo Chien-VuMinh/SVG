@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include "Point.h"
+#include "Transform.h"
 
 
 using namespace std;
@@ -33,17 +34,13 @@ public:
 	void ReadSVGFile(HDC hdc, string file_name);
 	void HanleSVG(HDC hdc, xml_node<>*& root);
 	void Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
-		      double stroke_opacity, int* translate, int* scale, int rotate);
-	void readTransform(string value, int*& translate, int*& scale, int& rotate);
+		      double stroke_opacity, vector<Transform>& transform);
+	void readTransform(string value, vector<Transform>& transform);
 
 	void readRGB(string value, int*& rgb);
 	void GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP);
 
 	virtual VOID OnPaint(HDC hdc, double);
-	virtual void fillRect(HDC, double);
-	virtual void _fillCircle(HDC, double);
-	virtual void fillPoline(HDC, double);
-	virtual void fillPolygon(HDC, double);
 
 	~Shape();
 };

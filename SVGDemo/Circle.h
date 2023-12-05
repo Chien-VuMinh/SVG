@@ -7,6 +7,7 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
+#include "Transform.h"
 
 
 using namespace std;
@@ -38,5 +39,5 @@ public:
 	void myLinearGradientBrush(HDC, double*, double*);
 	void gradientBrushPath(HDC, double*, double*);
 
-	VOID OnPaint(HDC hdc);
+	VOID OnPaint(HDC hdc, vector<Transform> transform);
 };

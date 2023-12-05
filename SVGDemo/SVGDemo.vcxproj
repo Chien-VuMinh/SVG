@@ -161,6 +161,7 @@
     <ClInclude Include="SVGDemo.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Path.cpp" />
@@ -178,6 +179,7 @@
     </ClCompile>
     <ClCompile Include="SVG_Reader.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SVGDemo.rc" />
