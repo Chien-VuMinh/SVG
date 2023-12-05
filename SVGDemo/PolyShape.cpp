@@ -35,18 +35,20 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int*
     }
 }
 
-void PolyLine::OnPaint(HDC hdc)
-{
-    Graphics     graphics(hdc);
-    int alpha    = 255 * fill_opacity;
-    SolidBrush   solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    graphics.FillPolygon(&solidBrush, points, NumOfPoint);
+void PolyLine::OnPaint(HDC hdc, vector<Transform> transform) {
+    Graphics   graphics(hdc);
+    int        alpha = 255 * fill_opacity;
+    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
 
-    alpha        = 255 * stroke_opacity;
-    Pen          pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
-    graphics.DrawLines(&pen, points, NumOfPoint);
-}
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
 
 //VOID PolyLine::OnPaint(HDC hdc) {
 //    if (!thickness)
