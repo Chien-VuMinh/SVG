@@ -10,7 +10,7 @@ class Transform {
 private:
 	string name;
 	int translate[2];
-	int scale[2];
+	double scale[2];
 	int rotate[3];
 
 public:
@@ -20,8 +20,8 @@ public:
 	void SetTranslate(int, int);
 	int* GetTranslate();
 
-	void SetScale(int, int);
-	int* GetScale();
+	void SetScale(double, double);
+	double* GetScale();
 
 	void SetRotate(int, int, int);
 	int* GetRotate();

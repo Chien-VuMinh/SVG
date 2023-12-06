@@ -24,8 +24,8 @@ VOID Text::OnPaint(HDC hdc, vector<Transform>& transform) {
     const wchar_t* widecstr = widestr.c_str();
 
     Graphics    graphics(hdc);
-    SolidBrush  brush(Color(fill_opacity * 255, rgb[0], rgb[1], rgb[2]));
-    Pen         pen(Color((stroke_opacity * 255), this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    SolidBrush  brush(Color(fill_opacity * 255, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
+    Pen         pen(Color((stroke_opacity * 255), rgb[0], rgb[1], rgb[2]), thickness);
     FontFamily  fontFamily(L"Times New Roman");
     Font        font(&fontFamily, size, FontStyleRegular, UnitPixel);
     int         Y = start.GetY() - font.GetHeight(FontStyleRegular);
@@ -49,8 +49,7 @@ VOID Text::OnPaint(HDC hdc, vector<Transform>& transform) {
     // Add the string to the path
     path.AddString(widestr.c_str(), -1, &fontFamily, FontStyleRegular, static_cast<REAL>(size), pointF, NULL);
 
-    // Create a solid brush for filling
-    
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     // Fill the path with the solid brush
     graphics.FillPath(&brush, &path);
     if (thickness != 0)

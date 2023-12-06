@@ -48,18 +48,20 @@ void Shape::ReadSVGFile(HDC hdc, string file_name) {
 void Shape::HanleSVG(HDC hdc, xml_node<>*& root) {
     for (rapidxml::xml_node<>* node = root->first_node(); node; node = node->next_sibling()) {
         string name = node->name();
-        double fill_opacity = 1, stroke_opacity = 1;
-        int rotate = 0, thickness = 0;
-        int translate[] = { 0, 0 },
-            scale[] = { 0, 0 },
-            fill[] = { 0, 0, 0 },
-            stroke_fill[] = { 0,0,0 };
-        vector<Transform> transform;
+
+
 
         if (name == "g") {
+            double fill_opacity = 1, stroke_opacity = 1;
+            int thickness = 0;
+            int fill[] = { 0, 0, 0 },
+                stroke_fill[] = { 0,0,0 };
+            vector<Transform> transform;
+
             for (rapidxml::xml_attribute<>* attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
                 name = attr->name();
                 string value = attr->value();
+
                 if (name == "fill-opacity")
                     fill_opacity = stod(value);
 
@@ -97,6 +99,12 @@ void Shape::HanleSVG(HDC hdc, xml_node<>*& root) {
             
         }
         else {
+            double fill_opacity = 1, stroke_opacity = 1;
+            int thickness = 0;
+            int fill[] = { 0, 0, 0 },
+                stroke_fill[] = { 0,0,0 };
+            vector<Transform> transform;
+
             Draw(hdc, node, fill, fill_opacity, stroke_fill, stroke_opacity, thickness, transform);
         }
 
@@ -133,6 +141,45 @@ void Shape::readRGB(string value, int* rgb) {
         rgb[1] = (hexValue >> 8) & 0xFF;
         rgb[2] = hexValue & 0xFF;
         int alpha = (hexValue >> 24) & 0xFF;
+    }
+
+    // ref: https://www.w3schools.com/css/css_colors_rgb.asp
+    else {
+        for (int i = 0; i < value.length(); i++) {
+            if (value[i] >= 'A' && value[i] <= 'Z') {
+                value[i] += 32;
+            }
+        }
+
+        ifstream read("colors.txt");
+        
+        string s;
+        while (!read.eof()) {
+            getline(read, s);
+            int ind1 = s.find("#") - 1, ind2;
+            string color = s.substr(0, ind1);
+            for (int i = 0; i < color.length(); i++) {
+                if (color[i] >= 'A' && color[i] <= 'Z') {
+                    color[i] += 32;
+                }
+            }
+
+            if (color == value) {
+                ind1 = s.find("(") + 1;
+                ind2 = s.find(",");
+                rgb[0] = stoi(s.substr(ind1, ind2 - ind1));
+
+                ind1 = ind2 + 1;
+                ind2 = s.find(",", ind1);
+                rgb[1] = stoi(s.substr(ind1, ind2 - ind1));
+
+                ind1 = ind2 + 1;
+                ind2 = s.find(")");
+                rgb[2] = stoi(s.substr(ind1, ind2 - ind1));
+            }
+        }
+
+        read.close();
     }
 }
 
@@ -176,10 +223,10 @@ void Shape::readTransform(string value, vector<Transform>& transform){
     }
 
     Transform trans;
-    int x1 = 0, x2 = 0, x3 = 0;
 
     for (int i = 0; i < value.size(); ++i) {
         if (value[i] == 't') {
+            int x1 = 0, x2 = 0, x3 = 0;
             trans.SetName("t");
 
             int ind1 = i + 10;
@@ -206,6 +253,7 @@ void Shape::readTransform(string value, vector<Transform>& transform){
         }
 
         else if (value[i] == 'r') {
+            int x1 = 0, x2 = 0, x3 = 0;
             trans.SetName("r");
 
             int ind1 = i + 7;
@@ -243,6 +291,7 @@ void Shape::readTransform(string value, vector<Transform>& transform){
         }
 
         else if (value[i] == 's') {
+            double x1 = 0, x2 = 0;
             trans.SetName("s");
 
             int ind1 = i + 6;
@@ -250,16 +299,16 @@ void Shape::readTransform(string value, vector<Transform>& transform){
 
             if (value.find(" ", ind1) < value.find(")", ind1)) {
                 ind2 = value.find(" ", ind1);
-                x1 = stoi(value.substr(ind1, ind2 - ind1));
+                x1 = stod(value.substr(ind1, ind2 - ind1));
 
 
                 ind1 = ind2 + 1;
                 ind2 = value.find(")", ind1);
-                x2 = stoi(value.substr(ind1, ind2 - ind1));
+                x2 = stod(value.substr(ind1, ind2 - ind1));
             }
             else {
                 ind2 = value.find(")", ind1);
-                x1 = x2 = stoi(value.substr(ind1, ind2 - ind1));
+                x1 = x2 = stod(value.substr(ind1, ind2 - ind1));
             }
             trans.SetScale(x1, x2);
             transform.push_back(trans);
@@ -270,46 +319,59 @@ void Shape::readTransform(string value, vector<Transform>& transform){
 }
 
 void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
-                 double stroke_opacity, int thickness, vector<Transform>& transform) {
+                 double stroke_opacity, int thickness, vector<Transform> transform) {
     string name = root->name();
+    double fill_opacity2 = fill_opacity, stroke_opacity2 = stroke_opacity;
+    int thickness2 = thickness;
+    int fill2[] = { 0, 0, 0 },
+        stroke_fill2[] = { 0,0,0 };
+    for (int i = 0; i < 3; ++i) {
+        fill2[i] = fill[i];
+        stroke_fill2[i] = stroke_fill[i];
+    }
+
     if (name == "g") {
+        vector<Transform> transform2;
+        for (int i = 0; i < transform.size(); ++i)
+            transform2.push_back(transform[i]);
+
         for (rapidxml::xml_attribute<>* attr = root->first_attribute(); attr; attr = attr->next_attribute()) {
             name = attr->name();
             string value = attr->value();
             if (name == "fill-opacity")
-                fill_opacity = stod(value);
+                fill_opacity2 = stod(value);
 
             else if (name == "stroke-opacity")
-                stroke_opacity = stod(value);
+                stroke_opacity2 = stod(value);
 
             else if (name == "fill") {
                 if (value == "none" || value == "transparent")
-                    fill_opacity = 0;
+                    fill_opacity2 = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
-                    stroke_opacity = 0;
+                    stroke_opacity2 = 0;
                 else {
-                    readRGB(value, stroke_fill);
-                    if (thickness == 0)
-                        thickness = 1;
+                    readRGB(value, stroke_fill2);
+                    if (thickness2 == 0)
+                        thickness2 = 1;
                 }
             }
 
             else if (name == "stroke-width") {
-                thickness = stoi(value);
+                thickness2 = stoi(value);
             }
 
             else if (name == "transform") {
-                readTransform(value, transform);
+                readTransform(value, transform2);
             }
         }
         
         for (rapidxml::xml_node<>* n = root->first_node(); n; n = n->next_sibling()) {
-            Draw(hdc, n, fill, fill_opacity, stroke_fill, stroke_opacity, thickness, transform);
+            Draw(hdc, n, fill2, fill_opacity2, stroke_fill2, stroke_opacity2, thickness2, transform2);
         }
     }
     else if (name == "rect") {
@@ -330,14 +392,14 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     fill_opacity = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -372,7 +434,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         _Rectangle Rec;
         start.SetPoint(x, y);
-        Rec.SetRec(stroke_fill, start, height, width, thickness, fill, fill_opacity, stroke_opacity);
+        Rec.SetRec(stroke_fill2, start, height, width, thickness, fill2, fill_opacity, stroke_opacity);
         Rec.OnPaint(hdc, transform);
     }
 
@@ -394,14 +456,14 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     fill_opacity = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -430,7 +492,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Circle Cir;
         start.SetPoint(x, y);
-        Cir.SetCircle(stroke_fill, start, rx, ry, thickness, fill, stroke_opacity, fill_opacity);
+        Cir.SetCircle(stroke_fill2, start, rx, ry, thickness, fill2, stroke_opacity, fill_opacity);
         Cir.OnPaint(hdc, transform);
     }
 
@@ -452,14 +514,14 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     fill_opacity = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -485,12 +547,11 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Text t;
         Point2D start(x, y);
-        t.SetText(text, fill, font_size, start, stroke_fill, stroke_opacity, fill_opacity, thickness);
+        t.SetText(text, stroke_fill2, font_size, start, fill2, stroke_opacity, fill_opacity, thickness);
         t.OnPaint(hdc, transform);
     }
 
     else if (name == "polyline") {
-        int thickness = 0;
         vector<Point2D> pointArray;
 
         for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
@@ -507,14 +568,14 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     fill_opacity = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -550,12 +611,11 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
         
         PolyLine poly;
-        poly.SetPolyLine(stroke_fill, thickness, pointArray, fill, fill_opacity, stroke_opacity);
+        poly.SetPolyLine(stroke_fill2, thickness, pointArray, fill2, fill_opacity, stroke_opacity);
         poly.OnPaint(hdc, transform);
     }
 
     else if (name == "polygon") {
-        int thickness = 0;
         vector<Point2D> pointArray;
 
         for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
@@ -572,14 +632,14 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     fill_opacity = 0;
                 else
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
             }
 
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -618,7 +678,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
 
         PolyGon poly;
-        poly.SetPolyGon(stroke_fill, fill, thickness, pointArray, fill_opacity, stroke_opacity);
+        poly.SetPolyGon(stroke_fill2, fill2, thickness, pointArray, fill_opacity, stroke_opacity);
         poly.OnPaint(hdc, transform);
     }
 
@@ -637,7 +697,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -666,12 +726,11 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Line line;
         Point2D p1(x1, y1), p2(x2, y2);
-        line.SetLine(stroke_fill, p1, p2, thickness, stroke_opacity);
+        line.SetLine(stroke_fill2, p1, p2, thickness, stroke_opacity);
         line.OnPaint(hdc, transform);
     }
 
     else if (name == "path") {
-        int thickness = 0;
         Point2D start;
 
         vector<vector<Point2D>> points;
@@ -700,7 +759,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 }
                 else
                 {
-                    readRGB(value, fill);
+                    readRGB(value, fill2);
                 }
             }
 
@@ -710,7 +769,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                     stroke_opacity = 0;
                 }
                 else {
-                    readRGB(value, stroke_fill);
+                    readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
                 }
@@ -991,7 +1050,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
         
         Path p;
-        p.SetPath(stroke_fill, fill, thickness, command, points, fill_opacity, stroke_opacity);
+        p.SetPath(stroke_fill2, fill2, thickness, command, points, fill_opacity, stroke_opacity);
         p.OnPaint(hdc, transform);
     }
 }
@@ -1006,105 +1065,6 @@ Shape::~Shape() {
 
 
 
-
-
-
-
-
-
-
-VOID Example_DrawCurve2(HDC hdc)
-{
-    Graphics graphics(hdc);
-
-    // Define a Pen object and an array of Point objects.
-    Pen greenPen(Color::Green, 3);
-    Point point1(100, 100);
-    Point point2(200, 50);
-    Point point3(400, 10);
-    Point point4(500, 100);
-
-    Point curvePoints[4] = {
-    point1,
-    point2,
-    point3,
-    point4 };
-
-    Point* pcurvePoints = curvePoints;
-
-    // Specify offset, number of segments to draw, and tension.
-    int offset = 1;
-    int segments = 2;
-    REAL tension = 1.0;
-
-    // Draw the curve.
-    graphics.DrawCurve(&greenPen, curvePoints, 4, offset, segments, tension);
-
-    //Draw the points in the curve.
-    SolidBrush redBrush(Color::Red);
-    graphics.FillEllipse(&redBrush, Rect(95, 95, 10, 10));
-    graphics.FillEllipse(&redBrush, Rect(195, 45, 10, 10));
-    graphics.FillEllipse(&redBrush, Rect(395, 5, 10, 10));
-    graphics.FillEllipse(&redBrush, Rect(495, 95, 10, 10));
-}
-
-
-
-
-
-
-
-VOID Example_DrawPath(HDC hdc)
-{
-    Graphics graphics(hdc);
-    GraphicsPath myGraphicsPath;
-    Pen myPen(Color(255, 0, 0));
-    SolidBrush redBrush(Color( 0, 255, 0));
-    myGraphicsPath.AddLine(0, 0, 30, 20);
-    myGraphicsPath.AddEllipse(20, 20, 20, 40);
-    myGraphicsPath.AddBezier(30, 60, 70, 60, 50, 30, 100, 10);
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    graphics.DrawPath(&myPen, &myGraphicsPath);
-    graphics.FillPath(&redBrush, &myGraphicsPath);
-}
-
-
-VOID Example_DrawBeziers2(HDC hdc)
-{
-    Graphics graphics(hdc);
-
-    // Define a Pen object and an array of PointF objects.
-    Pen greenPen(Color(255, 0, 255, 0), 3);
-    SolidBrush redBrush(Color(255, 255, 0, 0));
-    PointF startPoint(100.0f, 100.0f);
-    PointF ctrlPoint1(200.0f, 50.0f);
-    PointF ctrlPoint2(400.0f, 10.0f);
-    PointF endPoint1(500.0f, 100.0f);
-    PointF ctrlPoint3(600.0f, 200.0f);
-    PointF ctrlPoint4(700.0f, 400.0f);
-    PointF endPoint2(500.0f, 500.0f);
-
-    PointF curvePoints[7] = {
-       startPoint,
-       ctrlPoint1,
-       ctrlPoint2,
-       endPoint1,
-       ctrlPoint3,
-       ctrlPoint4,
-       endPoint2 };
-
-
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-
-    GraphicsPath bezierPath;
-    bezierPath.AddBeziers(curvePoints, 7);
-    graphics.FillPath(&redBrush, &bezierPath);
-    graphics.DrawPath(&greenPen, &bezierPath);
-}
-
-
-
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     Shape        shape;
     HDC          hdc;
@@ -1114,7 +1074,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "sample.svg");
+        shape.ReadSVGFile(hdc, "svg-11.svg");
+        /*
+        run: 3,5,7,10,11
+        wrong:
+        error: 1,2,4,6,8,9,12,13,14,15,16,17
+        */
         // Example_DrawPath(hdc);
         EndPaint(hWnd, &ps);
         return 0;

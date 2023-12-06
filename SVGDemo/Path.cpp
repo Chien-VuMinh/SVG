@@ -63,7 +63,9 @@ VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillPath(&solidBrush, &Path);
 
-    alpha      = 255 * stroke_opacity;
-    Pen        pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-    graphics.DrawPath(&pen, &Path);
+    if (thickness != 0) {
+        alpha = 255 * stroke_opacity;
+        Pen        pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
+        graphics.DrawPath(&pen, &Path);
+    }
 }

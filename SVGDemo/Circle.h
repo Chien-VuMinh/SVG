@@ -25,5 +25,5 @@ protected:
 
 public:
 	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform> transform);
+	VOID OnPaint(HDC hdc, vector<Transform>& transform);
 };

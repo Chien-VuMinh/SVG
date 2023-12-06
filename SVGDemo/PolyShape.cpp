@@ -106,9 +106,11 @@ void PolyGon::OnPaint(HDC hdc, vector<Transform>& transform) {
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
-    alpha       = 255 * stroke_opacity;
-    Pen         pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-    graphics.DrawPolygon(&pen, points, NumOfPoint);
+    if (thickness != 0) {
+        alpha = 255 * stroke_opacity;
+        Pen         pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
+        graphics.DrawPolygon(&pen, points, NumOfPoint);
+    }
 }
 //VOID PolyGon::OnPaint(HDC hdc) {
 //    Graphics    graphics(hdc);

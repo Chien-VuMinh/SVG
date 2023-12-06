@@ -18,11 +18,11 @@ int* Transform::GetTranslate() {
 	return this->translate;
 }
 
-void Transform::SetScale(int x1, int x2) {
+void Transform::SetScale(double x1, double x2) {
 	this->scale[0] = x1;
 	this->scale[1] = x2;
 }
-int* Transform::GetScale() {
+double* Transform::GetScale() {
 	return this->scale;
 }
 
