@@ -41,5 +41,5 @@ VOID Line::OnPaint(HDC hdc, vector<Transform>& transform) {
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     //graphics.DrawPath(&pen, &Path);
-    graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
+    graphics.DrawLine(&pen, static_cast<float>(start.GetX()), start.GetY(), end.GetX(), end.GetY());
 }

@@ -2,8 +2,8 @@
 <svg  xmlns="http://www.w3.org/2000/svg"
  width="5000.000000pt" height="5000.000000pt" viewBox="0 0 5000.000000 5000.000000">
 
-<g transform="translate(1500.000000,000.000000) scale(0.100000,-0.100000) rotate(-90)"
-fill="#ffbbff" stroke="none">
+<g transform="translate(1500,0) scale(0,0) rotate(-90)"
+fill="red" stroke="none">
 <path d="M23314 17603 c3 -10 15 -56 26 -103 39 -154 191 -585 244 -689 31
 -61 30 -66 -22 -67 -54 -1 -97 -20 -141 -65 -49 -48 -65 -87 -66 -155 0 -51 4
 -66 27 -97 40 -51 80 -76 140 -89 97 -20 187 25 208 104 l11 40 80 -133 c91

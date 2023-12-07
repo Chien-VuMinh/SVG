@@ -55,7 +55,7 @@ VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
             delete[] pts;
         }
         else
-            Path.AddLine(points[i][0].GetX(), points[i][0].GetY(),
+            Path.AddLine(static_cast<float>(points[i][0].GetX()), points[i][0].GetY(),
                 points[i][1].GetX(), points[i][1].GetY());
     }
 
