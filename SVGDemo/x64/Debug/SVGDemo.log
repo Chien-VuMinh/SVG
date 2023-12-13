@@ -1,46 +1,61 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (SVGDemo.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Shape.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(27,17): warning C4566: character represented by universal-character-name '\u1EC3' cannot be represented in the current code page (1252)
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(27,17): warning C4566: character represented by universal-character-name '\u1EDF' cannot be represented in the current code page (1252)
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(27,17): warning C4566: character represented by universal-character-name '\u1EC7' cannot be represented in the current code page (1252)
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(125,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(130,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(135,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(166,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(175,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(176,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(180,41): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(184,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(206,41): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(243,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(248,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(252,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(270,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(275,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(279,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(283,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(288,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(308,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(313,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(317,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(599,40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(666,40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(832,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(837,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(853,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(857,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(872,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(876,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(891,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(895,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(921,65): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(962,65): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(995,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1013,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1031,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1049,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1067,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1071,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1089,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1093,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(24,17): warning C4566: character represented by universal-character-name '\u1EC3' cannot be represented in the current code page (1252)
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(24,17): warning C4566: character represented by universal-character-name '\u1EDF' cannot be represented in the current code page (1252)
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(24,17): warning C4566: character represented by universal-character-name '\u1EC7' cannot be represented in the current code page (1252)
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(122,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(127,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(132,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(163,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(172,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(173,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(177,41): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(181,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(203,41): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(240,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(245,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(249,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(267,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(272,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(276,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(280,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(285,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(305,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(310,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(314,45): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(597,40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(664,40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(830,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(835,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(851,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(855,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(870,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(874,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(889,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(893,57): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(919,65): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(960,65): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(993,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1011,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1029,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1047,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1065,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1069,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1087,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1091,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Text.cpp
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(27,42): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(28,43): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(28,76): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(30,35): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(31,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(32,23): warning C4244: 'initializing': conversion from 'Gdiplus::REAL' to 'int', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(33,40): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(33,34): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(37,102): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(37,70): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(39,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(41,90): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Text.cpp(41,62): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
+  Generating Code...
   SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVG.exe

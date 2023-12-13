@@ -14,10 +14,7 @@
 
 
 
-Shape::Shape() {
-    ShapeArrSize = 0;
-    ShapeArr = NULL;
-}
+Shape::Shape() {}
 
 
 void Shape::ReadSVGFile(HDC hdc, string file_name) {
@@ -384,6 +381,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             Draw(hdc, n, fill2, fill_opacity2, stroke_fill2, stroke_opacity2, thickness2, transform2, font_size2);
         }
     }
+
     else if (name == "rect") {
         int  width, height, x = 10, y = 10;
         Point2D start;
@@ -1138,9 +1136,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
 VOID Shape::OnPaint(HDC hdc, vector<Transform>& transform) {}
 
-Shape::~Shape() {
-    delete[] ShapeArr;
-}
+Shape::~Shape() {}
 
 
 
@@ -1154,16 +1150,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "svg-12.svg");
+        shape.ReadSVGFile(hdc, "svg-18.svg");
         /*
         run: 2,3,4,5,7,10,11,
         wrong:  1 = 9(missing a lot),
                 6(nothing happend : D),
                 8(missing italic, bold, underline)
                 12(fill issue)
-        error: 13,14,15,16,17
+                13
+                14
+                18 (monster)
+        error: 15,16,17
         */
-        // Example_DrawPath(hdc);
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:

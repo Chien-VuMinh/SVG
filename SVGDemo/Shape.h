@@ -20,9 +20,6 @@ using namespace Gdiplus;
 
 class Shape {
 protected:
-	int ShapeArrSize;
-	Shape** ShapeArr;
-
 	int rgb[3];
 	int fill_rgb[3];
 	int thickness;
