@@ -25,8 +25,8 @@ protected:
 	double stroke_opacity;
 public:
 	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
-        void myLinearGradientBrush(double*, double*);
-        void gradientBrushPath(double*, double*);
+        void myLinearGradientBrush(HDC, double*, double*);
+        void gradientBrushPath(HDC, double*, double*);
 
 	VOID OnPaint(HDC hdc, double);
 };
