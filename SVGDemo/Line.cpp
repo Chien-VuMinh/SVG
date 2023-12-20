@@ -16,7 +16,7 @@ void Line::SetLine(int* rgb, Point2D start, Point2D end, int thickness, double s
     this->stroke_opacity = stroke_opacity;
 }
 
-void Line::myLinearGradientBrush(double* firstrgb, double* secondrgb)
+void Line::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)
 {
     Graphics graphics(hdc);
     LinearGradientBrush linearBrush(
@@ -30,10 +30,10 @@ void Line::myLinearGradientBrush(double* firstrgb, double* secondrgb)
     graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
 }
 
-void Line::gradientBrushPath(double* firstrgb, double* secondrgb)
+void Line::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
 {
     // Create a path that consists of a single ellipse.
-    Graphics graphics(this->hdc);
+    Graphics graphics(hdc);
     GraphicsPath path;
     path.AddLine(start.GetX(), start.GetY(), end.GetX(), end.GetY());
 
