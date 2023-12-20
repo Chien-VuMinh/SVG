@@ -56,7 +56,7 @@ void _Rectangle::fillRect(HDC hdc, double opacity)
     graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
 }
 
-void _Rectangle::myLinearGradientBrush(double* firstrgb, double* secondrgb)//these arr need 4 elements (alpha, reb, green, blue)
+void _Rectangle::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)//these arr need 4 elements (alpha, reb, green, blue)
 {
     Graphics graphics(hdc);
     LinearGradientBrush linearBrush(
@@ -69,10 +69,10 @@ void _Rectangle::myLinearGradientBrush(double* firstrgb, double* secondrgb)//the
     graphics.FillRectangle(&linearBrush, start.GetX(), start.GetY(), width, height);
 }
 
-void _Rectangle::gradientBrushPath(double* firstrgb, double* secondrgb)
+void _Rectangle::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
 {
     // Create a path that consists of a single ellipse.
-    Graphics graphics(this->hdc);
+    Graphics graphics(hdc);
     GraphicsPath path;
     RectF r(start.GetX(), start.GetY(), width, height);
     path.AddRectangle(r);
