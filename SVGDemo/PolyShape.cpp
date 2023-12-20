@@ -125,7 +125,7 @@ void PolyGon::fillPolygon(HDC hdc, double opacity)
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
 }
 
-void PolyGon::gradientBrushPath(double* firstrgb, double* secondrgb)
+void PolyGon::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
 {
     Graphics graphics(hdc);
     LinearGradientBrush linearBrush(
@@ -138,10 +138,10 @@ void PolyGon::gradientBrushPath(double* firstrgb, double* secondrgb)
     graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint);
 }
 
-void PolyGon::myLinearGradientBrush(double* firstrgb, double* secondrgb)
+void PolyGon::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)
 {
     // Create a path that consists of a single ellipse.
-    Graphics graphics(this->hdc);
+    Graphics graphics(hdc);
     GraphicsPath path;
     path.AddPolygon(this->points, this->NumOfPoint);
 
