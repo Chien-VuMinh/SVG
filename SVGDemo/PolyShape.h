@@ -7,6 +7,7 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
+#include "Line.h"
 
 
 using namespace std;
