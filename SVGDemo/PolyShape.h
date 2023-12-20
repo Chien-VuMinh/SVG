@@ -39,8 +39,8 @@ public:
 	void SetPolyLine(int* rgb, int thickness, int NumOfPoint, Point2D* points, int* fill_rgb, double fill_opacity, double stroke_opacity);
 
 	void fillPoline(HDC, double);
-	void gradientBrushPath(double*, double*);
-	void myLinearGradientBrush(double*, double*);
+	void gradientBrushPath(HDC, double*, double*);
+	void myLinearGradientBrush(HDC, double*, double*);
 	VOID OnPaint(HDC hdc, double);
 };
 
@@ -51,7 +51,7 @@ public:
 	void SetPolyLine(int* rgb, int* fill_rgb, int thickness, int NumOfPoint, Point2D* points, double fill_opacity, double stroke_opacity);
 
 	void fillPolygon(HDC, double);
-	void gradientBrushPath(double*, double*);
-	void myLinearGradientBrush(double*, double*);
+	void gradientBrushPath(HDC, double*, double*);
+	void myLinearGradientBrush(HDC, double*, double*);
 	VOID OnPaint(HDC hdc, double);
 };
