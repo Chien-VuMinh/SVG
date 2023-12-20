@@ -41,8 +41,8 @@ public:
 
 	void setRGB(double*);
 	void fillRect(HDC, double);
-	void gradientBrushPath(double*, double*);
-	void myLinearGradientBrush(double*, double*);
+	void gradientBrushPath(HDC, double*, double*);
+	void myLinearGradientBrush(HDC, double*, double*);
 	VOID OnPaint(HDC hdc, double);
 };
 
