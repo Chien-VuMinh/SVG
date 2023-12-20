@@ -32,7 +32,8 @@ public:
 	void ReadSVGFile(HDC hdc, string file_name);
 	void HanleSVG(HDC hdc, xml_node<>*& root);
 	void Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
-		      double stroke_opacity, int thickness, vector<Transform> transform, int font_size);
+		      double stroke_opacity, int thickness, vector<Transform> transform, 
+			  vector<LinearGradient> gradient,int font_size);
 	void readTransform(string value, vector<Transform>& transform);
 
 	void readRGB(string value, int* rgb);

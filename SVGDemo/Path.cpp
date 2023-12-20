@@ -45,7 +45,7 @@ VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
         
 
     for (int i = 0; i < command.size(); ++i) {
-        if (command[i] == 'c' || command[i] == 'C') {
+        if (command[i] == 'c' || command[i] == 'C' || command[i] == 's' || command[i] == 'S') {
             Point* pts = new Point[points[i].size()];
             for (int k = 0; k < points[i].size(); ++k) {
                 pts[k].X = points[i][k].GetX();
@@ -55,8 +55,8 @@ VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
             delete[] pts;
         }
         else
-            Path.AddLine(static_cast<float>(points[i][0].GetX()), points[i][0].GetY(),
-                points[i][1].GetX(), points[i][1].GetY());
+            Path.AddLine(static_cast<float>(points[i][0].GetX()), static_cast<float>(points[i][0].GetY()),
+                static_cast<float>(points[i][1].GetX()), static_cast<float>(points[i][1].GetY()));
     }
 
 

@@ -21,25 +21,17 @@ VOID Line::OnPaint(HDC hdc, vector<Transform>& transform) {
     int             alpha = 255 * stroke_opacity;
     Pen             pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
 
-    //Path.AddLine(start.GetX(), start.GetY(), end.GetX(), end.GetY());
 
     for (int i = 0; i < transform.size(); i++) {
         if (transform[i].GetName() == "t")
             graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
         if (transform[i].GetName() == "r")
-        {
-            //PointF center(transform[i].GetRotate()[1], transform[i].GetRotate()[2]);
-            //Gdiplus::Matrix	matrix;
-            //matrix.RotateAt(transform[i].GetRotate()[0], center);
-            //graphics.SetTransform(&matrix);
             graphics.RotateTransform(transform[i].GetRotate()[0]);
-        }
         if (transform[i].GetName() == "s")
             graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
     }
 
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    //graphics.DrawPath(&pen, &Path);
     graphics.DrawLine(&pen, static_cast<float>(start.GetX()), start.GetY(), end.GetX(), end.GetY());
 }
