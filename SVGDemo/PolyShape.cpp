@@ -44,6 +44,41 @@ void PolyLine::fillPoline(HDC hdc, double opacity)
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
 }
 
+void PolyLine::gradientBrushPath(double* firstrgb, double* secondrgb)
+{
+    Graphics graphics(hdc);
+    LinearGradientBrush linearBrush(
+        Point(50, 10), //associated with the first color
+        Point(150, 10), //associated with the second color
+        Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]),
+        Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]));
+
+    linearBrush.SetGammaCorrection(TRUE);
+    graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint);
+}
+
+void PolyLine::myLinearGradientBrush(double* firstrgb, double* secondrgb)
+{
+    // Create a path that consists of a single ellipse.
+    Graphics graphics(this->hdc);
+    GraphicsPath path;
+    path.AddLines(this->points, this->NumOfPoint);
+
+    // Use the path to construct a brush.
+    PathGradientBrush pthGrBrush(&path);
+    pthGrBrush.SetGammaCorrection(TRUE);
+
+    // Set the color at the center of the path to blue.
+    pthGrBrush.SetCenterColor(Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]));
+
+    // Set the color along the entire boundary of the path to aqua.
+    Color colors[] = { Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]) };
+    int count = 1;
+    pthGrBrush.SetSurroundColors(colors, &count);
+
+    graphics.FillPolygon(&pthGrBrush, this->points, this->NumOfPoint);
+}
+
 VOID PolyLine::OnPaint(HDC hdc, double stroke_opacity) {
 	Graphics graphics(hdc);
     	int alpha = 255 * stroke_opacity;
@@ -88,6 +123,41 @@ void PolyGon::fillPolygon(HDC hdc, double opacity)
     //SolidBrush solidBrush(Color(alpha, ((this->rgb[0] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[1] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[2] * alpha) / 255) + 255 * (255 - alpha) / 255));
     SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
     graphics.FillPolygon(&solidBrush, this->points, this->NumOfPoint);
+}
+
+void PolyGon::gradientBrushPath(double* firstrgb, double* secondrgb)
+{
+    Graphics graphics(hdc);
+    LinearGradientBrush linearBrush(
+        Point(50, 10), //associated with the first color
+        Point(150, 10), //associated with the second color
+        Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]),
+        Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]));
+
+    linearBrush.SetGammaCorrection(TRUE);
+    graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint);
+}
+
+void PolyGon::myLinearGradientBrush(double* firstrgb, double* secondrgb)
+{
+    // Create a path that consists of a single ellipse.
+    Graphics graphics(this->hdc);
+    GraphicsPath path;
+    path.AddPolygon(this->points, this->NumOfPoint);
+
+    // Use the path to construct a brush.
+    PathGradientBrush pthGrBrush(&path);
+    pthGrBrush.SetGammaCorrection(TRUE);
+
+    // Set the color at the center of the path to blue.
+    pthGrBrush.SetCenterColor(Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]));
+
+    // Set the color along the entire boundary of the path to aqua.
+    Color colors[] = { Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]) };
+    int count = 1;
+    pthGrBrush.SetSurroundColors(colors, &count);
+
+    graphics.FillPolygon(&pthGrBrush, this->points, this->NumOfPoint);
 }
 
 VOID PolyGon::OnPaint(HDC hdc, double stroke_opacity) {
