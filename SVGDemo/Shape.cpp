@@ -384,10 +384,11 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                  vector<LinearGradient> gradient, int font_size) {
     string name = root->name();
     double fill_opacity2 = fill_opacity, stroke_opacity2 = stroke_opacity;
-    int thickness2 = thickness, font_size2 = font_size, linearGradient = 0;
+    int thickness2 = thickness, font_size2 = font_size;
     int fill2[] = { 0, 0, 0 },
         stroke_fill2[] = { 0,0,0 };
-
+    bool linearGradient = 0;
+    LinearGradient Gradient;
 
     for (int i = 0; i < 3; ++i) {
         fill2[i] = fill[i];
@@ -438,7 +439,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
         
         for (rapidxml::xml_node<>* n = root->first_node(); n; n = n->next_sibling()) {
-            Draw(hdc, n, fill2, fill_opacity2, stroke_fill2, stroke_opacity2, thickness2, transform2, font_size2);
+            Draw(hdc, n, fill2, fill_opacity2, stroke_fill2, stroke_opacity2, thickness2, transform2, gradient, font_size2);
         }
     }
 
@@ -502,8 +503,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         _Rectangle Rec;
         start.SetPoint(x, y);
-        Rec.SetRec(stroke_fill2, start, height, width, thickness, fill2, fill_opacity, stroke_opacity);
-        Rec.OnPaint(hdc, transform);
+        Rec.SetRec(stroke_fill2, start, height, width, thickness, fill2, fill_opacity, stroke_opacity, transform);
+        Rec.OnPaint(hdc);
     }
 
     else if (name == "circle" || name == "ellipse") {
@@ -531,7 +532,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
                         for (int i = 0; i < gradient.size(); ++i) {
                             if (id == gradient[i].id) {
-
+                                Gradient = gradient[i];
                             }
                         }
                     }
@@ -586,8 +587,11 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Circle Cir;
         start.SetPoint(x, y);
-        Cir.SetCircle(stroke_fill2, start, rx, ry, thickness, fill2, stroke_opacity, fill_opacity);
-        Cir.OnPaint(hdc, transform);
+        Cir.SetCircle(stroke_fill2, start, rx, ry, thickness, fill2, stroke_opacity, fill_opacity, transform);
+        Cir.OnPaint(hdc);
+        if (linearGradient) {
+            Cir.myLinearGradientBrush(hdc, Gradient);
+        }
     }
 
     else if (name == "text") {
@@ -641,8 +645,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Text t;
         Point2D start(x, y);
-        t.SetText(text, stroke_fill2, font_size, start, fill2, stroke_opacity, fill_opacity, thickness);
-        t.OnPaint(hdc, transform);
+        t.SetText(text, stroke_fill2, font_size, start, fill2, stroke_opacity, fill_opacity, thickness, transform);
+        t.OnPaint(hdc);
     }
 
     else if (name == "polyline") {
@@ -705,8 +709,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
         
         PolyLine poly;
-        poly.SetPolyLine(stroke_fill2, thickness, pointArray, fill2, fill_opacity, stroke_opacity);
-        poly.OnPaint(hdc, transform);
+        poly.SetPolyLine(stroke_fill2, thickness, pointArray, fill2, fill_opacity, stroke_opacity, transform);
+        poly.OnPaint(hdc);
     }
 
     else if (name == "polygon") {
@@ -772,8 +776,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         }
 
         PolyGon poly;
-        poly.SetPolyGon(stroke_fill2, fill2, thickness, pointArray, fill_opacity, stroke_opacity);
-        poly.OnPaint(hdc, transform);
+        poly.SetPolyGon(stroke_fill2, fill2, thickness, pointArray, fill_opacity, stroke_opacity, transform);
+        poly.OnPaint(hdc);
     }
 
     else if (name == "line") {
@@ -820,8 +824,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
         Line line;
         Point2D p1(x1, y1), p2(x2, y2);
-        line.SetLine(stroke_fill2, p1, p2, thickness, stroke_opacity);
-        line.OnPaint(hdc, transform);
+        line.SetLine(stroke_fill2, p1, p2, thickness, stroke_opacity, transform);
+        line.OnPaint(hdc);
     }
 
     else if (name == "path") {
@@ -1303,8 +1307,8 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         
         Path p;
         for (int i = 0; i < MultiPath.size(); ++i) {
-            p.SetPath(stroke_fill2, fill2, thickness, Commands[i], MultiPath[i], fill_opacity, stroke_opacity);
-            p.OnPaint(hdc, transform);
+            p.SetPath(stroke_fill2, fill2, thickness, Commands[i], MultiPath[i], fill_opacity, stroke_opacity, transform);
+            p.OnPaint(hdc);
         }
 
         //p.SetPath(stroke_fill2, fill2, thickness, command, points, fill_opacity, stroke_opacity);
@@ -1313,7 +1317,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 }
 
 
-VOID Shape::OnPaint(HDC hdc, vector<Transform>& transform) {}
+VOID Shape::OnPaint(HDC hdc) {}
 
 Shape::~Shape() {}
 
@@ -1329,7 +1333,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "tiktok.svg");
+        shape.ReadSVGFile(hdc, "chrome.svg");
         /*
         run: 2,3,4,5,7,10,11,tiktok
         wrong:  1 = 9(missing a lot),

@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -25,8 +26,8 @@ public:
 	Path();
 
 	void SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
-				 vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+				 vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	VOID OnPaint(HDC hdc);
 
 	~Path();
 };

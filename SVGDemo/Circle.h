@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 
 using namespace std;
@@ -24,6 +25,7 @@ protected:
 	int radX, radY;
 
 public:
-	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };

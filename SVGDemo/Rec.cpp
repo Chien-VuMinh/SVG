@@ -6,13 +6,15 @@
 
 
 
-void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity) {
+void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity, vector<Transform>& transform) {
     this->start = start;
     this->height = height;
     this->width = width;
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
     this->fill_opacity = fill_opacity;
+    this->transform = transform;
+
     for (int i = 0; i <= 2; i++)
     {
         this->rgb[i] = rgb[i];
@@ -21,7 +23,7 @@ void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thic
 }
 
 
-VOID _Rectangle::OnPaint(HDC hdc, vector<Transform>& transform) {
+VOID _Rectangle::OnPaint(HDC hdc) {
     Graphics       graphics(hdc);
     double         alpha = 255 * stroke_opacity;
     Pen            pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
@@ -40,7 +42,9 @@ VOID _Rectangle::OnPaint(HDC hdc, vector<Transform>& transform) {
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
     graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
 
-    alpha          = 255 * fill_opacity;
-    SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
+    if (thickness != 0) {
+        alpha = 255 * fill_opacity;
+        SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+        graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
+    }
 }

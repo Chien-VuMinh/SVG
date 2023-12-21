@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -28,8 +29,8 @@ protected:
 class _Rectangle : public Rec {
 public:
 	void SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, 
-				double fill_opacity, double stroke_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+				double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	VOID OnPaint(HDC hdc);
 };
 
 

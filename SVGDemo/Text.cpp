@@ -5,13 +5,14 @@
 
 
 
-void Text::SetText(string text, int* rgb, int size, Point2D start, int* fill, double stroke_opacity, double fill_opacity, int thickness) {
+void Text::SetText(string text, int* rgb, int size, Point2D start, int* fill, double stroke_opacity, double fill_opacity, int thickness, vector<Transform>& transform) {
     this->text = text;
     this->start = start;
     this->size = size;
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
     this->fill_opacity = fill_opacity;
+    this->transform = transform;
     for (int i = 0; i < 3; ++i) {
         this->rgb[i] = rgb[i];
         this->fill_rgb[i] = fill[i];
@@ -19,7 +20,7 @@ void Text::SetText(string text, int* rgb, int size, Point2D start, int* fill, do
 }
 
 
-VOID Text::OnPaint(HDC hdc, vector<Transform>& transform) {
+VOID Text::OnPaint(HDC hdc) {
     wstring widestr = wstring(text.begin(), text.end());
     const wchar_t* widecstr = widestr.c_str();
 
@@ -42,7 +43,6 @@ VOID Text::OnPaint(HDC hdc, vector<Transform>& transform) {
     }
 
 
-    //PointF pointF(start.GetX(), start.GetY());
     // Create a GraphicsPath
     GraphicsPath path;
 
@@ -54,9 +54,4 @@ VOID Text::OnPaint(HDC hdc, vector<Transform>& transform) {
     graphics.FillPath(&brush, &path);
     if (thickness != 0)
         graphics.DrawPath(&pen, &path);
-
-
-
-    //graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    //graphics.DrawString(widecstr, -1, &font, pointF, NULL, &brush);
 }

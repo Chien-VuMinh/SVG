@@ -8,7 +8,7 @@ Path::Path() {}
 Path::~Path() {}
 
 void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
-                   vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity) {
+                   vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity, vector<Transform>& transform) {
 
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
@@ -20,14 +20,14 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
         this->fill_rgb[i] = fill_rgb[i];
     }
 
-
+    this->transform = transform;
     this->command = command;
     this->points  = points;
 }
 
 
 
-VOID Path::OnPaint(HDC hdc, vector<Transform>& transform) {
+VOID Path::OnPaint(HDC hdc) {
     Graphics        graphics(hdc);
     GraphicsPath    Path;
     double          alpha = 255 * fill_opacity;

@@ -9,6 +9,7 @@
 #include <fstream>
 #include "Point.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 
 using namespace std;
@@ -25,6 +26,7 @@ protected:
 	int thickness;
 	double fill_opacity;
 	double stroke_opacity;
+	vector<Transform> transform;
 
 public:
 	Shape();
@@ -39,7 +41,7 @@ public:
 	void readRGB(string value, int* rgb);
 	void GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP);
 
-	virtual VOID OnPaint(HDC hdc, vector<Transform>& transform);
+	virtual VOID OnPaint(HDC hdc);
 
 	~Shape();
 };

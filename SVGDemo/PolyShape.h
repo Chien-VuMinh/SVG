@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -34,8 +35,9 @@ public:
 class PolyLine : public PolyShape {
 public:
 	void SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int* fill_rgb, 
-					 double fill_opacity, double stroke_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+					 double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };
 
 
@@ -43,6 +45,7 @@ public:
 class PolyGon : public PolyShape {
 public:
 	void SetPolyGon(int* rgb, int* fill_rgb, int thickness, vector<Point2D> points, 
-					double fill_opacity, double stroke_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+					double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };

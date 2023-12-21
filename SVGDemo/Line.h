@@ -8,6 +8,7 @@
 #include "Point.h"
 #include "Shape.h"
 #include "Transform.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -22,6 +23,7 @@ protected:
 	Point2D start, end;
 
 public:
-	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
-	VOID OnPaint(HDC hdc, vector<Transform>& transform);
+	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };
