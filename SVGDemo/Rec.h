@@ -30,6 +30,7 @@ class _Rectangle : public Rec {
 public:
 	void SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, 
 				double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
 	VOID OnPaint(HDC hdc);
 };
 
