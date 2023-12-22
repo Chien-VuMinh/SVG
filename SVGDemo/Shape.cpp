@@ -505,6 +505,9 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         start.SetPoint(x, y);
         Rec.SetRec(stroke_fill2, start, height, width, thickness, fill2, fill_opacity, stroke_opacity, transform);
         Rec.OnPaint(hdc);
+        if (linearGradient) {
+            Rec.myLinearGradientBrush(hdc, Gradient);
+        }
     }
 
     else if (name == "circle" || name == "ellipse") {
@@ -711,6 +714,9 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         PolyLine poly;
         poly.SetPolyLine(stroke_fill2, thickness, pointArray, fill2, fill_opacity, stroke_opacity, transform);
         poly.OnPaint(hdc);
+        if (linearGradient) {
+            poly.myLinearGradientBrush(hdc, Gradient); 
+        }
     }
 
     else if (name == "polygon") {
@@ -778,6 +784,9 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         PolyGon poly;
         poly.SetPolyGon(stroke_fill2, fill2, thickness, pointArray, fill_opacity, stroke_opacity, transform);
         poly.OnPaint(hdc);
+        if (linearGradient) { 
+            poly.myLinearGradientBrush(hdc, Gradient);
+        }
     }
 
     else if (name == "line") {
@@ -826,6 +835,9 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         Point2D p1(x1, y1), p2(x2, y2);
         line.SetLine(stroke_fill2, p1, p2, thickness, stroke_opacity, transform);
         line.OnPaint(hdc);
+        if (linearGradient) {
+            line.myLinearGradientBrush(hdc, Gradient);
+        }
     }
 
     else if (name == "path") {
@@ -1309,6 +1321,9 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         for (int i = 0; i < MultiPath.size(); ++i) {
             p.SetPath(stroke_fill2, fill2, thickness, Commands[i], MultiPath[i], fill_opacity, stroke_opacity, transform);
             p.OnPaint(hdc);
+            if (linearGradient) {
+                p.myLinearGradientBrush(hdc, Gradient);
+            }
         }
 
         //p.SetPath(stroke_fill2, fill2, thickness, command, points, fill_opacity, stroke_opacity);
