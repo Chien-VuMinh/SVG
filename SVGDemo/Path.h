@@ -27,6 +27,7 @@ public:
 
 	void SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
 				 vector<vector<Point2D>> points, double fill_opacity, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC, LinearGradient gradient);
 	VOID OnPaint(HDC hdc);
 
 	~Path();
