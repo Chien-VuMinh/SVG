@@ -25,7 +25,45 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
     this->points  = points;
 }
 
+void Path::myLinearGradientBrush(HDC hdc, LinearGradient gradient)
+{
+    Graphics graphics(hdc);
+    GraphicsPath Path;
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
 
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
+    for (int i = 0; i < command.size(); ++i) {
+        if (command[i] == 'c' || command[i] == 'C' || command[i] == 's' || command[i] == 'S') {
+            Point* pts = new Point[points[i].size()];
+            for (int k = 0; k < points[i].size(); ++k) {
+                pts[k].X = points[i][k].GetX();
+                pts[k].Y = points[i][k].GetY();
+            }
+            Path.AddBeziers(pts, points[i].size());
+            delete[] pts;
+        }
+        else
+            Path.AddLine(static_cast<float>(points[i][0].GetX()), static_cast<float>(points[i][0].GetY()),
+                static_cast<float>(points[i][1].GetX()), static_cast<float>(points[i][1].GetY()));
+    }
+
+    LinearGradientBrush linearBrush(
+        Point(gradient.p1.GetX(), gradient.p1.GetY()),
+        Point(gradient.p2.GetX(), gradient.p2.GetY()),
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]),
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2]));
+
+    linearBrush.SetGammaCorrection(TRUE);
+    graphics.FillPath(&linearBrush, &Path);
+}
 
 VOID Path::OnPaint(HDC hdc) {
     Graphics        graphics(hdc);
