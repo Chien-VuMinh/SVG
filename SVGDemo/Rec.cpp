@@ -22,6 +22,29 @@ void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thic
     }
 }
 
+void _Rectangle::myLinearGradientBrush(HDC hdc, LinearGradient gradient)
+{
+    Graphics graphics(hdc);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
+    LinearGradientBrush linearBrush(
+        Point(gradient.p1.GetX(), gradient.p1.GetY()),
+        Point(gradient.p2.GetX(), gradient.p2.GetY()),
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]),
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2]));
+
+    linearBrush.SetGammaCorrection(TRUE);
+    graphics.FillRectangle(&linearBrush, start.GetX(), start.GetY(), width, height);
+}
 
 VOID _Rectangle::OnPaint(HDC hdc) {
     Graphics       graphics(hdc);
