@@ -59,6 +59,28 @@ void PolyLine::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
     graphics.FillPolygon(&pthGrBrush, this->points, this->NumOfPoint);
 }
 
+void PolyLine::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
+    Graphics graphics(hdc);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
+    LinearGradientBrush linearBrush(
+        Point(gradient.p1.GetX(), gradient.p1.GetY()),
+        Point(gradient.p2.GetX(), gradient.p2.GetY()),
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]),
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2]));
+
+    linearBrush.SetGammaCorrection(TRUE);
+    graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint);
+}
 
 void PolyLine::OnPaint(HDC hdc) {
     Graphics     graphics(hdc);
@@ -106,6 +128,29 @@ void PolyGon::SetPolyGon(int* rgb, int* fill_rgb, int thickness, vector<Point2D>
         this->rgb[i] = rgb[i];
         this->fill_rgb[i] = fill_rgb[i];
     }
+}
+
+void PolyGon::myLinearGradientBrush(HDC hdc, LinearGradient gradient){
+    Graphics graphics(hdc); 
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias); 
+
+    for (int i = 0; i < transform.size(); i++) { 
+        if (transform[i].GetName() == "t") 
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]); 
+        if (transform[i].GetName() == "r") 
+            graphics.RotateTransform(transform[i].GetRotate()[0]);  
+        if (transform[i].GetName() == "s") 
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]); 
+    }
+
+    LinearGradientBrush linearBrush( 
+        Point(gradient.p1.GetX(), gradient.p1.GetY()), 
+        Point(gradient.p2.GetX(), gradient.p2.GetY()), 
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]), 
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2])); 
+
+    linearBrush.SetGammaCorrection(TRUE); 
+    graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint); 
 }
 
 void PolyGon::OnPaint(HDC hdc) {
