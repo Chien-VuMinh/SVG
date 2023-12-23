@@ -63,11 +63,12 @@ VOID _Rectangle::OnPaint(HDC hdc) {
 
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
 
     if (thickness != 0) {
-        alpha = 255 * fill_opacity;
-        SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-        graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
+        graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
     }
+
+    alpha = 255 * fill_opacity;
+    SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
 }

@@ -25,6 +25,7 @@ void Path::SetPath(int* rgb, int* fill_rgb, int thickness, vector<char> command,
     this->points  = points;
 }
 
+
 void Path::myLinearGradientBrush(HDC hdc, LinearGradient gradient)
 {
     Graphics graphics(hdc);
@@ -64,6 +65,7 @@ void Path::myLinearGradientBrush(HDC hdc, LinearGradient gradient)
     linearBrush.SetGammaCorrection(TRUE);
     graphics.FillPath(&linearBrush, &Path);
 }
+
 
 VOID Path::OnPaint(HDC hdc) {
     Graphics        graphics(hdc);

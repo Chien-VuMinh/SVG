@@ -102,55 +102,58 @@ void Shape::HanleSVG(HDC hdc, xml_node<>*& root) {
         }
 
         else if (name == "defs") {
-            double fill_opacity = 1, stroke_opacity = 1, x1, y1, x2, y2;
-            int thickness = 0, font_size = 0;
-            int fill[] = { 0, 0, 0 },
-                stroke_fill[] = { 0,0,0 };
-            vector<Transform> transform;
+            double x1 = 0, y1 = 0, x2 = 1, y2 = 1;
             LinearGradient g;
 
             for (rapidxml::xml_node<>* attr = node->first_node(); attr; attr = attr->next_sibling()) {
-                for (rapidxml::xml_attribute<>* n = attr->first_attribute(); n; n = n->next_attribute()) {
-                    name = n->name();
-                    string value = n->value();
+                name = attr->name();
+                if(name == "linearGradient") {
+                    for (rapidxml::xml_attribute<>* n = attr->first_attribute(); n; n = n->next_attribute()) {
+                        name = n->name();
+                        string value = n->value();
 
 
-                    if (name == "id")
-                        g.id = value;
+                        if (name == "id")
+                            g.id = value;
 
-                    else if (name == "x1")
-                        x1 = stof(value);
+                        else if (name == "x1")
+                            x1 = stof(value);
 
-                    else if (name == "x2")
-                        x2 = stof(value);
+                        else if (name == "x2")
+                            x2 = stof(value);
 
-                    else if (name == "y1")
-                        y1 = stof(value);
+                        else if (name == "y1")
+                            y1 = stof(value);
 
-                    else if (name == "y2")
-                        y2 = stof(value);
+                        else if (name == "y2")
+                            y2 = stof(value);
+                    }
+                    g.p1.SetPoint(x1, y1);
+                    g.p2.SetPoint(x2, y2);
+
+                    rapidxml::xml_node<>* n2 = attr->first_node();
+                    for (rapidxml::xml_attribute<>* n = n2->first_attribute(); n; n = n->next_attribute()) {
+                        name = n->name();
+                        string value = n->value();
+
+                        if (name == "stop-color")
+                        {
+                            readRGB(value, g.rgb1);
+                        }
+                    }
+                    n2 = n2->next_sibling();
+                    for (rapidxml::xml_attribute<>* n = n2->first_attribute(); n; n = n->next_attribute()) {
+                        name = n->name();
+                        string value = n->value();
+
+                        if (name == "stop-color")
+                        {
+                            readRGB(value, g.rgb2);
+                        }
+                    }
+
+                    gradient.push_back(g);
                 }
-                g.p1.SetPoint(x1, y1);
-                g.p2.SetPoint(x2, y2);
-
-                rapidxml::xml_node<>* n2 = attr->first_node();
-                for (rapidxml::xml_attribute<>* n = n2->first_attribute(); n; n = n->next_attribute()) {
-                    name = n->name();
-                    string value = n->value();
-
-                      if (name == "stop-color")
-                        readRGB(value, g.rgb1);
-                }
-                n2 = n2->next_sibling();
-                for (rapidxml::xml_attribute<>* n = n2->first_attribute(); n; n = n->next_attribute()) {
-                    name = n->name();
-                    string value = n->value();
-
-                    if (name == "stop-color")
-                        readRGB(value, g.rgb2);
-                }
-
-                gradient.push_back(g);
             }
         }
 
@@ -242,38 +245,6 @@ void Shape::readRGB(string value, int* rgb) {
 
         read.close();
     }
-}
-
-void Shape::GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP) {
-    int x, y, ind1 = n + 1, ind2;
-    Point2D p;
-    vector<Point2D> Parray;
-    Parray.push_back(startP);
-
-    for (int i = ind1; i < s.size(); ++i) {
-        if (s[i] < 65 || (s[i] > 90 && s[i] < 97) || s[i] > 122) {
-            if (s[i] == ' ') {
-                ind2 = i;
-                x = stoi(s.substr(ind1, ind2 - ind1));
-
-                ind1 = ind2 + 1;
-                ind2 = s.find(" ", ind1);
-                y = stoi(s.substr(ind1, ind2 - ind1));
-
-                ind1 = ind2 + 1;
-                i = ind2;
-                n = ind2;
-
-                p.SetPoint(x, y);
-                Parray.push_back(p);
-            }
-        }
-        else
-        {
-            break;
-        }
-    }
-    points.push_back(Parray);
 }
 
 
@@ -471,6 +442,32 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                     readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
+                }
+            }
+
+            else if (name == "style") {
+                if (value.find("fill") < value.size()) {
+                    int ind = value.find("fill") + 5;
+
+                    if (value[ind] == 'u') {
+                        ind += 5;
+                        linearGradient = 1;
+                        string id = value.substr(ind, value.find(")", ind) - ind);
+
+                        for (int i = 0; i < gradient.size(); ++i) {
+                            if (id == gradient[i].id) {
+                                Gradient = gradient[i];
+                            }
+                        }
+                    }
+
+                    else {
+                        string color = value.substr(ind, value.size() - ind);
+                        if (value == "none" || value == "transparent")
+                            fill_opacity = 0;
+                        else
+                            readRGB(color, fill2);
+                    }
                 }
             }
 
@@ -672,6 +669,32 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                     readRGB(value, fill2);
             }
 
+            else if (name == "style") {
+                if (value.find("fill") < value.size()) {
+                    int ind = value.find("fill") + 5;
+
+                    if (value[ind] == 'u') {
+                        ind += 5;
+                        linearGradient = 1;
+                        string id = value.substr(ind, value.find(")", ind) - ind);
+
+                        for (int i = 0; i < gradient.size(); ++i) {
+                            if (id == gradient[i].id) {
+                                Gradient = gradient[i];
+                            }
+                        }
+                    }
+
+                    else {
+                        string color = value.substr(ind, value.size() - ind);
+                        if (value == "none" || value == "transparent")
+                            fill_opacity = 0;
+                        else
+                            readRGB(color, fill2);
+                    }
+                }
+            }
+
             else if (name == "stroke") {
                 if (value == "none" || value == "transparent")
                     stroke_opacity = 0;
@@ -683,26 +706,42 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             }
 
             else if (name == "points") {
-                string points;
-                int NumOfPoint = 0;
-                Point2D* pointsArray = NULL;
-                int pos1 = 0;
-                int pos2 = value.size();
-                points = value.substr(pos1, pos2 - pos1);
+                for (int i = 0; i < value.size(); ++i) {
+                    if (value[i] == '\n' || value[i] == ',' || value[i] == 9) {
+                        value[i] = ' ';
+                    }
+                }
 
-                stringstream ss(points);
-                string point;
+                while (value[value.size() - 1] == ' ') {
+                    value.erase(value.begin() + value.size() - 1);
+                }
 
-                while (getline(ss, point, ' ')) {
-                    stringstream pointSS(point);
-                    string coordinate;
-                    vector<int> coordinates;
+                for (int i = 0; i < value.size(); ++i) {
+                    if ((i < value.size() - 1) && (value[i] == ' ' && value[i + 1] == ' ')) {
+                        value.erase(value.begin() + i);
+                        --i;
+                    }
+                }
+                value += ' ';
 
-                    while (getline(pointSS, coordinate, ','))
-                        coordinates.push_back(stoi(coordinate));
+                double x, y;
+                int ind1 = 0, ind2;
+                Point2D p;
 
-                    Point2D pointObj(coordinates[0], coordinates[1]);
-                    pointArray.push_back(pointObj);
+                for (int j = 0; j < value.size(); ++j) {
+                    if (value[j] == ' ') {
+                        ind2 = j;
+                        x = stod(value.substr(ind1, ind2 - ind1));
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y = stod(value.substr(ind1, ind2 - ind1));
+                        ind1 = ind2 + 1;
+                        j = ind2;
+
+                        p.SetPoint(x, y);
+                        pointArray.push_back(p);
+                    }
                 }
             }
 
@@ -725,6 +764,7 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
         for (rapidxml::xml_attribute<>* node = root->first_attribute(); node; node = node->next_attribute()) {
             name = node->name();
             string value = node->value();
+
 
             if (name == "fill-opacity")
                 fill_opacity = stod(value);
@@ -749,30 +789,72 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                 }
             }
 
+            else if (name == "style") {
+                if (value.find("fill") < value.size()) {
+                    int ind = value.find("fill") + 5;
+
+                    if (value[ind] == 'u') {
+                        ind += 5;
+                        linearGradient = 1;
+                        string id = value.substr(ind, value.find(")", ind) - ind);
+
+                        for (int i = 0; i < gradient.size(); ++i) {
+                            if (id == gradient[i].id) {
+                                Gradient = gradient[i];
+                            }
+                        }
+                    }
+
+                    else {
+                        string color = value.substr(ind, value.size() - ind);
+                        if (value == "none" || value == "transparent")
+                            fill_opacity = 0;
+                        else
+                            readRGB(color, fill2);
+                    }
+                }
+            }
+
             else if (name == "stroke-width")
                 thickness = stoi(value);
 
             else if (name == "points") {
-                string points;
-                int NumOfPoint = 0;
-                Point2D* pointsArray = NULL;
-                int pos1 = 0;
-                int pos2 = value.size();
-                points = value.substr(pos1, pos2 - pos1);
+                for (int i = 0; i < value.size(); ++i) {
+                    if (value[i] == '\n' || value[i] == ',' || value[i] == 9) {
+                        value[i] = ' ';
+                    }
+                }
 
-                stringstream ss(points);
-                string point;
+                while (value[value.size() - 1] == ' ') {
+                    value.erase(value.begin() + value.size() - 1);
+                }
 
-                while (getline(ss, point, ' ')) {
-                    stringstream pointSS(point);
-                    string coordinate;
-                    vector<int> coordinates;
+                for (int i = 0; i < value.size(); ++i) {
+                    if ((i < value.size() - 1) && (value[i] == ' ' && value[i + 1] == ' ')) {
+                        value.erase(value.begin() + i);
+                        --i;
+                    }
+                }
+                value += ' ';
 
-                    while (getline(pointSS, coordinate, ','))
-                        coordinates.push_back(stoi(coordinate));
+                double x, y;
+                int ind1 = 0, ind2;
+                Point2D p;
 
-                    Point2D pointObj(coordinates[0], coordinates[1]);
-                    pointArray.push_back(pointObj);
+                for (int j = 0; j < value.size(); ++j) {
+                    if (value[j] == ' ') {
+                        ind2 = j;
+                        x = stod(value.substr(ind1, ind2 - ind1));
+
+                        ind1 = ind2 + 1;
+                        ind2 = value.find(" ", ind1);
+                        y = stod(value.substr(ind1, ind2 - ind1));
+                        ind1 = ind2 + 1;
+                        j = ind2;
+
+                        p.SetPoint(x, y);
+                        pointArray.push_back(p);
+                    }
                 }
             }
 
@@ -807,6 +889,32 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
                     readRGB(value, stroke_fill2);
                     if (thickness == 0)
                         thickness = 1;
+                }
+            }
+
+            else if (name == "style") {
+                if (value.find("fill") < value.size()) {
+                    int ind = value.find("fill") + 5;
+
+                    if (value[ind] == 'u') {
+                        ind += 5;
+                        linearGradient = 1;
+                        string id = value.substr(ind, value.find(")", ind) - ind);
+
+                        for (int i = 0; i < gradient.size(); ++i) {
+                            if (id == gradient[i].id) {
+                                Gradient = gradient[i];
+                            }
+                        }
+                    }
+
+                    else {
+                        string color = value.substr(ind, value.size() - ind);
+                        if (value == "none" || value == "transparent")
+                            fill_opacity = 0;
+                        else
+                            readRGB(color, fill2);
+                    }
                 }
             }
 
@@ -864,6 +972,32 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
             else if (name == "fill-opacity")
             {
                 fill_opacity = stod(value);
+            }
+
+            else if (name == "style") {
+                if (value.find("fill") < value.size()) {
+                    int ind = value.find("fill") + 5;
+
+                    if (value[ind] == 'u') {
+                        ind += 5;
+                        linearGradient = 1;
+                        string id = value.substr(ind, value.find(")", ind) - ind);
+
+                        for (int i = 0; i < gradient.size(); ++i) {
+                            if (id == gradient[i].id) {
+                                Gradient = gradient[i];
+                            }
+                        }
+                    }
+
+                    else {
+                        string color = value.substr(ind, value.size() - ind);
+                        if (value == "none" || value == "transparent")
+                            fill_opacity = 0;
+                        else
+                            readRGB(color, fill2);
+                    }
+                }
             }
 
             else if (name == "fill") {
@@ -1311,10 +1445,6 @@ void Shape::Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int
 
 
             }
-
-            else if (name == "transform") {
-                readTransform(value, transform);
-            }
         }
         
         Path p;
@@ -1338,7 +1468,6 @@ Shape::~Shape() {}
 
 
 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     Shape        shape;
     HDC          hdc;
@@ -1348,9 +1477,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "chrome.svg");
+        shape.ReadSVGFile(hdc, "svg-15.svg");
         /*
-        run: 2,3,4,5,7,10,11,tiktok
+        run: 2,3,4,5,7,10,11,15,tiktok
         wrong:  1 = 9(missing a lot),
                 6(nothing happend : D),
                 8(missing italic, bold, underline)
@@ -1358,11 +1487,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 13
                 14
                 18 (monster)
-                chrome
-                apple
-                insta
+                chrome (close)
+                apple (what is this ?)
+                insta (what is this ?)
                 
-        error: 15,16,17,firefox
+        error: 16,17, firefox (e, a ?)
         */
         EndPaint(hWnd, &ps);
         return 0;

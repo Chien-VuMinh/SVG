@@ -16,6 +16,7 @@ PolyShape::~PolyShape() {
 
 
 
+
 void PolyLine::SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int* fill_rgb, double fill_opacity,double stroke_opacity, vector<Transform>& transform) {
     this->thickness = thickness;
     this->NumOfPoint = points.size();
@@ -25,8 +26,8 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int*
 
     this->points = new PointF[NumOfPoint];
     for (int i = 0; i < NumOfPoint; ++i) {
-        this->points[i].X = points[i].GetX();
-        this->points[i].Y = points[i].GetY();
+        this->points[i].X = (points[i].GetX());
+        this->points[i].Y = (points[i].GetY());
     }
 
     for (int i = 0; i <= 2; i++)
@@ -36,28 +37,6 @@ void PolyLine::SetPolyLine(int* rgb, int thickness, vector<Point2D> points, int*
     }
 }
 
-
-
-void PolyLine::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
-    Graphics graphics(hdc);
-    GraphicsPath path;
-    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    path.AddLines(this->points, this->NumOfPoint);
-
-    // Use the path to construct a brush.
-    PathGradientBrush pthGrBrush(&path);
-    pthGrBrush.SetGammaCorrection(TRUE);
-
-    // Set the color at the center of the path to blue.
-    pthGrBrush.SetCenterColor(Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]));
-
-    // Set the color along the entire boundary of the path to aqua.
-    Color colors[] = { 255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2] };
-    int count = 1;
-    pthGrBrush.SetSurroundColors(colors, &count);
-
-    graphics.FillPolygon(&pthGrBrush, this->points, this->NumOfPoint);
-}
 
 void PolyLine::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
     Graphics graphics(hdc);
@@ -81,6 +60,7 @@ void PolyLine::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
     linearBrush.SetGammaCorrection(TRUE);
     graphics.FillPolygon(&linearBrush, this->points, this->NumOfPoint);
 }
+
 
 void PolyLine::OnPaint(HDC hdc) {
     Graphics     graphics(hdc);
@@ -121,8 +101,8 @@ void PolyGon::SetPolyGon(int* rgb, int* fill_rgb, int thickness, vector<Point2D>
     this->points = new PointF[NumOfPoint];
     this->transform = transform;
     for (int i = 0; i < NumOfPoint; ++i) {
-        this->points[i].X = points[i].GetX();
-        this->points[i].Y = points[i].GetY();
+        this->points[i].X = static_cast<float>(points[i].GetX());
+        this->points[i].Y = static_cast<float>(points[i].GetY());
     }
     for (int i = 0; i <= 2; i++) {
         this->rgb[i] = rgb[i];
@@ -156,7 +136,7 @@ void PolyGon::myLinearGradientBrush(HDC hdc, LinearGradient gradient){
 void PolyGon::OnPaint(HDC hdc) {
     Graphics    graphics(hdc);
     int         alpha = 255 * fill_opacity;
-    SolidBrush  solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    SolidBrush  solidBrush(Color(alpha, fill_rgb[0], fill_rgb[1], fill_rgb[2]));
 
 
 
