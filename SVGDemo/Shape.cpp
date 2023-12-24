@@ -1477,22 +1477,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "svg-15.svg");
-        /*
-        run: 2,3,4,5,7,10,11,15,tiktok
-        wrong:  1 = 9(missing a lot),
-                6(nothing happend : D),
-                8(missing italic, bold, underline)
-                12(fill issue)
-                13
-                14
-                18 (monster)
-                chrome (close)
-                apple (what is this ?)
-                insta (what is this ?)
-                
-        error: 16,17, firefox (e, a ?)
-        */
+        shape.ReadSVGFile(hdc, "chrome.svg");
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:

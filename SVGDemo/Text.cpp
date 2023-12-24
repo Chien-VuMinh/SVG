@@ -43,14 +43,12 @@ VOID Text::OnPaint(HDC hdc) {
     }
 
 
-    // Create a GraphicsPath
+
     GraphicsPath path;
 
-    // Add the string to the path
     path.AddString(widestr.c_str(), -1, &fontFamily, FontStyleRegular, static_cast<REAL>(size), pointF, NULL);
 
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
-    // Fill the path with the solid brush
     graphics.FillPath(&brush, &path);
     if (thickness != 0)
         graphics.DrawPath(&pen, &path);

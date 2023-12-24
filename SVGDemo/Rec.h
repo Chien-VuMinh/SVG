@@ -33,16 +33,3 @@ public:
 	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
 	VOID OnPaint(HDC hdc);
 };
-
-
-
-//class RoundRectangle : public Rec {
-//private:
-//	int thickness;
-//	Point2D end;
-//
-//public:
-//	void SetRoundRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness);
-//
-//	VOID OnPaintRoundRec();
-//};

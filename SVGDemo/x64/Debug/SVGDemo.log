@@ -1,47 +1,4 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (SVGDemo.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  PolyShape.cpp
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(22,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(29,44): warning C4244: '=': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(30,44): warning C4244: '=': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(47,102): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(47,70): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(49,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(51,90): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(51,62): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(55,51): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(55,31): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(56,51): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(56,31): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(57,19): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(58,19): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(67,24): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(73,102): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(73,70): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(75,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(77,90): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(77,62): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(84,21): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(85,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(98,37): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(119,102): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(119,70): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(121,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(123,90): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(123,62): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(127,51): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(127,31): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(128,51): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(128,31): warning C4244: 'argument': conversion from 'double' to 'INT', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(129,19): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(130,19): warning C4244: 'argument': conversion from 'double' to 'BYTE', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(138,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(145,102): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(145,70): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(147,64): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(149,90): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(149,62): warning C4244: 'argument': conversion from 'double' to 'Gdiplus::REAL', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(156,21): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\PolyShape.cpp(157,63): warning C4244: 'argument': conversion from 'int' to 'Gdiplus::REAL', possible loss of data
   Shape.cpp
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(25,17): warning C4566: character represented by universal-character-name '\u1EC3' cannot be represented in the current code page (1252)
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(25,17): warning C4566: character represented by universal-character-name '\u1EDF' cannot be represented in the current code page (1252)
@@ -99,5 +56,4 @@ C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1398,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1416,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\SVGDemo\Shape.cpp(1420,53): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
   SVGDemo.vcxproj -> C:\Users\ADMIN\OneDrive - VNU-HCMUS\Documents\C++\OOP\SVG-git\SVG\x64\Debug\SVG.exe
