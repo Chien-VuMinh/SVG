@@ -1477,7 +1477,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
     case WM_PAINT:
         hdc = BeginPaint(hWnd, &ps);
-        shape.ReadSVGFile(hdc, "chrome.svg");
+        shape.ReadSVGFile(hdc, "tiktok.svg");
         EndPaint(hWnd, &ps);
         return 0;
     case WM_DESTROY:
