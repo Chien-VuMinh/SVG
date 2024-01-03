@@ -6,23 +6,23 @@
 Point2D::Point2D() : x(0), y(0) {}
 
 
-Point2D::Point2D(int x, int y) {
+Point2D::Point2D(double x, double y) {
 	this->x = x;
 	this->y = y;
 }
 
 
-int Point2D::GetX() {
+double Point2D::GetX() {
 	return this->x;
 }
 
 
-int Point2D::GetY() {
+double Point2D::GetY() {
 	return this->y;
 }
 
 
-void Point2D::SetPoint(int x, int y) {
+void Point2D::SetPoint(double x, double y) {
 	this->x = x;
 	this->y = y;
 }

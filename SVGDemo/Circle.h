@@ -7,6 +7,8 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
+#include "Transform.h"
+#include "LinearGradient.h"
 
 
 using namespace std;
@@ -19,26 +21,11 @@ using namespace Gdiplus;
 
 class Circle : public Shape {
 protected:
-	int rgb[3];
-	int fill_rgb[3];
-	int thickness;
 	Point2D center;
 	int radX, radY;
 
-	double stroke_opacity;
-	double fill_opacity;
 public:
-	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity);
-
-	int getX();
-	int getY();
-	int getradX();
-	int getradY();
-
-	void setRGB(int*);
-	void _fillCircle(HDC, double);
-	void myLinearGradientBrush(HDC, double*, double*);
-	void gradientBrushPath(HDC, double*, double*);
-
-	VOID OnPaint(HDC hdc, double);
+	void SetCircle(int* rgb, Point2D center, int radX, int radY, int thickness, int* fill_rgb, double stroke_opacity, double fill_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };

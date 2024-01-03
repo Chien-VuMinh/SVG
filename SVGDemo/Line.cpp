@@ -4,56 +4,60 @@
 
 
 
-void Line::SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity) 
-{
+void Line::SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity, vector<Transform>& transform) {
     for (int i = 0; i <= 2; i++)
-    {
         this->rgb[i] = rgb[i];
-    }
     this->start = start;
     this->end = end;
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
+    this->transform = transform;
 }
 
-void Line::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)
-{
+
+
+void Line::myLinearGradientBrush(HDC hdc, LinearGradient gradient) {
     Graphics graphics(hdc);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
     LinearGradientBrush linearBrush(
-        Point(50, 10), //associated with the first color
-        Point(150, 10), //associated with the second color
-        Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]),
-        Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]));
+        Point(gradient.p1.GetX(), gradient.p1.GetY()),
+        Point(gradient.p2.GetX(), gradient.p2.GetY()),
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]),
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2]));
 
     linearBrush.SetGammaCorrection(TRUE);
     Pen pen(&linearBrush);
-    graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
+    graphics.DrawLine(&pen, static_cast<float>(start.GetX()), start.GetY(), end.GetX(), end.GetY());
 }
 
-void Line::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
-{
-    // Create a path that consists of a single ellipse.
-    Graphics graphics(hdc);
-    GraphicsPath path;
-    path.AddLine(start.GetX(), start.GetY(), end.GetX(), end.GetY());
 
-    // Use the path to construct a brush.
-    PathGradientBrush pthGrBrush(&path);
-    pthGrBrush.SetGammaCorrection(TRUE);
+VOID Line::OnPaint(HDC hdc) {
+    Graphics        graphics(hdc);
+    GraphicsPath    Path;
+    int             alpha = 255 * stroke_opacity;
+    Pen             pen(Color(alpha, rgb[0], rgb[1], rgb[2]), thickness);
 
-    // Set the color at the center of the path to blue.
-    pthGrBrush.SetCenterColor(Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]));
 
-    // Set the color along the entire boundary of the path to aqua.
-    Color colors[] = { Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]) };
-    int count = 1;
-    pthGrBrush.SetSurroundColors(colors, &count);
-    Pen pen(&pthGrBrush);
-    graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
-}
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
 
-VOID Line::OnPaint(HDC hdc, double opacity) {
-    Graphics graphics(hdc);
-    Pen      pen(Color(rgb[0], rgb[1], rgb[2]), thickness);
-    graphics.DrawLine(&pen, start.GetX(), start.GetY(), end.GetX(), end.GetY());
+
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    graphics.DrawLine(&pen, static_cast<float>(start.GetX()), start.GetY(), end.GetX(), end.GetY());
 }

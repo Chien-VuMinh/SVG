@@ -8,6 +8,8 @@
 #include <vector>
 #include <fstream>
 #include "Point.h"
+#include "Transform.h"
+#include "LinearGradient.h"
 
 
 using namespace std;
@@ -19,24 +21,27 @@ using namespace Gdiplus;
 
 class Shape {
 protected:
-	int ShapeArrSize;
-	Shape** ShapeArr;
+	int rgb[3];
+	int fill_rgb[3];
+	int thickness;
+	double fill_opacity;
+	double stroke_opacity;
+	vector<Transform> transform;
 
 public:
 	Shape();
 
-	void HandleSVGFile(HDC hdc);
+	void ReadSVGFile(HDC hdc, string file_name);
+	void HanleSVG(HDC hdc, xml_node<>*& root);
+	void Draw(HDC hdc, xml_node<>*& root, int* fill, double fill_opacity, int* stroke_fill,
+		      double stroke_opacity, int thickness, vector<Transform> transform, 
+			  vector<LinearGradient> gradient,int font_size);
+	void readTransform(string value, vector<Transform>& transform);
 
-	VOID OnPaintLine(HDC hdc, int* rgb, int xStart, int yStart, int xEnd, int yEnd, int thickness);
-	VOID OnPaintString(HDC hdc, string s, int* rgb, int size, int x, int y);
-	VOID OnPaintImage(HDC hdc, string name, int x, int y);
-	virtual VOID OnPain(HDC hdc);
-	virtual VOID OnPaint(HDC hdc, double);
-	virtual void fillRect(HDC, double);
-	virtual void _fillCircle(HDC, double);
-	virtual void fillPoline(HDC, double);
-	virtual void fillPolygon(HDC, double);
+	void readRGB(string value, int* rgb);
+	void GetP(vector<vector<Point2D>>& points, string s, int& n, Point2D startP);
 
+	virtual VOID OnPaint(HDC hdc);
 
 	~Shape();
 };

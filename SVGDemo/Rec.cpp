@@ -6,12 +6,15 @@
 
 
 
-void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity) {
+void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thickness, int* fill_rgb, double fill_opacity, double stroke_opacity, vector<Transform>& transform) {
     this->start = start;
     this->height = height;
     this->width = width;
     this->thickness = thickness;
     this->stroke_opacity = stroke_opacity;
+    this->fill_opacity = fill_opacity;
+    this->transform = transform;
+
     for (int i = 0; i <= 2; i++)
     {
         this->rgb[i] = rgb[i];
@@ -19,98 +22,53 @@ void _Rectangle::SetRec(int* rgb, Point2D start, int height, int width, int thic
     }
 }
 
-int _Rectangle::getHeight()
-{
-    return this->height;
-}
-
-int _Rectangle::getWidth()
-{
-    return this->width;
-}
-
-int _Rectangle::getX()
-{
-    return this->start.GetX();
-}
-
-int _Rectangle::getY()
-{
-    return this->start.GetY();
-}
-
-void _Rectangle::setRGB(double* rgb)
-{
-    this->rgb[0] = rgb[0];
-    this->rgb[1] = rgb[1];
-    this->rgb[2] = rgb[2];
-}
-
-void _Rectangle::fillRect(HDC hdc, double opacity)
-{
-    Graphics    graphics(hdc);
-    int alpha = 255 * opacity;
-
-    //SolidBrush solidBrush(Color(alpha, ((this->rgb[0] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[1] * alpha) / 255) + 255 * (255 - alpha) / 255, ((this->rgb[2] * alpha) / 255) + 255 * (255 - alpha) / 255));
-    SolidBrush solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
-    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
-}
-
-void _Rectangle::myLinearGradientBrush(HDC hdc, double* firstrgb, double* secondrgb)//these arr need 4 elements (alpha, reb, green, blue)
+void _Rectangle::myLinearGradientBrush(HDC hdc, LinearGradient gradient)
 {
     Graphics graphics(hdc);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
+
     LinearGradientBrush linearBrush(
-        Point(50, 10), //associated with the first color
-        Point(150, 10), //associated with the second color
-        Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]),
-        Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]));
+        Point(gradient.p1.GetX(), gradient.p1.GetY()),
+        Point(gradient.p2.GetX(), gradient.p2.GetY()),
+        Color(255 * fill_opacity, gradient.rgb1[0], gradient.rgb1[1], gradient.rgb1[2]),
+        Color(255 * fill_opacity, gradient.rgb2[0], gradient.rgb2[1], gradient.rgb2[2]));
 
     linearBrush.SetGammaCorrection(TRUE);
     graphics.FillRectangle(&linearBrush, start.GetX(), start.GetY(), width, height);
 }
 
-void _Rectangle::gradientBrushPath(HDC hdc, double* firstrgb, double* secondrgb)
-{
-    // Create a path that consists of a single ellipse.
-    Graphics graphics(hdc);
-    GraphicsPath path;
-    RectF r(start.GetX(), start.GetY(), width, height);
-    path.AddRectangle(r);
+VOID _Rectangle::OnPaint(HDC hdc) {
+    Graphics       graphics(hdc);
+    double         alpha = 255 * stroke_opacity;
+    Pen            pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
 
-    // Use the path to construct a brush.
-    PathGradientBrush pthGrBrush(&path);
-    pthGrBrush.SetGammaCorrection(TRUE);
 
-    // Set the color at the center of the path to blue.
-    pthGrBrush.SetCenterColor(Color(255 * firstrgb[0], firstrgb[1], firstrgb[2], firstrgb[3]));
+    for (int i = 0; i < transform.size(); i++) {
+        if (transform[i].GetName() == "t")
+            graphics.TranslateTransform(transform[i].GetTranslate()[0], transform[i].GetTranslate()[1]);
+        if (transform[i].GetName() == "r")
+            graphics.RotateTransform(transform[i].GetRotate()[0]);
+        if (transform[i].GetName() == "s")
+            graphics.ScaleTransform(transform[i].GetScale()[0], transform[i].GetScale()[1]);
+    }
 
-    // Set the color along the entire boundary of the path to aqua.
-    Color colors[] = { Color(255 * secondrgb[0], secondrgb[1], secondrgb[2], secondrgb[3]) };
-    int count = 1;
-    pthGrBrush.SetSurroundColors(colors, &count);
 
-    graphics.FillRectangle(&pthGrBrush, start.GetX(), start.GetY(), width, height);
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+    if (thickness != 0) {
+        graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
+    }
+
+    alpha = 255 * fill_opacity;
+    SolidBrush     solidBrush(Color(alpha, this->fill_rgb[0], this->fill_rgb[1], this->fill_rgb[2]));
+    graphics.FillRectangle(&solidBrush, start.GetX(), start.GetY(), width, height);
 }
-
-VOID _Rectangle::OnPaint(HDC hdc, double stroke_opacity) {
-    Graphics graphics(hdc);
-    int alpha = 255 * stroke_opacity;
-    Pen      pen(Color(alpha, this->rgb[0], this->rgb[1], this->rgb[2]), this->thickness);
-    graphics.DrawRectangle(&pen, start.GetX(), start.GetY(), width, height);
-}
-
-//void RoundRectangle::SetRoundRec(HDC hdc, int* rgb, Point2D start, int height, int width, int thickness) {
-//    this->hdc = hdc;
-//    this->rgb[0] = rgb[0];
-//    this->rgb[1] = rgb[1];
-//    this->rgb[2] = rgb[2];
-//    this->start = start;
-//    this->height = height;
-//    this->width = width;
-//    this->thickness = thickness;
-//}
-//
-//VOID RoundRectangle::OnPaintRoundRec() {
-//    Graphics graphics(hdc);
-//    RoundRect(hdc, start.GetX(), start.GetY(), 100, 100, 10, 10);
-//}

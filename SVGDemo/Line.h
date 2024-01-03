@@ -7,7 +7,8 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
-
+#include "Transform.h"
+#include "LinearGradient.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -19,14 +20,10 @@ using namespace Gdiplus;
 
 class Line : public Shape {
 protected:
-	int rgb[3];
-	int thickness;
 	Point2D start, end;
-	double stroke_opacity;
-public:
-	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity);
-        void myLinearGradientBrush(HDC, double*, double*);
-        void gradientBrushPath(HDC, double*, double*);
 
-	VOID OnPaint(HDC hdc, double);
+public:
+	void SetLine(int* rgb, Point2D start, Point2D end, int thickness, double stroke_opacity, vector<Transform>& transform);
+	void myLinearGradientBrush(HDC hdc, LinearGradient gradient);
+	VOID OnPaint(HDC hdc);
 };

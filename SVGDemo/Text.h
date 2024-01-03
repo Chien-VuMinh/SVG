@@ -7,6 +7,8 @@
 #include <gdiplus.h>
 #include "Point.h"
 #include "Shape.h"
+#include "Transform.h"
+#include "LinearGradient.h"
 
 
 using namespace std;
@@ -20,12 +22,10 @@ using namespace Gdiplus;
 class Text : public Shape {
 protected:
 	string text;
-	int rgb[3];
 	int size;
 	Point2D start;
 
 public:
-	void SetText(string text, int* rgb, int size, Point2D start);
-
-	VOID OnPaint(HDC hdc, double);
+	void SetText(string text, int* rgb, int size, Point2D start, int* fill, double stroke_opacity, double fill_opacity, int thickness, vector<Transform>& transform);
+	VOID OnPaint(HDC hdc);
 };
